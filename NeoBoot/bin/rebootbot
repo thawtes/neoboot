@@ -1,0 +1,9 @@
+#!/bin/sh
+if [ ! -e /media/neoboot/ImageBoot/.neonextboot ]; then
+          ln -sfn /sbin/init.sysvinit /sbin/init
+          echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
+          sync
+          echo "Error - Back to Flash... "
+          sleep 3; reboot -f
+fi  
+exit 0
