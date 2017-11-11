@@ -6,6 +6,6 @@ Uruchom poniższą komendę w terminalu wspieranego tunera
 
 opkg update; opkg install curl 
 
-curl -kLs https://raw.githubusercontent.com/gutosie/neoboot-6/master/iNB.sh|sh
+curl -kLs https://raw.githubusercontent.com/gutosie/neoboot/master/iNB.sh|sh
 
 
