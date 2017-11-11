@@ -214,7 +214,7 @@ def NEOBootMainEx(source, target, installsettings, zipdelete, tvlist, montowanie
     if getCPUtype() == 'MIPS':
         cmd = 'cp -r -f /etc/hostname %s/ImageBoot/%s/etc/hostname > /dev/null 2>&1' % (media, target)
         rc = os.system(cmd)
-        if not os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/HbbTV' % (media, target)):
+        if os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/HbbTV' % (media, target)):
             cmd = 'rm -r %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/HbbTV' % (media, target)
             rc = os.system(cmd)
 
