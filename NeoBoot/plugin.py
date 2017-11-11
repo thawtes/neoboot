@@ -518,8 +518,10 @@ class NeoBootInstallation(Screen):
             system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoinit*; chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; cd;')                        
             cmd = 'mkdir /media/neoboot;mount ' + self.mysel + ' /media/neoboot'
             system(cmd)
-            cmd2 = 'mkdir ' + self.mysel + 'ImageBoot;mkdir ' + self.mysel + 'ImagesUpload/.kernel' 
+            cmd2 = 'mkdir ' + self.mysel + 'ImageBoot;mkdir ' + self.mysel + 'ImagesUpload' 
             system(cmd2)
+            cmd3 = 'mkdir ' + self.mysel + 'ImageBoot;mkdir ' + self.mysel + 'ImagesUpload/.kernel' 
+            system(cmd3)
                                     
             if fileExists('/proc/mounts'):
                 fileExists('/proc/mounts')
