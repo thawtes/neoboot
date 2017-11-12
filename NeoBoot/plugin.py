@@ -43,7 +43,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.10'
+UPDATEVERSION = '6.11'
 
 def readline(filename, iferror = ''):
     if iferror[:3] == 'or:':
