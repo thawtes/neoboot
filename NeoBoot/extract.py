@@ -397,7 +397,7 @@ def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
                 os.system('echo "NeoBoot keep the file:  %s  for reinstallation."' % sourcefile)
             cmd = 'rm -rf /media/neoboot/ubi'
             rc = os.system(cmd)
-    elif os.path.exists(sourcefile):
+    if os.path.exists(sourcefile):
         os.chdir(media + '/ImagesUpload')
         os.system('unzip ' + sourcefile)
         if ZipDelete == 'True': 
