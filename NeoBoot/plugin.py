@@ -676,7 +676,7 @@ class NeoBootImageChoose(Screen):
         #if fileExists('/.multinfo'):
         if fileExists('/.multinfo') or getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
-                if boxtype == 'sf4008':   
+                if getCPUSoC() == '7251' or getBoxHostName == 'sf4008':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')  
 
             if os.path.exists('/proc/stb/info/model'):
