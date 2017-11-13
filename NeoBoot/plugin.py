@@ -1164,7 +1164,7 @@ class UruchamianieImage(Screen):
                 os.system('rm -f /media/mmc/etc/init.d/neobootmount.sh;')
 
             #Octagon SF4008
-            if getCPUSoC() == 'bcm7251' getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
+            if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
                         if  getImageNeoBoot() == 'Flash':                    
                             if fileExists('/.multinfo'):   
                                 os.system('cd /media/mmc; ln -sf "init.sysvinit" "/media/mmc/sbin/init"; /etc/init.d/reboot')                 
