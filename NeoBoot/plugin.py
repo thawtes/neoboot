@@ -546,7 +546,7 @@ class NeoBootInstallation(Screen):
                 try:
                     system('opkg update;opkg configure;sleep 5')                    
                     #OctagonSF4008 DM900
-                    if getCPUSoC() == 'bcm7251' getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
+                    if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
                         os.system('cp -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; chmod 0755 /sbin/neoinitarm; ln -sfn /sbin/neoinitarm /sbin/init')                             
                     #VUPLUS ARM                                    
                     elif  getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' :                                                                                                                                                                                                                                                                                                                                                                                              
