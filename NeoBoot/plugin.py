@@ -1207,7 +1207,7 @@ class UruchamianieImage(Screen):
                         self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd])
                         self.close()                                                                        
             #VUPLUS MIPS              
-            elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == '7429'  or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7358' or getBoxHostName() == 'mbmini':                   
+            elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == '7429'  or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7358' or getBoxHostName() == 'mbmini':                   
                         if  getImageNeoBoot() == 'Flash':                    
                             if fileExists('/.multinfo'):   
                                 os.system('/etc/init.d/reboot')             
