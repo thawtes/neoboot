@@ -83,12 +83,21 @@ def getImageNeoBoot():
 #zwraca model vuplus   
 def getBoxVuModel():
     vumodel='UNKNOWN'
-    if os.path.exists('/proc/stb/info/vumodel'):
+    if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):
         with open('/proc/stb/info/vumodel', 'r') as f:
             vumodel = f.readline().strip()
             f.close() 
     return vumodel
-    
+
+def getVuModel():
+    if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):
+        brand = "Vu+"
+        f = open("/proc/stb/info/vumodel",'r')
+        procmodel = f.readline().strip()
+        f.close()
+        model = procmodel.title().replace("olose", "olo SE").replace("olo2se", "olo2 SE").replace("2", "²")
+    return model    
+
 #zwraca nazwe stb z pliku hostname    
 def getBoxHostName():
     if os.path.exists('/etc/hostname'):
