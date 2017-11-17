@@ -74,6 +74,8 @@ else
                   echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
 		  reboot -f
 	fi   
+        ln -sfn /sbin/init.sysvinit /sbin/init
+
 	TARGET=Flash
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
@@ -114,6 +116,17 @@ else
                            done	
                         chmod 755 $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh   
 
+                        #powrot do flasza jesli image sie nie uruchomi
+			if [ ! -e $IMAGE/$TARGET/checkpoint ]; then                                    
+                                    touch $IMAGE/$TARGET/checkpoint 
+
+			elif [ -f $IMAGE/$TARGET/checkpoint ]; then                                                                        
+                                    ln -sfn /sbin/init.sysvinit /sbin/init
+                                    echo "Flash "  > $IMAGEBOOT
+                                    echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                                    reboot -f
+                        fi
+                        #
 			if [ -f $IMAGE/$TARGET/sbin/init.sysvinit ]; then                                    
                                     exec /usr/sbin/chroot $IMAGE/$TARGET /sbin/init.sysvinit 
 			elif [ -f $IMAGE/$TARGET/sbin/init ]; then                                    
