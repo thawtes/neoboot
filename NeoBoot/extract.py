@@ -402,7 +402,7 @@ def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, Insta
             if os.path.exists('/tmp/without_copying '):
                 rc = os.system('rm -f /tmp/without_copying')                                             
                 rc = os.system(cmd)
-            cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/checkpoint.sh %s/ImageBoot/%s/etc/init.d/ > /dev/null 2>&1' % (media, target)
+            cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh %s/ImageBoot/%s/etc/rcS.d > /dev/null 2>&1' % (media, target)
             rc = os.system(cmd) 
                                   
 def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
