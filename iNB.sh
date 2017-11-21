@@ -14,7 +14,7 @@ Cel="/usr/lib/enigma2/python/Plugins/Extensions"
 [ -e $Cel/NeoBoot ] && rm -rf $Cel/NeoBoot/* || mkdir -p $Cel/NeoBoot
 mv -f /tmp/neoboot-master/NeoBoot/* $Cel/NeoBoot
 [ -e /tmp/neoboot-master ] && rm -rf /tmp/neoboot-master
-cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/*; chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/checkpoint.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; chmod 0755 ./bin/rebootbot; cp /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinit* /sbin; cd;                        
+cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/*; chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/checkpoint.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; chmod 0755 /files/S51checkpoint.sh; chmod 0755 ./bin/rebootbot; cp /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinit* /sbin; cd;                        
 echo "NeoBoot zainstalowany!!!"
 echo ""
 echo "#####################################################"
