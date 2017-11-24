@@ -590,8 +590,11 @@ class NeoBootInstallation(Screen):
                             os.system('ln -sf /usr/lib/enigma2/python/Components/PackageInfo.pyo /usr/lib/enigma2/python/Tools/DreamboxInfoHandler.pyo')                            
 
                         if getCPUtype() == 'MIPS':    
-                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -f ./neotmp/fontforneoboot.ttf /usr/share/fonts; cp -f ./neotmp/libpngneo /usr/lib; cp ./neotmp/neobm ./bin; rm ./bin/rebootbot; cp ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 /sbin/neoinitmips; ln -sfn /sbin/neoinitmips /sbin/init; rm  ./bin/neoinitar*; rm -r ./neotmp; chmod 0755 ./bin/nfidump; chmod 0755 ./bin/neobm; cd; chmod 0755 /usr/lib/libpngneo')
-                                         
+                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -f ./neotmp/fontforneoboot.ttf /usr/share/fonts; cp -f ./neotmp/libpngneo /usr/lib; cp ./neotmp/neobm ./bin; rm ./bin/rebootbot; cp ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 /sbin/neoinitmips; ln -sfn /sbin/neoinitmips /sbin/init; rm  ./bin/neoinitar*; rm -r ./neotmp; chmod 0755 ./bin/nfidump; chmod 0755 ./bin/neobm; cd; chmod 0755 /usr/lib/libpngneo; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage')
+
+                        if fileExists('/usr/lib/libpngneoboot'):
+                            os.system('ln -sf libpngneo /usr/lib/libpngneoboot')
+                            
                         if fileExists('/tmp/plik.tar.gz'):
                             cmd = 'mkdir -p ' + self.mysel + 'ImagesUpload/.egami'    #private non-public use patch
                             system(cmd)
