@@ -1,5 +1,4 @@
-Wspierane tunery: Wszytkie modele VuPlus, Octagon SF4008, MiracleBox Mini, ( Testy- DM900), (Klony - UltraSolo, MiniVuSolo,
-CloudIbox)
+Wspierane tunery: Wszytkie modele VuPlus - klony też, Octagon SF4008, MiracleBox Mini, ( Testy- DM900)
 
 Pierwsza instalacja neoboot-a
 
