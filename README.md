@@ -1,5 +1,5 @@
-Wspierane tunery: Wszytkie modele VuPlus, Octagon SF4008, MiracleBox Mini, ( Testy- DM900)
-
+Wspierane tunery: Wszytkie modele VuPlus, Octagon SF4008, MiracleBox Mini, ( Testy- DM900),(Klony - UltraSolo, MiniVuSolo,
+CloudIbox)
 Pierwsza instalacja neoboot-a
 
 Uruchom poniższą komendę w terminalu wspieranego tunera:
