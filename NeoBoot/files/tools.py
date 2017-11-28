@@ -69,7 +69,7 @@ class MBTools(Screen):
         self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.KeyOk,
          'back': self.close})
 
-    def updateList(self):
+    def updateList(self):                       
         self.list = []
         mypath = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot'
         if not fileExists(mypath + 'icons'):
@@ -115,9 +115,14 @@ class MBTools(Screen):
         self.list.append(res)
         self['list'].list = self.list        
 
-        res = (_('Informacje NeoBoota'), png, 10)
+        res = (_('Sprawdz poprawnosc instalacji neoboota'), png, 10)
         self.list.append(res)
         self['list'].list = self.list
+        
+        res = (_('Informacje NeoBoota'), png, 11)
+        self.list.append(res)
+        self['list'].list = self.list        
+
 
     def KeyOk(self):
         self.sel = self['list'].getCurrent()
@@ -141,11 +146,12 @@ class MBTools(Screen):
             pass
         if self.sel == 8 and self.session.open(IPTVPlayer):
             pass
-        if self.sel == 9 and self.session.open(SetPasswd):
+        if self.sel == 9 and self.session.open(SetPasswd): 
             pass
-        if self.sel == 10 and self.session.open(MultiBootMyHelp):
+        if self.sel == 10 and self.session.open(CheckInstall): 
+            pass            
+        if self.sel == 11 and self.session.open(MultiBootMyHelp):
             pass
-
 
 class MBBackup(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -775,6 +781,50 @@ class SetPasswd(Screen):
             self.session.open(TryQuitMainloop, 3)
         else:
             self.close()
+
+
+class CheckInstall(Screen):        
+    __module__ = __name__
+    skin = '\n\t<screen position="center,center" size="700,300" title="Sprawdz poprawnosc instalacji neoboota.">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
+
+    def __init__(self, session):
+        Screen.__init__(self, session)
+        self['lab1'] = Label('Wykonac ?')
+        self['key_red'] = Label(_('Uruchom'))
+        self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'back': self.close,
+         'red': self.sprawdz})
+    
+    def sprawdz(self):    
+        if not fileExists('/usr/sbin/ubiattach'):
+            os.system('echo "Sorry, ubiattach not found"')
+        elif fileExists('/usr/sbin/ubiattach'):
+            os.system('echo "Sorry, ubiattach found"')            
+        if not fileExists('/lib/modules/*/kernel/drivers/mtd/nand/nandsim.ko'):
+            os.system('echo "Sorry, nandsim not found"')          
+        if not fileExists('/usr/bin/curl'):
+            os.system('echo "Sorry, curl not found"')
+        if not fileExists('/usr/lib/python*/argparse.pyo'):
+            os.system('echo "Sorry, argparse not found"')
+        if not fileExists('/usr/lib/python*/subprocess.pyo'):
+            os.system('echo "Sorry, subprocess not found"')                   
+        if not fileExists('/usr/sbin/jffs2dump'):
+            os.system('echo "Sorry, jffs2dump not found"')
+        if not fileExists('/usr/sbin/ubidetach'):
+            os.system('echo "Sorry, ubidetach not found"')                                                 
+        else:
+            os.system('echo "ALL OK !"')            
+
+def getCPUtype():
+    cpu='UNKNOWN'
+    if os.path.exists('/proc/cpuinfo'):
+        with open('/proc/cpuinfo', 'r') as f:
+            lines = f.read()
+            f.close()
+        if lines.find('ARMv7') != -1:
+            cpu='ARMv7'
+        elif lines.find('mips') != -1:
+            cpu='MIPS'
+    return cpu
 
 class MultiBootMyHelp(Screen):
     screenwidth = getDesktop(0).size().width()
