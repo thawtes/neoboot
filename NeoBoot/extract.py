@@ -585,27 +585,27 @@ def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/vuplus/solo4k'):
             os.system('echo "Instalacja systemu VuPlus Solo4K."')
-            cmd = 'cmod 777 /media/neoboot/ImagesUpload/vuplus/solo4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/solo4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/vuplus/solo4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/solo4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/vuplus/uno4k'):
             os.system('echo "Instalacja systemu dla modelu VuPlus Uno4K."')
-            cmd = 'cmod 777 /media/neoboot/ImagesUpload/vuplus/uno4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/uno4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/vuplus/uno4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/uno4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/vuplus/uno4kse'):
             os.system('echo "Instalacja systemu VuPlus Uno4kse."')
-            cmd = 'cmod 777 /media/neoboot/ImagesUpload/vuplus/uno4kse/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/uno4kse/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/vuplus/uno4kse/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/uno4kse/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/vuplus/zero4k'):
             os.system('echo "Instalacja systemu VuPlus zero4K."')
-            cmd = 'cmod 777 /media/neoboot/ImagesUpload/vuplus/zero4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/zero4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/vuplus/zero4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/zero4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/vuplus/ultimo4k'):
             os.system('echo "Instalacja systemu VuPlus Ultimo4K."')
-            cmd = 'cmod 777 /media/neoboot/ImagesUpload/vuplus/ultimo4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/ultimo4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/vuplus/ultimo4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/vuplus/ultimo4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/update/revo4k'):
             os.system('echo "Instalacja systemu Revo4k."')
-            cmd = 'cmod 777 /media/neoboot/ImagesUpload/update/revo4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/update/revo4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/update/revo4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/update/revo4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/update/galaxy4k'):
             os.system('echo "Instalacja systemu Galaxy4k."')
