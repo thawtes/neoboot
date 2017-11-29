@@ -809,12 +809,11 @@ class CheckInstall(Screen):
          'red': self.boot_check})
 
     def boot_check(self):
-            myerror = ''
-            if not fileExists('/usr/sbin/ubiattach'):
-                return myerror = _('Sorry you cannot overwrite the image currently booted from. Please, boot from Flash to restore this backup.')
-            if fileExists('/usr/sbin/ubiattach'):
-                return message = _('Przed przywracaniem sprawdz czy masz wolne miejsce na swoim urz\xc4\x85dzeniu - 300Mb \nCzy chcesz przywr\xc3\xb3ci\xc4\x87 ten obraz:\n ') 
-
+        message = ''
+        message += 'W budowie... >\n\n'
+        message += _('Udanej zabawy :)\n\n')
+        self['lab1'].show()
+        self['lab1'].setText(message)
 
 class MultiBootMyHelp(Screen):
     screenwidth = getDesktop(0).size().width()
