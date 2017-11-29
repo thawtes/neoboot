@@ -24,8 +24,23 @@ from os.path import dirname, isdir, isdir as os_isdir
 from enigma import eTimer
 from Plugins.Extensions.NeoBoot.files.stbbranding import getKernelVersionString
 import os
+import time
+import sys
+import struct
 
 PLUGINVERSION = '6.00'
+
+def getCPUtype():
+    cpu='UNKNOWN'
+    if os.path.exists('/proc/cpuinfo'):
+        with open('/proc/cpuinfo', 'r') as f:
+            lines = f.read()
+            f.close()
+        if lines.find('ARMv7') != -1:
+            cpu='ARMv7'
+        elif lines.find('mips') != -1:
+            cpu='MIPS'
+    return cpu
 
 if os.path.exists('/etc/hostname'):
     with open('/etc/hostname', 'r') as f:
@@ -782,49 +797,24 @@ class SetPasswd(Screen):
         else:
             self.close()
 
-
-class CheckInstall(Screen):        
+class CheckInstall(Screen):
     __module__ = __name__
-    skin = '\n\t<screen position="center,center" size="700,300" title="Sprawdz poprawnosc instalacji neoboota.">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
+    skin = '\n\t<screen position="center,center" size="700,300" title="NEOBOOT - CHECK">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
 
     def __init__(self, session):
         Screen.__init__(self, session)
-        self['lab1'] = Label('Wykonac ?')
+        self['lab1'] = Label('Uruchomic ?')
         self['key_red'] = Label(_('Uruchom'))
         self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'back': self.close,
-         'red': self.sprawdz})
-    
-    def sprawdz(self):    
-        if not fileExists('/usr/sbin/ubiattach'):
-            os.system('echo "Sorry, ubiattach not found"')
-        elif fileExists('/usr/sbin/ubiattach'):
-            os.system('echo "Sorry, ubiattach found"')            
-        if not fileExists('/lib/modules/*/kernel/drivers/mtd/nand/nandsim.ko'):
-            os.system('echo "Sorry, nandsim not found"')          
-        if not fileExists('/usr/bin/curl'):
-            os.system('echo "Sorry, curl not found"')
-        if not fileExists('/usr/lib/python*/argparse.pyo'):
-            os.system('echo "Sorry, argparse not found"')
-        if not fileExists('/usr/lib/python*/subprocess.pyo'):
-            os.system('echo "Sorry, subprocess not found"')                   
-        if not fileExists('/usr/sbin/jffs2dump'):
-            os.system('echo "Sorry, jffs2dump not found"')
-        if not fileExists('/usr/sbin/ubidetach'):
-            os.system('echo "Sorry, ubidetach not found"')                                                 
-        else:
-            os.system('echo "ALL OK !"')            
+         'red': self.boot_check})
 
-def getCPUtype():
-    cpu='UNKNOWN'
-    if os.path.exists('/proc/cpuinfo'):
-        with open('/proc/cpuinfo', 'r') as f:
-            lines = f.read()
-            f.close()
-        if lines.find('ARMv7') != -1:
-            cpu='ARMv7'
-        elif lines.find('mips') != -1:
-            cpu='MIPS'
-    return cpu
+    def boot_check(self):
+            myerror = ''
+            if not fileExists('/usr/sbin/ubiattach'):
+                return myerror = _('Sorry you cannot overwrite the image currently booted from. Please, boot from Flash to restore this backup.')
+            if fileExists('/usr/sbin/ubiattach'):
+                return message = _('Przed przywracaniem sprawdz czy masz wolne miejsce na swoim urz\xc4\x85dzeniu - 300Mb \nCzy chcesz przywr\xc3\xb3ci\xc4\x87 ten obraz:\n ') 
+
 
 class MultiBootMyHelp(Screen):
     screenwidth = getDesktop(0).size().width()

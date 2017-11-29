@@ -72,7 +72,7 @@ if [ $TARGET = "Flash" ]; then
 
                                 fi                            
                             fi                        
-                    elif [ $CHIPSET = "7335" ] || [ $CHIPSET = "7325" ] || [ $CHIPSET = "7405(with 3D)" ]; then 
+                    elif [ $CHIPSET = "7335" ] || [ $CHIPSET = "7325" ] || [ $CHIPSET = "7405" ] || [ $CHIPSET = "7405(with 3D)" ]; then 
                             if [ -f /proc/stb/info/vumodel ]; then
                                 if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
                                     cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk                                    
@@ -98,7 +98,7 @@ if [ $TARGET = "Flash" ]; then
                                     cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk
                                     opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk                                
                                 fi
-                            elif [ $CHIPSET = "7335" ] || [ $CHIPSET = "7325" ] || [ $CHIPSET = "7405(with 3D)" ]; then                     
+                            elif [ $CHIPSET = "7335" ] || [ $CHIPSET = "7325" ] || [ $CHIPSET = "7405" ] || [ $CHIPSET = "7405(with 3D)" ]; then                     
                                 if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
                                     cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk                                    
                                     opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
@@ -184,7 +184,7 @@ else
                                     sleep 3; /etc/init.d/reboot
                         fi
 
-            elif [ $CHIPSET = "7424" ] || [ $CHIPSET = "7325" ] || [ $CHIPSET = "7405(with 3D)" ]; then	     
+            elif [ $CHIPSET = "7424" ] || [ $CHIPSET = "7325" ] || [ $CHIPSET = "7405" ] || [ $CHIPSET = "7405(with 3D)" ]; then	     
                         if [ -e /.multinfo ] ; then
                                 INFOBOOT=$( cat /.multinfo )
                                 if [ $TARGET = $INFOBOOT ] ; then

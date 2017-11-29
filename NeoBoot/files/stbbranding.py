@@ -135,15 +135,22 @@ def getImageFolder():
         ImageFolder = 'vuplus/' + BOX_NAME
     return ImageFolder
 
+#zwraca nazwe kernela z /lib/modules
+def getKernelVersion():
+    try:
+        return open('/proc/version', 'r').read().split(' ', 4)[2].split('-', 2)[0]
+    except:
+        return _('unknown')
 
-#####################################
-
+# czysci pamiec
 def runCMDS(cmdsList):
     clearMemory()
     if isinstance(cmdsList, (list, tuple)):
         myCMD = '\n'.join(cmdsList)# + '\n'
     ret = os.system(myCMD)
     return rett           
+
+#####################################
 
 def getImageDistro():
     if fileExists('/etc/issue.net'):
