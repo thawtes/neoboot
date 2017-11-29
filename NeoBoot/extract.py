@@ -21,7 +21,7 @@ def getCPUtype():
 
 def getBoxVuModel():
     vumodel='UNKNOWN'
-    if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):
+    if os.path.exists("/proc/stb/info/vumodel") and not os.path.exists("/proc/stb/info/boxtype"):
         with open('/proc/stb/info/vumodel', 'r') as f:
             vumodel = f.readline().strip()
             f.close() 
