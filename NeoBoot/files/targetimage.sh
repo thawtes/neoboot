@@ -164,7 +164,7 @@ else
                                     echo "NEOBOOT is booting image from " $TARGET
                                     sleep 3; /etc/init.d/reboot
                                 else                                  
-                                    cp -f $IMAGE/$TARGET/boot/vmlinux.gz /tmp/vmlinux.gz 
+                                    cp -f $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz /tmp/vmlinux.gz 
                                     flash_eraseall /dev/mtd2
 		                    nandwrite -p /dev/mtd2 //tmp/vmlinux.gz 
 		                    rm -f //tmp/vmlinux.gz
@@ -174,7 +174,7 @@ else
                                     sleep 3; /etc/init.d/reboot 
                                 fi
                         else
-                                    cp -f $IMAGE/$TARGET/boot/vmlinux.gz /tmp/vmlinux.gz
+                                    cp -f $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz /tmp/vmlinux.gz
                                     flash_eraseall /dev/mtd2                                    
 		                    nandwrite -p /dev/mtd2 /tmp/vmlinux.gz 
 		                    rm -f /tmp/vmlinux.gz
@@ -191,7 +191,7 @@ else
                                     echo "NEOBOOT is booting image from " $TARGET
                                     sleep 5; /etc/init.d/reboot
                                 else                                    
-                                    cp -fR $IMAGE/$TARGET/boot/vmlinux.gz /tmp/vmlinux.gz
+                                    cp -fR $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz /tmp/vmlinux.gz
                                     flash_eraseall /dev/mtd1
 		                    nandwrite -p /dev/mtd1 //tmp/vmlinux.gz  
 		                    rm -f /tmp/vmlinux.gz
@@ -201,7 +201,7 @@ else
                                     sleep 5; /etc/init.d/reboot 
                                 fi
                         else
-                                    cp -fR $IMAGE/$TARGET/boot/vmlinux.gz /tmp/vmlinux.gz
+                                    cp -fR $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz /tmp/vmlinux.gz
                                     flash_eraseall /dev/mtd1
 		                    nandwrite -p /dev/mtd1 /tmp/vmlinux.gz  
                                     rm -f /tmp/vmlinux.gz                                    
