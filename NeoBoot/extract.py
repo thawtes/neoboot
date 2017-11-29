@@ -248,7 +248,7 @@ def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, Insta
                     out = open(fname2, 'w')
                     f = open(fname, 'r')
                     for line in f.readlines():
-                        if line.find('if file(""/proc/stb/info/getBoxVuModel()")') != -1:
+                        if line.find('if file(""/proc/stb/info/vumodel")') != -1:
                             line = '#' + line
                         out.write(line)
 
