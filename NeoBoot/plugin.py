@@ -5,9 +5,10 @@
     #SF4008:           bcm7251
     #MBmini:           bcm7358
     #Miraclebox Micro: bcm7362
-    #Ultimo4k:         7444s
-    #Solo4k:           7376
-    #Uno 4K:           7252s 
+    #Ultimo4k :         7444s
+    #Solo4k   :           7376
+    #Uno 4K   :           7252s 
+    #Zero 4K  :        72604 
     #Ultimo   :        7405(with 3D)
     #Uno      :        7405(with 3D)
     #Solo2    :        7356
@@ -60,7 +61,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.20'
+UPDATEVERSION = '6.21'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -693,69 +694,66 @@ class NeoBootImageChoose(Screen):
     else:
         skin = """
         <screen name="NeoBootImageChoose" position="center,64" size="1273, 640" backgroundColor="transpBlack">
-        <widget name="device_icon" position="968, 87" size="131, 129" alphatest="on"/>
-        <widget name="label1" position="34, 28" size="587, 38" zPosition="1" halign="center" font="Regular;25" foregroundColor="red" backgroundColor="background" transparent="1"/>
-        <widget name="config" position="76, 77" size="545, 493" scrollbarMode="showOnDemand" backgroundColor="black"/>                        
-        <widget name="label3" position="650, 88" size="306, 128" font="Regular;26" halign="center" foregroundColor="yellow" valign="center" transparent="1"/>
-        <widget name="label2" position="635, 251" size="452, 37" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF"/>
-        <widget name="label8" position="636, 304" size="452, 33" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF"/>
-        <widget name="label4" position="637, 355" size="452, 34" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF"/>
+        <widget name="device_icon" position="1071,424" size="131, 129" alphatest="on" />
+        <widget name="label1" position="34, 28" size="587, 38" zPosition="1" halign="center" font="Regular;25" foregroundColor="red" backgroundColor="background" transparent="1" />
+        <widget name="config" position="31,77" size="590,493" scrollbarMode="showOnDemand" backgroundColor="black" />                        
+        <widget name="label3" position="649,88" size="439,128" font="Regular;26" halign="center" foregroundColor="yellow" valign="center" transparent="1" />
+        <widget name="label2" position="635, 251" size="452, 37" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF" />
+        <widget name="label8" position="636, 304" size="452, 33" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF" />
+        <widget name="label4" position="637, 355" size="452, 34" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF" />
         <widget name="label5" position="1063, 251" size="161, 37" zPosition="1" halign="right" font="Regular;26" backgroundColor="background" foregroundColor="#9999FF" transparent="1" />
         <widget name="label6" position="986, 355" size="240, 34" zPosition="1" halign="right" font="Regular;26" backgroundColor="background" foregroundColor="#CCFF33" transparent="1" />
         <widget name="label7" position="1063, 304" size="162, 33" zPosition="1" halign="right" font="Regular;26" backgroundColor="background" foregroundColor="#99CCFF" transparent="1" />
-        <widget name="key_menu" position="954, 410" zPosition="1" size="271, 31" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white"/>
-        <widget name="key_red" position="34, 584" zPosition="1" size="157, 32" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-        <widget name="key_green" position="181,578" zPosition="1" size="165,42" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-        <widget name="key_yellow" position="336, 583" zPosition="1" size="140, 33" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-        <widget name="key_blue" position="477, 584" zPosition="1" size="148, 32" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-        <widget name="key_1" position="955, 455" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white"/>
-        <widget name="key_2" position="955, 498" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white"/>
-        <widget name="key_3" position="955, 539" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white"/>
-        <widget name="device_icon" position="968, 87" size="131, 129" alphatest="on"/>
-        <widget name="label1" position="34, 28" size="587, 38" zPosition="1" halign="center" font="Regular;25" foregroundColor="red" backgroundColor="background" transparent="1"/>
-        <widget name="config" position="76, 77" size="545, 493" scrollbarMode="showOnDemand" backgroundColor="black"/>                        
-        <widget name="label3" position="650, 88" size="306, 128" font="Regular;26" halign="center" foregroundColor="yellow" valign="center" transparent="1"/>
-        <widget name="label2" position="635, 251" size="452, 37" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF"/>
-        <widget name="label8" position="636, 304" size="452, 33" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF"/>
-        <widget name="label4" position="637, 355" size="452, 34" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF"/>
+        <widget name="label19" position="638,584" zPosition="-2" size="594,43" font="Regular;35" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#00FF00" />
+        <widget name="key_menu" position="723,411" zPosition="1" size="271, 31" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white" />
+        <widget name="key_red" position="34, 584" zPosition="1" size="157, 32" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+        <widget name="key_green" position="181,578" zPosition="1" size="165,42" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+        <widget name="key_yellow" position="336, 583" zPosition="1" size="140, 33" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+        <widget name="key_blue" position="477, 584" zPosition="1" size="148, 32" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+        <widget name="key_1" position="718,460" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white" />
+        <widget name="key_2" position="717,504" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white" />
+        <widget name="key_3" position="715,549" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white" />
+        <widget name="device_icon" position="1070,425" size="131, 129" alphatest="on" />
+        <widget name="label1" position="34, 28" size="587, 38" zPosition="1" halign="center" font="Regular;25" foregroundColor="red" backgroundColor="background" transparent="1" />
+        <widget name="config" position="76, 77" size="545, 493" scrollbarMode="showOnDemand" backgroundColor="black" />                        
+        <widget name="label3" position="650, 88" size="439,128" font="Regular;26" halign="center" foregroundColor="yellow" valign="center" transparent="1" />
+        <widget name="label2" position="635, 251" size="452, 37" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF" />
+        <widget name="label8" position="636, 304" size="452, 33" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF" />
+        <widget name="label4" position="637, 355" size="452, 34" zPosition="1" font="Regular;26" backgroundColor="background" transparent="1" foregroundColor="#99CCFF" />
         <widget name="label5" position="1063, 251" size="161, 37" zPosition="1" halign="right" font="Regular;26" backgroundColor="background" foregroundColor="#9999FF" transparent="1" />
         <widget name="label6" position="986, 355" size="240, 34" zPosition="1" halign="right" font="Regular;26" backgroundColor="background" foregroundColor="#CCFF33" transparent="1" />
         <widget name="label7" position="1063, 304" size="162, 33" zPosition="1" halign="right" font="Regular;26" backgroundColor="background" foregroundColor="#99CCFF" transparent="1" />
-        <widget name="key_menu" position="954, 410" zPosition="1" size="271, 31" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white"/>
-        <widget name="key_red" position="34, 584" zPosition="1" size="157, 32" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-        <widget name="key_green" position="181,578" zPosition="1" size="165,42" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-        <widget name="key_yellow" position="336, 583" zPosition="1" size="140, 33" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-        <widget name="key_blue" position="477, 584" zPosition="1" size="148, 32" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
-        <widget name="key_1" position="955, 455" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white"/>
-        <widget name="key_2" position="955, 498" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white"/>
-        <widget name="key_3" position="955, 539" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white"/>
-        <eLabel position="632, 80" size="600, 2" backgroundColor="blue" foregroundColor="blue" name="linia"/>
-        <eLabel position="632, 237" size="600, 2" backgroundColor="blue" foregroundColor="blue" name="linia"/>
-        <eLabel text="NeoBoot vuplus " font="Regular; 25" position="642, 28" size="574, 38" halign="center" foregroundColor="red" backgroundColor="background" transparent="1"/>
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="34, 613" size="159, 14" alphatest="on"/>
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="190, 613" size="145, 14" alphatest="on"/>
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="332, 613" size="144, 12" alphatest="on"/>
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="474, 613" size="151, 13" alphatest="on"/>
-        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/menu.png" position="875, 413" size="67, 29" alphatest="on" borderWidth="0" borderColor="black"/>
-        <ePixmap position="632, 76" zPosition="-2" size="600, 166" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/dot.png"/>
+        <widget name="key_menu" position="723,411" zPosition="1" size="271, 31" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white" />
+        <widget name="key_red" position="34, 584" zPosition="1" size="157, 32" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+        <widget name="key_green" position="181,578" zPosition="1" size="165,42" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+        <widget name="key_yellow" position="336, 583" zPosition="1" size="140, 33" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+        <widget name="key_blue" position="477, 584" zPosition="1" size="148, 32" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
+        <widget name="key_1" position="718,460" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white" />
+        <widget name="key_2" position="717,504" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white" />
+        <widget name="key_3" position="715,548" zPosition="1" size="271, 28" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" foregroundColor="white" />
+        <eLabel position="632, 80" size="600, 2" backgroundColor="blue" foregroundColor="blue" name="linia" />
+        <eLabel position="632, 237" size="600, 2" backgroundColor="blue" foregroundColor="blue" name="linia" />
+        <eLabel text="NeoBoot vuplus " font="Regular; 25" position="642, 28" size="574, 38" halign="center" foregroundColor="red" backgroundColor="background" transparent="1" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="34, 613" size="159, 14" alphatest="on" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="190, 613" size="145, 14" alphatest="on" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="332, 613" size="144, 12" alphatest="on" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="474, 613" size="151, 13" alphatest="on" />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/menu.png" position="643,414" size="67, 29" alphatest="on" borderWidth="0" borderColor="black" />
+        <ePixmap position="633,69" zPosition="-2" size="600, 166" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/dot.png" />
         <ePixmap position="632, 25" zPosition="-2" size="600, 47" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue.png" />
-        <ePixmap position="632, 299" zPosition="-2" size="600, 47" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/dot1.png"/>
-        <ePixmap position="632, 349" zPosition="-2" size="600, 47" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/dot1.png"/>
-        <ePixmap position="632, 246" zPosition="-2" size="600, 47" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/dot1.png"/>
-        <ePixmap position="27, 578" zPosition="-2" size="600, 53" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue.png"/>
-        <ePixmap position="28, 24" zPosition="-2" size="601, 49" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue.png"/>
-        <ePixmap position="878, 455" size="67, 32" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/key_1.png" alphatest="on"/>
-        <ePixmap position="876, 498" size="67, 30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/key_2.png" alphatest="on"/>
-        <ePixmap position="879, 539" size="67, 30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/key_3.png" alphatest="on"/>
-        <ePixmap position="1103,131" zPosition="-2" size="124,52" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/neo.png"/>        
-        <ePixmap position="865, 408" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png"/>
-        <ePixmap position="29, 76" size="35, 69" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/arrowdown.png" alphatest="on"/>
-        <ePixmap position="30, 470" size="37, 65" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/arrowup.png" alphatest="on"/>
-        <ePixmap position="865, 451" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png"/>
-        <ePixmap position="865, 493" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png"/>
-        <ePixmap position="865, 535" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png"/>
-        <ePixmap position="865, 579" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png"/>        
-        <ePixmap position="637, 437" zPosition="-2" size="242, 163" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrixhd.png"/>
+        <ePixmap position="632, 299" zPosition="-2" size="600, 47" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/dot1.png" />
+        <ePixmap position="632, 349" zPosition="-2" size="600, 47" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/dot1.png" />
+        <ePixmap position="632, 246" zPosition="-2" size="600, 47" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/dot1.png" />
+        <ePixmap position="27, 578" zPosition="-2" size="600, 53" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue.png" />
+        <ePixmap position="28, 24" zPosition="-2" size="601, 49" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue.png" />
+        <ePixmap position="644,462" size="67, 32" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/key_1.png" alphatest="on" />
+        <ePixmap position="644,504" size="67, 30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/key_2.png" alphatest="on" />
+        <ePixmap position="645,549" size="67, 30" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/key_3.png" alphatest="on" />
+        <ePixmap position="1103,131" zPosition="-2" size="124,52" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/neo.png" />        
+        <ePixmap position="634,405" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png" />
+        <ePixmap position="633,452" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png" />
+        <ePixmap position="634,499" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png" />
+        <ePixmap position="634,542" zPosition="-2" size="371, 43" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/numery.png" />       
         </screen>"""
 
     def __init__(self, session):

@@ -1,38 +1,54 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import time
-import sys
-import os
-import struct
-import shutil 
+import time, sys, os, struct, shutil 
+# Copyright (c) , gutosie  license
+# 
+# Redystrybucja wersji programu i dokonywania modyfikacji JEST DOZWOLONE, pod warunkiem zachowania niniejszej informacji o prawach autorskich. 
+# Autor NIE ponosi JAKIEJKOLWIEK odpowiedzialnosci za skutki użtkowania tego programu oraz za wykorzystanie zawartych tu informacji.
+# Modyfikacje przeprowadzasz na wlasne ryzyko!!!
+# O wszelkich zmianach proszę poinformować na  http://all-forum.cba.pl   w temacie pod nazwa  	 -#[NEOBOOT]#-
 
-def getCPUtype():
-    cpu = 'UNKNOWN'
-    if os.path.exists('/proc/cpuinfo'):
-        with open('/proc/cpuinfo', 'r') as f:
-            lines = f.read()
-            f.close()
-        if lines.find('ARMv7') != -1:
-            cpu = 'ARMv7'
-        elif lines.find('mips') != -1:
-            cpu = 'MIPS'
-    return cpu
-
+# This text/program is free document/software. Redistribution and use in
+# source and binary forms, with or without modification, ARE PERMITTED provided
+# save this copyright notice. This document/program is distributed WITHOUT any
+# warranty, use at YOUR own risk.
+def getCPUSoC():
+    chipset='UNKNOWN'
+    if os.path.exists('/proc/stb/info/chipset'):
+        with open('/proc/stb/info/chipset', 'r') as f:
+            chipset = f.readline().strip()
+            f.close()     
+        if chipset == '7405(with 3D)':
+            chipset = '7405'
+    return chipset
+      
 def getBoxVuModel():
     vumodel='UNKNOWN'
     if os.path.exists("/proc/stb/info/vumodel") and not os.path.exists("/proc/stb/info/boxtype"):
         with open('/proc/stb/info/vumodel', 'r') as f:
             vumodel = f.readline().strip()
             f.close() 
-    return vumodel 
+    return vumodel
+
+def getCPUtype():
+    cpu='UNKNOWN'
+    if os.path.exists('/proc/cpuinfo'):
+        with open('/proc/cpuinfo', 'r') as f:
+            lines = f.read()
+            f.close()
+        if lines.find('ARMv7') != -1:
+            cpu='ARMv7'
+        elif lines.find('mips') != -1:
+            cpu='MIPS'
+    return cpu
     
-def getKernelVer():
+def getKernelVersion():
     try:
         return open('/proc/version', 'r').read().split(' ', 4)[2].split('-', 2)[0]
     except:
         return _('unknown')
-    
+
 media = '/media/neoboot'
 mediahome = media + '/ImageBoot/'
 extensions_path = '/usr/lib/enigma2/python/Plugins/Extensions/'
@@ -58,10 +74,10 @@ def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, Insta
         rc = os.system(cmd)
         cmd = 'cp -r /usr/share/enigma2/rc_models %s/ImageBoot/%s/usr/share/enigma2 > /dev/null 2>&1' % (media, target)
         rc = os.system(cmd)
-           
-        if getCPUtype() == 'MIPS' and getBoxVuModel() == 'bm750' or getBoxVuModel() == 'duo' or getBoxVuModel() == 'solo' or getBoxVuModel() == 'uno' or getBoxVuModel() == 'ultimo' or getBoxVuModel() == 'solo2' or getBoxVuModel() == 'duo2' or getBoxVuModel() == 'solose' or getBoxVuModel() == 'zero':
+
+        if getCPUtype() == 'MIPS' and getCPUSoC() == '7424' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362 ':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)
-        elif getCPUtype() == 'MIPS' and getBoxVuModel() == 'ultimo4k' or getBoxVuModel() == 'solo4k' or getBoxVuModel() == 'uno4k':
+        elif getCPUtype() == 'ARMv7' and getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
 
         if os.path.exists('/usr/bin/fullwget'):
@@ -208,6 +224,8 @@ def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, Insta
                     if not os.path.exists('/usr/lib/enigma2/python/boxbranding.so'):
                         cmd = 'cp -r /usr/lib/enigma2/python/boxbranding.so %s/ImageBoot/%s/usr/lib/enigma2/python/boxbranding.so > /dev/null 2>&1' % (media, target)
                         rc = os.system(cmd)
+                    cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh %s/ImageBoot/%s/etc/rcS.d' % (media, target)
+                    rc = os.system(cmd)
                     os.system('echo "EGAMI-installed OK. Installation continues, wait..."')
         if os.path.exists('%s/ImageBoot/%s/var/lib/opkg/status' % (media, target)):
             zrodlopliku = open(media + '/ImageBoot/' + target + '/var/lib/opkg/status').readlines()
@@ -358,10 +376,11 @@ def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, Insta
                     os.rename(filename2, filename)
                     cmd = 'chmod -R 0755 %s' % filename
                     rc = os.system(cmd)
-
+                                                                      
     if '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot' % (media, target)):
         os.system('echo "Nie zainstalowano systemu ! Powodem b\xc5\x82\xc4\x99du instalacji mo\xc5\xbce by\xc4\x87 \xc5\xbale spakowany plik image w zip lub nie jest to sytem dla Twojego modelu ."')
         os.system('rm -r %s/ImageBoot/%s' % (media, target))
+        rc = RemoveUnpackDirs(getImageFolder)
     else:
         os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
         os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
@@ -374,16 +393,14 @@ def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, Insta
         out = open(mediahome + '.neonextboot', 'w')
         out.write('Flash')
         out.close()
+        os.system('echo "Zako\xc5\x84czono instalacj\xc4\x99 nowego systemu. !!! - EXIT - !!!"')
+        os.system('echo "End of installation:"; date +%T')
+        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh %s/ImageBoot/%s/etc/rcS.d > /dev/null 2>&1' % (media, target)
+        rc = os.system(cmd)
+        os.system('echo 3 > /proc/sys/vm/drop_caches')
+        os.system('sync')        
+        rc = RemoveUnpackDirs(getImageFolder)                             
 
-    os.system('echo "Zako\xc5\x84czono instalacj\xc4\x99 nowego systemu. !!! - EXIT - !!!"')
-    os.system('echo "End of installation:"; date +%T')
-    cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh %s/ImageBoot/%s/etc/rcS.d > /dev/null 2>&1' % (media, target)
-    rc = os.system(cmd)
-    os.system('echo 3 > /proc/sys/vm/drop_caches')
-    os.system('sync')
-    rc = RemoveUnpackDirs(getImageFolder)
-    print 'OS release: %s' % getKernelVer()
-                                     
 def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
     os.system('echo "Start of installation:"; date +%T')
     RemoveUnpackDirs(getImageFolder)
@@ -526,9 +543,9 @@ def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
                 if os.path.exists('/media/neoboot/ImagesUpload/gigablue/quad'):
                     os.chdir('quad')
 
-            if os.path.exists('/lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko' % getKernelVer())is True:
+            if os.path.exists('/lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko' % getKernelVersion())is True:
                 os.system("sync; echo 3 > /proc/sys/vm/drop_caches; sync")
-                rc = os.system('insmod /lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko cache_file=/media/neoboot/image_cache first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15;sleep 5' % getKernelVer())
+                rc = os.system('insmod /lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko cache_file=/media/neoboot/image_cache first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15;sleep 5' % getKernelVersion())
                 cmd = 'dd if=%s of=/dev/mtdblock%s bs=2048' % (rootfname, mtd)
                 rc = os.system(cmd)
                 cmd = 'ubiattach /dev/ubi_ctrl -m %s -O 2048' % mtd
@@ -551,6 +568,7 @@ def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
                 cmd = 'python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py rootfs.bin -o /media/neoboot/ubi'
                 rc = os.system(cmd)
                 os.chdir('/home/root')
+                os.system("sync; echo 3 > /proc/sys/vm/drop_caches; sync")
                 os.system('mv /media/neoboot/ubi/rootfs/* /media/neoboot/ImageBoot/%s/' % target)                
                 cmd = 'chmod -R +x /media/neoboot/ImageBoot/' + target
                 rc = os.system(cmd)
@@ -696,17 +714,19 @@ def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
                     if not os.path.exists('/usr/lib/enigma2/python/boxbranding.so'):
                         cmd = 'cp -r /usr/lib/enigma2/python/boxbranding.so %s/ImageBoot/%s/usr/lib/enigma2/python/boxbranding.so > /dev/null 2>&1' % (media, target)
                         rc = os.system(cmd)
+                    cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh %s/ImageBoot/%s/etc/rcS.d' % (media, target)
+                    rc = os.system(cmd)
                     os.system('echo "EGAMI-installed OK. Installation continues, wait..."')
     return 1
 
 def RemoveUnpackDirs(getImageFolder):
     os.chdir(media + '/ImagesUpload')
     if os.path.exists('/media/neoboot/ubi') is True:
-            os.system('rm -rf /media/neoboot/ubi')          
+        os.system('rm -rf /media/neoboot/ubi')          
     if os.path.exists('/media/neoboot/image_cache') is True:
-            os.system('rm /media/neoboot/image_cache')
+        os.system('rm /media/neoboot/image_cache')
     if os.path.exists('/tmp/without_copying ') is True:
-            os.system('rm -f /tmp/without_copying') 
+        os.system('rm -f /tmp/without_copying') 
     if os.path.exists(media + '/ImagesUpload/%s' % getImageFolder):
         shutil.rmtree('%s' % getImageFolder)
     if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
@@ -729,4 +749,7 @@ def RemoveUnpackDirs(getImageFolder):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/*.nfi')
     elif os.path.exists('/media/neoboot/ImagesUpload/zgemma'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/zgemma')       
+    print 'OS release: %s' % getKernelVersion()
     os.system('echo "..........................................."')
+    
+#END            
