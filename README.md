@@ -1,5 +1,7 @@
 Wspierane tunery: Wszytkie modele VuPlus - klony też, Octagon SF4008, MiracleBox Mini, ( Testy- DM900)
 
+NeoBoot nie działa jeszcze w pełni sprawnie w  modelach DM900 i OctagonSF4008 - prace nad ulepszeniem trwają..
+
 Pierwsza instalacja neoboot-a
 
 Uruchom poniższą komendę w terminalu wspieranego tunera:
