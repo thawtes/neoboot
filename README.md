@@ -8,6 +8,10 @@ opkg update; opkg install curl
 
 curl -kLs https://raw.githubusercontent.com/gutosie/neoboot/master/iNB.sh|sh
 
+
+
+###############################################################################################################################
+
 Uwaga!!! 
 Redystrybucja wersji programu i dokonywania modyfikacji JEST DOZWOLONE, pod warunkiem zachowania niniejszej informacji o prawach autorskich. 
 
@@ -20,5 +24,7 @@ Dziękuję wszystkim kolegom wpierającym projekt neoboot.
 Dziękuję też kolegom Rango, zdzislaw22 za porady.
 
 pozdrawiam gutosie
+
+################################################################################################################################
 
 
