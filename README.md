@@ -3,7 +3,7 @@ Wspierane tunery: Wszytkie modele VuPlus - klony też, Octagon SF4008, MiracleBo
 Pierwsza instalacja neoboot-a
 
 Uruchom poniższą komendę w terminalu wspieranego tunera:
-
+#
 
 opkg update 
 
