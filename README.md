@@ -13,7 +13,7 @@ curl -kLs https://raw.githubusercontent.com/gutosie/neoboot/master/iNB.sh|sh
 
 
 
-
+#
 Uwaga!!! 
 Redystrybucja wersji programu i dokonywania modyfikacji JEST DOZWOLONE, pod warunkiem zachowania niniejszej informacji o prawach autorskich. 
 
