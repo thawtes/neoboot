@@ -4,13 +4,15 @@ Pierwsza instalacja neoboot-a
 
 Uruchom poniższą komendę w terminalu wspieranego tunera:
 
-opkg update; opkg install curl 
+
+opkg update 
+
+opkg install curl 
 
 curl -kLs https://raw.githubusercontent.com/gutosie/neoboot/master/iNB.sh|sh
 
 
 
-###################################################################################################
 
 Uwaga!!! 
 Redystrybucja wersji programu i dokonywania modyfikacji JEST DOZWOLONE, pod warunkiem zachowania niniejszej informacji o prawach autorskich. 
@@ -25,6 +27,6 @@ Dziękuję też kolegom Rango, zdzislaw22 za porady.
 
 pozdrawiam gutosie
 
-#####################################################################################################
+
 
 
