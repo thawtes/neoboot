@@ -61,7 +61,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.22'
+UPDATEVERSION = '6.23'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1386,6 +1386,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
             sourcelist = [('None', 'None')]
         self.source = ConfigSelection(choices=sourcelist)
         self.target = ConfigText(fixed_size=False)
+        self.CopyKernel = ConfigYesNo(default=False)
         self.TvList = ConfigYesNo(default=True) 
         self.Montowanie = ConfigYesNo(default=True)
         self.LanWlan = ConfigYesNo(default=True)
@@ -1423,7 +1424,8 @@ class InstalacjaImage(Screen, ConfigListScreen):
     def createSetup(self):
         self.list = []
         self.list.append(getConfigListEntry(_('Source Image file'), self.source))
-        self.list.append(getConfigListEntry(_('Image Name'), self.target))  
+        self.list.append(getConfigListEntry(_('Image Name'), self.target)) 
+        self.list.append(getConfigListEntry(_('Copy the kernel of the installed system (recommended only for Vu+) ?'), self.CopyKernel ))         
         self.list.append(getConfigListEntry(_('Copy the channel list ?'), self.TvList))  
         self.list.append(getConfigListEntry(_('Copy mounting disks ? (Recommended)'), self.Montowanie))
         self.list.append(getConfigListEntry(_('Copy network settings LAN-WLAN ?'), self.LanWlan))
@@ -1432,7 +1434,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_('Delete Image zip after Install ?'), self.ZipDelete)) 
         self.list.append(getConfigListEntry(_('Repair FTP ? (Recommended only other image if it does not work.)'), self.RepairFTP))
         self.list.append(getConfigListEntry(_('Do not copy files from Flash to the installed image ?'), self.CopyFiles ))     
-
+ 
     def typeChange(self, value):
         self.createSetup()
         self['config'].l.setList(self.list)
@@ -1488,9 +1490,10 @@ class InstalacjaImage(Screen, ConfigListScreen):
                 message += _('Please, wait...\n')                
                 message += "'"
                 cmd1 = 'python ' + pluginpath + '/ex_init.py'
-                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
+                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
                  source,
                  target.replace(' ', '.'),
+                 str(self.CopyKernel.value),                 
                  str(self.TvList.value),
                  str(self.Montowanie.value),
                  str(self.LanWlan.value),
@@ -1498,7 +1501,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                  str(self.InstallSettings.value), 
                  str(self.ZipDelete.value),                                                                    
                  str(self.RepairFTP.value),
-                 str(self.CopyFiles.value),
+                 str(self.CopyFiles.value),                                  
                  getImageFolder())
                 print '[NEO-BOOT]: ', cmd
                 self.session.open(Console, _('NEOBoot: Install new image'), [message, cmd])

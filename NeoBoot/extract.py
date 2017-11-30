@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import time, sys, os, struct, shutil 
 # Copyright (c) , gutosie  license
 # 
@@ -54,7 +53,7 @@ mediahome = media + '/ImageBoot/'
 extensions_path = '/usr/lib/enigma2/python/Plugins/Extensions/'
 dev_null = ' > /dev/null 2>&1'
 
-def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP, CopyFiles, getImageFolder):
+def NEOBootMainEx(source, target, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP, CopyFiles, getImageFolder):
     media_target = mediahome + target
     list_one = ['rm -r ' + media_target + dev_null, 'mkdir ' + media_target + dev_null, 'chmod -R 0777 ' + media_target]
     for command in list_one:
@@ -70,13 +69,14 @@ def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, Insta
         for command in list_two:
             os.system(command)
             
-        if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
-            os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
-            os.system('echo "Skopiowano kernel.bin STB-MIPS"')
-        elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
-            os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
-            os.system('echo "Skopiowano kernel.bin STB-ARM"')
-
+        if CopyKernel == 'True':        
+            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
+                os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
+                os.system('echo "Skopiowano kernel.bin STB-MIPS"')
+            elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
+                os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
+                os.system('echo "Skopiowano kernel.bin STB-ARM"')
+                
         os.system('mkdir -p ' + media_target + '/media/hdd' + dev_null)
         os.system('mkdir -p ' + media_target + '/media/usb' + dev_null)
         os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
@@ -406,7 +406,7 @@ def NEOBootMainEx(source, target, TvList, Montowanie, LanWlan, Sterowniki, Insta
         if os.path.exists('/tmp/without_copying ') is True:
             os.system('rm -f /tmp/without_copying') 
         rc = RemoveUnpackDirs(getImageFolder)                             
-        print 'Model STB: %s \n OS release: %s \n Chipset: %s \n CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())
+        print ' Model STB: %s - OS release: %s - Chipset: %s - CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())
         os.system("sync; echo 3 > /proc/sys/vm/drop_caches; sync")        
 
     elif not os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot' % (media, target)):
