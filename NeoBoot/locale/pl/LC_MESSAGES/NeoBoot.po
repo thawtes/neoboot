@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NeoBoot\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2017-10-07 07:57+0300\n"
+"PO-Revision-Date: 2017-11-30 14:34+0200\n"
 "Last-Translator: gutosie <gutosie@o2.pl>\n"
 "Language-Team: gutosie- GaduGadu nr. 5111900 <http://all-forum.cba.pl >\n"
 "Language: pl\n"
@@ -1310,3 +1310,9 @@ msgstr "Plik aktualizacji dostepny jest na stronie   http://all-forum.cba.pl\n"
 
 msgid "Please name NeoBootUpdate.tar.gz for the downloaded file and upload to / tmp and try again.\n"
 msgstr "Prosze nadać nazwę NeoBootUpdate.tar.gz  dla pobranego pliku i przesłąć do lokalizacji /tmp i spróbować ponownie...\n"
+
+msgid "Copy the kernel of the installed system (recommended only for Vu+) ?"
+msgstr "Kopiować jądro instalowanego systemu (zalecane tylko dla Vu+) ?"
+
+msgid "Do not copy files from Flash to the installed image ?"
+msgstr "Pominąć kopiowanie plików z Flash do instalowanego systemu ?"
