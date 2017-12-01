@@ -61,7 +61,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.23'
+UPDATEVERSION = '6.24'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1386,6 +1386,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
             sourcelist = [('None', 'None')]
         self.source = ConfigSelection(choices=sourcelist)
         self.target = ConfigText(fixed_size=False)
+        self.CopyFiles = ConfigYesNo(default=False)
         self.CopyKernel = ConfigYesNo(default=False)
         self.TvList = ConfigYesNo(default=True) 
         self.Montowanie = ConfigYesNo(default=True)
@@ -1394,7 +1395,6 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.InstallSettings = ConfigYesNo(default=False)        
         self.ZipDelete = ConfigYesNo(default=False) 
         self.RepairFTP = ConfigYesNo(default=False)                                                    
-        self.CopyFiles = ConfigYesNo(default=False)
         self.target.value = ''
         self.curselimage = ''
 
@@ -1425,6 +1425,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.list = []
         self.list.append(getConfigListEntry(_('Source Image file'), self.source))
         self.list.append(getConfigListEntry(_('Image Name'), self.target)) 
+        self.list.append(getConfigListEntry(_('Do not copy files from Flash to the installed image ?'), self.CopyFiles ))         
         self.list.append(getConfigListEntry(_('Copy the kernel of the installed system (recommended only for Vu+) ?'), self.CopyKernel ))         
         self.list.append(getConfigListEntry(_('Copy the channel list ?'), self.TvList))  
         self.list.append(getConfigListEntry(_('Copy mounting disks ? (Recommended)'), self.Montowanie))
@@ -1433,7 +1434,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_('Copy Settings to the new Image'), self.InstallSettings))                                                                                
         self.list.append(getConfigListEntry(_('Delete Image zip after Install ?'), self.ZipDelete)) 
         self.list.append(getConfigListEntry(_('Repair FTP ? (Recommended only other image if it does not work.)'), self.RepairFTP))
-        self.list.append(getConfigListEntry(_('Do not copy files from Flash to the installed image ?'), self.CopyFiles ))     
+    
  
     def typeChange(self, value):
         self.createSetup()
@@ -1493,6 +1494,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                 cmd = '%s %s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
                  source,
                  target.replace(' ', '.'),
+                 str(self.CopyFiles.value),                 
                  str(self.CopyKernel.value),                 
                  str(self.TvList.value),
                  str(self.Montowanie.value),
@@ -1500,8 +1502,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                  str(self.Sterowniki.value),                                                                                                                        
                  str(self.InstallSettings.value), 
                  str(self.ZipDelete.value),                                                                    
-                 str(self.RepairFTP.value),
-                 str(self.CopyFiles.value),                                  
+                 str(self.RepairFTP.value),                                  
                  getImageFolder())
                 print '[NEO-BOOT]: ', cmd
                 self.session.open(Console, _('NEOBoot: Install new image'), [message, cmd])

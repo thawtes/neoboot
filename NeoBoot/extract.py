@@ -53,40 +53,55 @@ mediahome = media + '/ImageBoot/'
 extensions_path = '/usr/lib/enigma2/python/Plugins/Extensions/'
 dev_null = ' > /dev/null 2>&1'
 
-def NEOBootMainEx(source, target, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP, CopyFiles, getImageFolder):
+def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP, getImageFolder):
     media_target = mediahome + target
     list_one = ['rm -r ' + media_target + dev_null, 'mkdir ' + media_target + dev_null, 'chmod -R 0777 ' + media_target]
     for command in list_one:
         os.system(command)
+    rc = NEOBootExtract(source, target, ZipDelete, getImageFolder)    
+    list_two = ['mkdir -p ' + media_target + '/media' + dev_null,
+     'rm ' + media_target + media + dev_null,
+     'rmdir ' + media_target + media + dev_null,
+     'mkdir -p ' + media_target + media + dev_null,
+     'cp -r ' + extensions_path + 'NeoBoot ' + media_target + extensions_path + 'NeoBoot' + dev_null]
+    for command in list_two:
+        os.system(command)
 
-    rc = NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder)
-    if not os.path.exists('/tmp/without_copying'):
-        list_two = ['mkdir -p ' + media_target + '/media' + dev_null,
-         'rm ' + media_target + media + dev_null,
-         'rmdir ' + media_target + media + dev_null,
-         'mkdir -p ' + media_target + media + dev_null,
-         'cp -r ' + extensions_path + 'NeoBoot ' + media_target + extensions_path + 'NeoBoot' + dev_null]
-        for command in list_two:
-            os.system(command)
-            
+    if CopyFiles == 'True':
+        os.system('echo "No copying of files..."')
+        os.system('touch  /media/neoboot/ImageBoot/.without_copying')              
+        if not os.path.exists('/usr/lib/enigma2/python/EGAMI') and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/EGAMI' % (media, target)):
+            if getBoxVuModel() == 'ultimo4k' or getBoxVuModel() == 'solo4k' or getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'bm750' or getBoxVuModel() == 'duo' or getBoxVuModel() == 'solo' or getBoxVuModel() == 'uno' or getBoxVuModel() == 'ultimo' or getBoxVuModel() == 'solo2' or getBoxVuModel() == 'duo2' or getBoxVuModel() == 'solose' or getBoxVuModel() == 'zero':
+                if not os.path.exists('/media/neoboot/ImagesUpload/.egami/patchE.tar.gz'):
+                    os.system('echo "System EGAMI nie jest przeznaczony tego odbiornika !!! "')
+                else:
+                    cmd = 'cp -r /media/neoboot/ImagesUpload/.egami/patchE.tar.gz %s/ImageBoot/%s/home/root/ > /dev/null 2>&1' % (media, target)
+                    rc = os.system(cmd)
+                    cmd = 'rm %s/ImageBoot/%s/usr/lib/enigma2/python/mytest.pyo' % (media, target)
+                    rc = os.system(cmd)
+                    if not os.path.exists('/usr/lib/enigma2/python/boxbranding.so'):
+                        cmd = 'cp -r /usr/lib/enigma2/python/boxbranding.so %s/ImageBoot/%s/usr/lib/enigma2/python/boxbranding.so > /dev/null 2>&1' % (media, target)
+                        rc = os.system(cmd)
+                    cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh %s/ImageBoot/%s/etc/rcS.d' % (media, target)
+                    rc = os.system(cmd)
+                    os.system('echo "EGAMI-installed OK. Installation continues, wait..."')
+
+    if not os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
+        os.system('mkdir -p ' + media_target + '/media/hdd' + dev_null)
+        os.system('mkdir -p ' + media_target + '/media/usb' + dev_null)
+        os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
+        os.system('mkdir -p ' + media_target + '/var/lib/opkg/info/' + dev_null)        
+        cmd = 'cp -a /usr/share/enigma2/rc_models/* %s/ImageBoot/%s/usr/share/enigma2/rc_models/ > /dev/null 2>&1' % (media, target)
+        rc = os.system(cmd)
+        cmd = 'cp -r /usr/share/enigma2/rc_models %s/ImageBoot/%s/usr/share/enigma2 > /dev/null 2>&1' % (media, target)
+        rc = os.system(cmd)            
         if CopyKernel == 'True':        
             if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin STB-MIPS"')
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
-                os.system('echo "Skopiowano kernel.bin STB-ARM"')
-                
-        os.system('mkdir -p ' + media_target + '/media/hdd' + dev_null)
-        os.system('mkdir -p ' + media_target + '/media/usb' + dev_null)
-        os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
-        os.system('mkdir -p ' + media_target + '/var/lib/opkg/info/' + dev_null)
-        
-        cmd = 'cp -a /usr/share/enigma2/rc_models/* %s/ImageBoot/%s/usr/share/enigma2/rc_models/ > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r /usr/share/enigma2/rc_models %s/ImageBoot/%s/usr/share/enigma2 > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-
+                os.system('echo "Skopiowano kernel.bin STB-ARM"')                
         if os.path.exists('/usr/bin/fullwget'):
             cmd = 'cp -r /usr/bin/fullwget %s/ImageBoot/%s/usr/bin/fullwget > /dev/null 2>&1' % (media, target)
             rc = os.system(cmd)
@@ -381,6 +396,8 @@ def NEOBootMainEx(source, target, CopyKernel, TvList, Montowanie, LanWlan, Stero
                     cmd = 'chmod -R 0755 %s' % filename
                     rc = os.system(cmd)
                                                                       
+    with open("/proc/sys/vm/drop_caches", "w") as f: f.write("3\n")
+    rc = os.system('sync') 
     if os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot' % (media, target)):
         os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
         os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
@@ -396,39 +413,42 @@ def NEOBootMainEx(source, target, CopyKernel, TvList, Montowanie, LanWlan, Stero
         os.system('echo "Zako\xc5\x84czono instalacj\xc4\x99 nowego systemu. !!! - EXIT - !!!"')
         os.system('echo "End of installation:"; date +%T')
         cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh %s/ImageBoot/%s/etc/rcS.d > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        os.system('echo 3 > /proc/sys/vm/drop_caches')
-        os.system('sync')        
-        if os.path.exists('/media/neoboot/ubi') is True:
+        rc = os.system(cmd)     
+        rc = RemoveUnpackDirs(getImageFolder) 
+        if os.path.exists('/media/neoboot/ubi'):
             os.system('rm -rf /media/neoboot/ubi')          
-        if os.path.exists('/media/neoboot/image_cache') is True:
+        if os.path.exists('/media/neoboot/image_cache/'):
             os.system('rm /media/neoboot/image_cache')
-        if os.path.exists('/tmp/without_copying ') is True:
-            os.system('rm -f /tmp/without_copying') 
-        rc = RemoveUnpackDirs(getImageFolder)                             
-        print ' Model STB: %s - OS release: %s - Chipset: %s - CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())
+        if os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
+            os.system('rm /media/neoboot/ImageBoot/.without_copying')                             
+        print 'Model STB: %s - OS release: %s - Chipset: %s - CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())
         os.system("sync; echo 3 > /proc/sys/vm/drop_caches; sync")        
 
     elif not os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot' % (media, target)):
             os.system('echo "Nie zainstalowano systemu ! Powodem b\xc5\x82\xc4\x99du instalacji mo\xc5\xbce by\xc4\x87 \xc5\xbale spakowany plik image w zip lub nie jest to sytem dla Twojego modelu ."')
-            os.system('rm -r %s/ImageBoot/%s' % (media, target))
-            if os.path.exists('/media/neoboot/ubi') is True:
+            if os.path.exists('/media/neoboot/ubi'):
                 os.system('rm -rf /media/neoboot/ubi')          
-            if os.path.exists('/media/neoboot/image_cache') is True:
+            if os.path.exists('/media/neoboot/image_cache'):
                 os.system('rm /media/neoboot/image_cache')
-            if os.path.exists('/tmp/without_copying ') is True:
-                os.system('rm -f /tmp/without_copying') 
+            if os.path.exists('/media/neoboot/ImageBoot/.without_copying') :
+                os.system('rm /media/neoboot/ImageBoot/.without_copying') 
             rc = RemoveUnpackDirs(getImageFolder)
+            os.system('NEOBOOT usunal instalowany system !')
+            os.system('rm -r %s/ImageBoot/%s' % (media, target))
     else:
          pass
 
-def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
+def NEOBootExtract(source, target, ZipDelete, getImageFolder):
     os.system('echo "Start of installation:"; date +%T')
     RemoveUnpackDirs(getImageFolder)
+    if os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
+        os.system('rm /media/neoboot/ImageBoot/.without_copying') 
+
     sourcefile = media + '/ImagesUpload/%s.zip' % source
     sourcefile2 = media + '/ImagesUpload/%s.nfi' % source
     if os.path.exists(sourcefile2) is True:
         if sourcefile2.endswith('.nfi'):
+            os.system('echo "Instalacja systemu skapowanego w plik nfi..."')
             to = '/media/neoboot/ImageBoot/' + target
             cmd = 'mkdir %s > /dev/null 2<&1' % to
             rc = os.system(cmd)
@@ -440,7 +460,7 @@ def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
             if ZipDelete == 'True':
                 rc = os.system('rm -rf ' + sourcefile2)
             else:
-                os.system('echo "NeoBoot keep the file:  %s  for reinstallation."' % sourcefile)
+                os.system('echo "NeoBoot keep the file:  %s  for reinstallation."' % sourcefile2)
     elif os.path.exists(sourcefile) is True:
         os.chdir(media + '/ImagesUpload')
         os.system('unzip ' + sourcefile)
@@ -694,47 +714,6 @@ def NEOBootExtract(source, target, ZipDelete, CopyFiles, getImageFolder):
             cmd = 'rm -r /media/neoboot/ImageBoot/%s/usr/bin/enigma2-or' % target
             rc = os.system(cmd)
 
-    if CopyFiles == 'True':
-        os.system('echo "copying files NeoBoot..."')
-        cmd = 'mkdir -p %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'mkdir -p %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/plugin.py %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/__init__.py %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/locale %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/Harddisk.py %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/stbbranding.py %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/Task.py %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/tools.py %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/__init__.py %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'touch /tmp/without_copying'
-        rc = os.system(cmd)                
-        if not os.path.exists('/usr/lib/enigma2/python/EGAMI') and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/EGAMI' % (media, target)):
-            if getBoxVuModel() == 'ultimo4k' or getBoxVuModel() == 'solo4k' or getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'bm750' or getBoxVuModel() == 'duo' or getBoxVuModel() == 'solo' or getBoxVuModel() == 'uno' or getBoxVuModel() == 'ultimo' or getBoxVuModel() == 'solo2' or getBoxVuModel() == 'duo2' or getBoxVuModel() == 'solose' or getBoxVuModel() == 'zero':
-                if not os.path.exists('/media/neoboot/ImagesUpload/.egami/patchE.tar.gz'):
-                    os.system('echo "System EGAMI nie jest przeznaczony tego odbiornika !!! "')
-                else:
-                    cmd = 'cp -r /media/neoboot/ImagesUpload/.egami/patchE.tar.gz %s/ImageBoot/%s/home/root/ > /dev/null 2>&1' % (media, target)
-                    rc = os.system(cmd)
-                    cmd = 'rm %s/ImageBoot/%s/usr/lib/enigma2/python/mytest.pyo' % (media, target)
-                    rc = os.system(cmd)
-                    if not os.path.exists('/usr/lib/enigma2/python/boxbranding.so'):
-                        cmd = 'cp -r /usr/lib/enigma2/python/boxbranding.so %s/ImageBoot/%s/usr/lib/enigma2/python/boxbranding.so > /dev/null 2>&1' % (media, target)
-                        rc = os.system(cmd)
-                    cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh %s/ImageBoot/%s/etc/rcS.d' % (media, target)
-                    rc = os.system(cmd)
-                    os.system('echo "EGAMI-installed OK. Installation continues, wait..."')
     return 1
 
 def RemoveUnpackDirs(getImageFolder):
