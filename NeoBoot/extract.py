@@ -18,7 +18,7 @@ def getCPUSoC():
         with open('/proc/stb/info/chipset', 'r') as f:
             chipset = f.readline().strip()
             f.close()     
-        if chipset == '('7405(with 3D)')':
+        if chipset == '7405(with 3D)':
             chipset = '7405'
     return chipset
       
@@ -103,7 +103,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         cmd = 'cp -r /usr/share/enigma2/rc_models %s/ImageBoot/%s/usr/share/enigma2 > /dev/null 2>&1' % (media, target)
         rc = os.system(cmd)            
         if CopyKernel == 'True':        
-            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or == '('7405(with 3D)')' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
+            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or == '7405(with 3D)' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin STB-MIPS"')
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
