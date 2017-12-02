@@ -20,6 +20,12 @@ def getCPUSoC():
             f.close()     
         if chipset == '7405(with 3D)':
             chipset = '7405'
+        elif os.path.exists('/etc/hostname'):
+            with open('/etc/hostname', 'r') as f:
+                myboxname = f.readline().strip()
+                f.close()   
+        if myboxname == 'vuultimo':
+            chipset = '7405'
     return chipset
       
 def getBoxVuModel():
@@ -47,6 +53,13 @@ def getKernelVersion():
         return open('/proc/version', 'r').read().split(' ', 4)[2].split('-', 2)[0]
     except:
         return _('unknown')
+        
+def getBoxHostName():
+    if os.path.exists('/etc/hostname'):
+        with open('/etc/hostname', 'r') as f:
+            myboxname = f.readline().strip()
+            f.close()   
+    return myboxname         
 
 media = '/media/neoboot'
 mediahome = media + '/ImageBoot/'
@@ -103,7 +116,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         cmd = 'cp -r /usr/share/enigma2/rc_models %s/ImageBoot/%s/usr/share/enigma2 > /dev/null 2>&1' % (media, target)
         rc = os.system(cmd)            
         if CopyKernel == 'True':        
-            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
+            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin STB-MIPS"')
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
