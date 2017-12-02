@@ -61,7 +61,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.24'
+UPDATEVERSION = '6.25'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1395,6 +1395,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.InstallSettings = ConfigYesNo(default=False)        
         self.ZipDelete = ConfigYesNo(default=False) 
         self.RepairFTP = ConfigYesNo(default=False)                                                    
+        #self.UbiReader = ConfigYesNo(default=False)
         self.target.value = ''
         self.curselimage = ''
 
@@ -1434,8 +1435,8 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_('Copy Settings to the new Image'), self.InstallSettings))                                                                                
         self.list.append(getConfigListEntry(_('Delete Image zip after Install ?'), self.ZipDelete)) 
         self.list.append(getConfigListEntry(_('Repair FTP ? (Recommended only other image if it does not work.)'), self.RepairFTP))
-    
- 
+        #self.list.append(getConfigListEntry(_('Uzyj UbiReader by rozpakowac image ? (Only for mips)'), self.UbiReader))
+     
     def typeChange(self, value):
         self.createSetup()
         self['config'].l.setList(self.list)
@@ -1503,6 +1504,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                  str(self.InstallSettings.value), 
                  str(self.ZipDelete.value),                                                                    
                  str(self.RepairFTP.value),                                  
+                 #str(self.UbiReader.value),
                  getImageFolder())
                 print '[NEO-BOOT]: ', cmd
                 self.session.open(Console, _('NEOBoot: Install new image'), [message, cmd])
