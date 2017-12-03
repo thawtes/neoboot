@@ -1,19 +1,24 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-  
-    #cat /proc/stb/info/chipset:
     #Machine BCM
-    #SF4008:           bcm7251
-    #MBmini:           bcm7358
+    #cat /proc/stb/info/chipset:
+
+    #et8500   :        bcm7241
+
+    #SF4008   :        bcm7251
+    #MBmini   :        bcm7358
     #Miraclebox Micro: bcm7362
-    #Ultimo4k :         7444s
-    #Solo4k   :           7376
-    #Uno 4K   :           7252s 
+    
+    #Ultimo4k :        7444s
+    #Solo4k   :        7376
+    #Uno 4K   :        7252s 
     #Zero 4K  :        72604 
+    
     #Ultimo   :        7405(with 3D)
     #Uno      :        7405(with 3D)
-    #Solo2    :        7356
     #Duo2     :        7424
-    #Duo      :	       7335      
+    #Duo      :	       7335
+    #Solo2    :        7356
     #Solose-v2:        7241
     #Solo     :        7325
     #Zero     :        7362       
@@ -61,7 +66,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.25'
+UPDATEVERSION = '6.26'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
