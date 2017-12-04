@@ -26,10 +26,16 @@ from Plugins.Extensions.NeoBoot.files.stbbranding import getKernelVersionString
 import os
 import time
 import sys
-import struct
+import struct, shutil
 
 PLUGINVERSION = '6.00'
 
+def getKernelVersion():
+    try:
+        return open('/proc/version', 'r').read().split(' ', 4)[2].split('-', 2)[0]
+    except:
+        return _('unknown')
+            
 def getCPUtype():
     cpu='UNKNOWN'
     if os.path.exists('/proc/cpuinfo'):
@@ -635,7 +641,6 @@ class SetPasswd(Screen):
         else:
             self.close()
 
-
 class ReinstallKernel(Screen):
     __module__ = __name__
     skin = '\n\t<screen position="center,center" size="700,300" title="Module kernel">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
@@ -799,21 +804,38 @@ class SetPasswd(Screen):
 
 class CheckInstall(Screen):
     __module__ = __name__
-    skin = '\n\t<screen position="center,center" size="700,300" title="NEOBOOT - CHECK">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
+    skin = '\n\t<screen position="center,center" size="700,300" title="Zmiana Hasla">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
 
     def __init__(self, session):
         Screen.__init__(self, session)
-        self['lab1'] = Label('Uruchomic ?')
+        self['lab1'] = Label('Sprawdzanie poprawnosci zainstalwoanych modulow dla NeoBoota')
         self['key_red'] = Label(_('Uruchom'))
         self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'back': self.close,
-         'red': self.boot_check})
+         'red': self.neocheck})
+         
+    def neocheck(self):
+        try:
+            if not fileExists('/usr/sbin/ubidetach'):
+                cmd = "echo -e '\n%s '" % _('OK, ubidetach found.')            
+            if not fileExists('/usr/sbin/ubiattach'):
+                cmd0 = "echo -e '\n%s '" % _('OK, ubiattach found.')           
+            if not fileExists('/usr/bin/curl'):
+                cmd1 = "echo -e '\n%s '" % _('OK, curl notfound.')          
+            if not fileExists('/usr/lib/python2.7/subprocess.pyo'):
+                cmd2 = "echo -e '\n%s '" % _('OK, python-subprocess found.')
+            else:
+                cmdA = "echo -e '\n%s '" % _('All installed OK')
+                self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmdA]) 
+                self.close()
 
-    def boot_check(self):
-        message = ''
-        message += 'W budowie... >\n\n'
-        message += _('Udanej zabawy :)\n\n')
-        self['lab1'].show()
-        self['lab1'].setText(message)
+            self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd,
+             cmd0,
+             cmd1,
+             cmd2]) 
+            self.close()
+
+        except:
+            False
 
 class MultiBootMyHelp(Screen):
     screenwidth = getDesktop(0).size().width()
