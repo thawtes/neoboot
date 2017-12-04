@@ -500,6 +500,7 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
             rc = os.system(cmd)
             rootfname = 'rootfs.bin'
             brand = ''
+            #zgemma
             if os.path.exists('/media/neoboot/ImagesUpload/zgemma'):
                 os.chdir('zgemma')
                 brand = 'zgemma'
@@ -514,6 +515,7 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
                     os.chdir('h3')
                 if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h5'):
                     os.chdir('h5')
+            #miraclebox
             if os.path.exists('/media/neoboot/ImagesUpload/miraclebox'):
                 os.chdir('miraclebox')
                 brand = 'miraclebox'
@@ -532,6 +534,21 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
                     os.chdir('micro')
                 if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/twinplus'):
                     os.chdir('twinplus')
+            #atemio
+            if os.path.exists('/media/neoboot/ImagesUpload/atemio'):
+                    os.chdir('atemio')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/5x00'):
+                        os.chdir('5x00')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6000'):
+                        os.chdir('6000')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6100'):
+                        os.chdir('6100')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6200'):
+                        os.chdir('6200')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/8x00'):
+                        os.chdir('8x00')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/8x00'):
+                        os.chdir('8x00')
             if os.path.exists('/media/neoboot/ImagesUpload/sf3038'):
                 os.chdir('sf3038')
             if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx'):
@@ -540,6 +557,7 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
             if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx3'):
                 os.chdir('xpeedlx3')
                 brand = 'xpeedlx3'
+            #vuplus
             if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
                 os.chdir('vuplus')
                 brand = 'vuplus'
