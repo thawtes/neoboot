@@ -1,17 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import time, sys, os, struct, shutil 
-# Copyright (c) , gutosie  license
-# 
-# Redystrybucja wersji programu i dokonywania modyfikacji JEST DOZWOLONE, pod warunkiem zachowania niniejszej informacji o prawach autorskich. 
-# Autor NIE ponosi JAKIEJKOLWIEK odpowiedzialnosci za skutki użtkowania tego programu oraz za wykorzystanie zawartych tu informacji.
-# Modyfikacje przeprowadzasz na wlasne ryzyko!!!
-# O wszelkich zmianach proszę poinformować na  http://all-forum.cba.pl   w temacie pod nazwa  	 -#[NEOBOOT]#-
 
-# This text/program is free document/software. Redistribution and use in
-# source and binary forms, with or without modification, ARE PERMITTED provided
-# save this copyright notice. This document/program is distributed WITHOUT any
-# warranty, use at YOUR own risk.
 def getCPUSoC():
     chipset='UNKNOWN'
     if os.path.exists('/proc/stb/info/chipset'):
@@ -418,7 +408,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                                                                       
     with open("/proc/sys/vm/drop_caches", "w") as f: f.write("3\n")
     rc = os.system('sync') 
-    if os.path.exists('%s/ImageBoot/%s/etc/issue.net' % (media, target)):
+    if os.path.exists('%s/ImageBoot/%s/etc/hostname' % (media, target)):
         os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
         os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
         cmd = 'touch /tmp/.init_reboot'
@@ -444,7 +434,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         print 'Model STB: %s - OS release: %s - Chipset: %s - CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())
         os.system("sync; echo 3 > /proc/sys/vm/drop_caches; sync")        
 
-    elif '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/issue.net' % (media, target)):
+    elif '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/hostname' % (media, target)):
             os.system('echo ""; echo "Nie zainstalowano systemu ! Powodem b\xc5\x82\xc4\x99du instalacji mo\xc5\xbce by\xc4\x87 \xc5\xbale spakowany plik image w zip lub nie jest to sytem dla Twojego modelu ."')
             if os.path.exists('/media/neoboot/ubi'):
                 os.system('rm -rf /media/neoboot/ubi')          
