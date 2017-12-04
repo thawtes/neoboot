@@ -588,12 +588,19 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
             if os.path.exists('/media/neoboot/ImagesUpload/et4x00'):
                 os.chdir('et4x00')
                 brand = 'et4x00'
-            if os.path.exists('/media/neoboot/ImagesUpload/gigablue'):
-                os.chdir('gigablue')
-                brand = 'gigablue'
-                if os.path.exists('/media/neoboot/ImagesUpload/gigablue/quad'):
-                    os.chdir('quad')
-
+            if os.path.exists('/media/neoboot/ImagesUpload/formuler1'):
+                os.chdir('formuler1')
+                brand = 'formuler1'
+            if os.path.exists('/media/neoboot/ImagesUpload/formuler2'):
+                os.chdir('formuler2')
+                brand = 'formuler2'
+            if os.path.exists('/media/neoboot/ImagesUpload/formuler3'):
+                os.chdir('formuler3')
+                brand = 'formuler3'
+            if os.path.exists('/media/neoboot/ImagesUpload/formuler4turbo'):
+                os.chdir('formuler4turbo')
+                brand = 'formuler4turbo'
+                                        
             if os.path.exists('/lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko' % getKernelVersion())is True:
                 rc = os.system('insmod /lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko cache_file=/media/neoboot/image_cache first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15;sleep 5' % getKernelVersion())
                 cmd = 'dd if=%s of=/dev/mtdblock%s bs=2048' % (rootfname, mtd)
