@@ -56,12 +56,12 @@ mediahome = media + '/ImageBoot/'
 extensions_path = '/usr/lib/enigma2/python/Plugins/Extensions/'
 dev_null = ' > /dev/null 2>&1'
 
-def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP, getImageFolder):
+def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP):
     media_target = mediahome + target
     list_one = ['rm -r ' + media_target + dev_null, 'mkdir ' + media_target + dev_null, 'chmod -R 0777 ' + media_target]
     for command in list_one:
         os.system(command)
-    rc = NEOBootExtract(source, target, ZipDelete, getImageFolder)    
+    rc = NEOBootExtract(source, target, ZipDelete)    
     if not os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions' % (media, target)):
         os.system('mkdir -p %s/ImageBoot/%s/usr/lib/' % (media, target))
         os.system('mkdir -p %s/ImageBoot/%s/usr/lib/enigma2' % (media, target))
@@ -441,11 +441,11 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         os.system('rm /media/neoboot/ImageBoot/.without_copying') 
     rc = os.system('sync')
     os.system("echo 3 > /proc/sys/vm/drop_caches")
-    rc = RemoveUnpackDirs(getImageFolder)
+    rc = RemoveUnpackDirs()
 
-def NEOBootExtract(source, target, ZipDelete, getImageFolder):
+def NEOBootExtract(source, target, ZipDelete):
     os.system('echo "Start of installation:"; date +%T')
-    RemoveUnpackDirs(getImageFolder)
+    RemoveUnpackDirs()
     if os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
         os.system('rm /media/neoboot/ImageBoot/.without_copying') 
 
@@ -472,8 +472,6 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
         os.system('unzip ' + sourcefile)
         if ZipDelete == 'True':
             os.system('rm -rf ' + sourcefile)
-        if os.path.exists(media + '/ImagesUpload/%s' % getImageFolder):
-            os.chdir('%s' % getImageFolder)
         os.system('echo "Rozpakowywanie pliku instalacyjnego..."')
     if os.path.exists(sourcefile) and getCPUtype() != 'ARMv7':
         for i in range(0, 20):
@@ -483,8 +481,6 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
                 
         mtd = str(i)
         os.chdir(media + '/ImagesUpload')
-        if os.path.exists(media + '/ImagesUpload/%s' % getImageFolder):
-            os.chdir('%s' % getImageFolder)
         if os.path.exists('/media/neoboot/ubi') is False:
             rc = os.system('mkdir /media/neoboot/ubi')
         if getCPUtype() == 'MIPS':
@@ -712,9 +708,7 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         else:
-            sfolder = media + '/ImagesUpload/%s' % getImageFolder
-            cmd = 'tar -jxvf' + sfolder + '/rootfs.tar.bz2 -C ' + media + '/ImageBoot/' + target + ' > /dev/null 2>&1'
-            rc = os.system(cmd)
+            os.system('echo "NeoBoot wykryl blad !!! Prawdopodobnie brak pliku instalacyjnego."')
 
     if 'BlackHole' in source and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Blackhole' % (media, target)):
             ver = source.replace('BlackHole-', '')
@@ -752,10 +746,8 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
 
     return 1
 
-def RemoveUnpackDirs(getImageFolder):
+def RemoveUnpackDirs():
     os.chdir(media + '/ImagesUpload')
-    if os.path.exists(media + '/ImagesUpload/%s' % getImageFolder):
-        shutil.rmtree('%s' % getImageFolder)
     if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/vuplus')
     elif os.path.exists('/media/neoboot/ImagesUpload/sf4008'):

@@ -30,7 +30,7 @@
                                
 from __init__ import _
 from Plugins.Extensions.NeoBoot.files import Harddisk                                                                                                                                                     
-from Plugins.Extensions.NeoBoot.files.stbbranding import getKernelVersionString, getKernelImageVersion, getImageFolder, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
+from Plugins.Extensions.NeoBoot.files.stbbranding import getKernelVersionString, getKernelImageVersion, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
 from enigma import getDesktop
 from enigma import eTimer
 from Screens.Screen import Screen                                                                                                                                               
@@ -71,7 +71,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.28'
+UPDATEVERSION = '6.29'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1438,7 +1438,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                 message += _('Please, wait...\n')                
                 message += "'"
                 cmd1 = 'python ' + pluginpath + '/ex_init.py'
-                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
+                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
                  source,
                  target.replace(' ', '.'),
                  str(self.CopyFiles.value),                 
@@ -1449,9 +1449,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                  str(self.Sterowniki.value),                                                                                                                        
                  str(self.InstallSettings.value), 
                  str(self.ZipDelete.value),                                                                    
-                 str(self.RepairFTP.value),                                  
-                 #str(self.UbiReader.value),
-                 getImageFolder())
+                 str(self.RepairFTP.value))                                  
                 print '[NEO-BOOT]: ', cmd
                 self.session.open(Console, _('NEOBoot: Install new image'), [message, cmd])
 
