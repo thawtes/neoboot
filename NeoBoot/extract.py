@@ -405,10 +405,11 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                     os.rename(filename2, filename)
                     cmd = 'chmod -R 0755 %s' % filename
                     rc = os.system(cmd)
-                                                                      
+                    
+    rc = os.system('sync')
     with open("/proc/sys/vm/drop_caches", "w") as f: f.write("3\n")
-    rc = os.system('sync') 
-    if os.path.exists('%s/ImageBoot/%s/etc/hostname' % (media, target)):
+                                                                                               
+    if os.path.exists('%s/ImageBoot/%s/etc/issue' % (media, target)):
         os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
         os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
         cmd = 'touch /tmp/.init_reboot'
@@ -420,33 +421,27 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         out = open(mediahome + '.neonextboot', 'w')
         out.write('Flash')
         out.close()
-        os.system('echo "Zako\xc5\x84czono instalacj\xc4\x99 nowego systemu. EXIT "')
-        os.system('echo "End of installation:"; date +%T')
         cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh %s/ImageBoot/%s/etc/rcS.d > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)     
-        rc = RemoveUnpackDirs(getImageFolder) 
-        if os.path.exists('/media/neoboot/ubi'):
-            os.system('rm -rf /media/neoboot/ubi')          
-        if os.path.exists('/media/neoboot/image_cache/'):
-            os.system('rm /media/neoboot/image_cache')
-        if os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
-            os.system('rm /media/neoboot/ImageBoot/.without_copying')                             
-        print 'Model STB: %s - OS release: %s - Chipset: %s - CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())
-        os.system("sync; echo 3 > /proc/sys/vm/drop_caches; sync")        
-
-    elif '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/hostname' % (media, target)):
+        rc = os.system(cmd)
+        os.system('echo "Zako\xc5\x84czono instalacj\xc4\x99 nowego systemu. EXIT "')
+        os.system('echo "End of installation:"; date +%T')                                 
+        print 'Model STB: %s | OS release: %s | Chipset: %s | CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())            
+    elif '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/issue' % (media, target)):
             os.system('echo ""; echo "Nie zainstalowano systemu ! Powodem b\xc5\x82\xc4\x99du instalacji mo\xc5\xbce by\xc4\x87 \xc5\xbale spakowany plik image w zip lub nie jest to sytem dla Twojego modelu ."')
-            if os.path.exists('/media/neoboot/ubi'):
-                os.system('rm -rf /media/neoboot/ubi')          
-            if os.path.exists('/media/neoboot/image_cache'):
-                os.system('rm /media/neoboot/image_cache')
-            if os.path.exists('/media/neoboot/ImageBoot/.without_copying') :
-                os.system('rm /media/neoboot/ImageBoot/.without_copying') 
-            rc = RemoveUnpackDirs(getImageFolder)
             os.system('echo "NEOBOOT usunal instalowany system !"')
             os.system('rm -r %s/ImageBoot/%s' % (media, target))
     else:
          pass
+
+    if os.path.exists('/media/neoboot/ubi'):
+        os.system('rm -rf /media/neoboot/ubi')          
+    if os.path.exists('/media/neoboot/image_cache/'):
+        os.system('rm /media/neoboot/image_cache')
+    if os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
+        os.system('rm /media/neoboot/ImageBoot/.without_copying') 
+    rc = os.system('sync')
+    os.system("echo 3 > /proc/sys/vm/drop_caches")
+    rc = RemoveUnpackDirs(getImageFolder)
 
 def NEOBootExtract(source, target, ZipDelete, getImageFolder):
     os.system('echo "Start of installation:"; date +%T')
@@ -456,6 +451,7 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
 
     sourcefile = media + '/ImagesUpload/%s.zip' % source
     sourcefile2 = media + '/ImagesUpload/%s.nfi' % source
+    os.system('echo "This may take a few minutes to complete...."')
     if os.path.exists(sourcefile2) is True:
         if sourcefile2.endswith('.nfi'):
             os.system('echo "Instalacja systemu skapowanego w plik nfi..."')
@@ -549,14 +545,6 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
                         os.chdir('8x00')
                     if os.path.exists('/media/neoboot/ImagesUpload/atemio/8x00'):
                         os.chdir('8x00')
-            if os.path.exists('/media/neoboot/ImagesUpload/sf3038'):
-                os.chdir('sf3038')
-            if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx'):
-                os.chdir('xpeedlx')
-                brand = 'xpeedlx'
-            if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx3'):
-                os.chdir('xpeedlx3')
-                brand = 'xpeedlx3'
             #vuplus
             if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
                 os.chdir('vuplus')
@@ -582,6 +570,7 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
                 if os.path.exists('/media/neoboot/ImagesUpload/vuplus/zero'):
                     os.chdir('zero')
                     rootfname = 'root_cfe_auto.bin'
+            #Xtrend
             if os.path.exists('/media/neoboot/ImagesUpload/et10000'):
                 os.chdir('et10000')
                 brand = 'et10000'
@@ -606,6 +595,7 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
             if os.path.exists('/media/neoboot/ImagesUpload/et4x00'):
                 os.chdir('et4x00')
                 brand = 'et4x00'
+            #formuler
             if os.path.exists('/media/neoboot/ImagesUpload/formuler1'):
                 os.chdir('formuler1')
                 brand = 'formuler1'
@@ -618,7 +608,19 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
             if os.path.exists('/media/neoboot/ImagesUpload/formuler4turbo'):
                 os.chdir('formuler4turbo')
                 brand = 'formuler4turbo'
-                                        
+            #inne
+            if os.path.exists('/media/neoboot/ImagesUpload/sf3038'):
+                os.chdir('sf3038')
+            if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx'):
+                os.chdir('xpeedlx')
+                brand = 'xpeedlx'
+            if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx3'):
+                os.chdir('xpeedlx3')
+                brand = 'xpeedlx3'
+
+            rc = os.system('sync')                            
+            os.system("echo 3 > /proc/sys/vm/drop_caches") 
+
             if os.path.exists('/lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko' % getKernelVersion())is True:
                 rc = os.system('insmod /lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko cache_file=/media/neoboot/image_cache first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15;sleep 5' % getKernelVersion())
                 cmd = 'dd if=%s of=/dev/mtdblock%s bs=2048' % (rootfname, mtd)
@@ -635,8 +637,7 @@ def NEOBootExtract(source, target, ZipDelete, getImageFolder):
                 rc = os.system('rmmod nandsim')
             elif os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py')is True:
                 if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
-                    os.system('mv -f root_cfe_auto.* rootfs.bin')
-                os.system("sync; echo 3 > /proc/sys/vm/drop_caches; sync")                
+                    os.system('mv -f root_cfe_auto.* rootfs.bin')                
                 cmd = 'chmod 777 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py'
                 rc = os.system(cmd)
                 cmd = 'python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py rootfs.bin -o /media/neoboot/ubi'
@@ -771,10 +772,20 @@ def RemoveUnpackDirs(getImageFolder):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/update')
     elif os.path.exists('/media/neoboot/ImagesUpload/rootfs.tar.xz'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/rootfs.tar.xz')
-    elif os.path.exists('/media/neoboot/ImagesUpload/*nfi'):
+    elif os.path.exists('/media/neoboot/ImagesUpload/*.nfi'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/*.nfi')
     elif os.path.exists('/media/neoboot/ImagesUpload/zgemma'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/zgemma')       
+    elif os.path.exists('/media/neoboot/ImagesUpload/formuler1'):
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/formuler1')
+    elif os.path.exists('/media/neoboot/ImagesUpload/formuler3'):
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/formuler3')
+    elif os.path.exists('/media/neoboot/ImagesUpload/formuler4turbo'):
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/formuler4turbo')                        
+    elif os.path.exists('/media/neoboot/ImagesUpload/et*'):
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/et*')                
+    elif os.path.exists('/media/neoboot/ImagesUpload/xpeedl*'):
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/xpeedl*')
     os.system('echo "..........................................."')
     
 #END            
