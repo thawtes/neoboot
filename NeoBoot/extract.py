@@ -16,9 +16,9 @@ def getCPUSoC():
         with open('/proc/stb/info/chipset', 'r') as f:
             chipset = f.readline().strip()
             f.close()     
-    elif chipset = '7405(with 3D)' or getBoxHostName() = 'vuultimo': 
-        chipset = '7405'
-                    
+        if chipset == '7405(with 3D)':
+            chipset == '7405'
+                                            
     return chipset
       
 def getBoxVuModel():
@@ -57,7 +57,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
     list_one = ['rm -r ' + media_target + dev_null, 'mkdir ' + media_target + dev_null, 'chmod -R 0777 ' + media_target]
     for command in list_one:
         os.system(command)
-    rc = NEOBootExtract(source, target, ZipDelete)    
+    rc = NEOBootExtract(source, target, ZipDelete, BlackHole)    
     if not os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions' % (media, target)):
         os.system('mkdir -p %s/ImageBoot/%s/usr/lib/' % (media, target))
         os.system('mkdir -p %s/ImageBoot/%s/usr/lib/enigma2' % (media, target))
@@ -101,9 +101,9 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         rc = os.system(cmd)
         cmd = 'cp -r /usr/share/enigma2/rc_models %s/ImageBoot/%s/usr/share/enigma2 > /dev/null 2>&1' % (media, target)
         rc = os.system(cmd)            
-        #or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' 
+
         if CopyKernel == 'True':        
-            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
+            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362' or getBoxHostName() == 'vuultimo':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin STB-MIPS"')
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':

@@ -157,8 +157,9 @@ class MyUpgrade2(Screen):
                     system(cmd)
                     cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot ' + target
                     system(cmd)
+
                     target2 = dirfile + '/etc/rcS.d'
-                    cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh ' target2
+                    cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh ' + target2
                     os.system(cmd)
           
             out = open('/media/neoboot/ImageBoot/.version', 'w')
