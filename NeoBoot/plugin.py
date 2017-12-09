@@ -71,7 +71,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.29'
+UPDATEVERSION = '6.30'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -157,11 +157,15 @@ class MyUpgrade2(Screen):
                     system(cmd)
                     cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot ' + target
                     system(cmd)
+                    target2 = dirfile + '/etc/rcS.d'
+                    cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh ' target2
+                    os.system(cmd)
           
             out = open('/media/neoboot/ImageBoot/.version', 'w')
             out.write(PLUGINVERSION)
             out.close()
             self.myClose(_('NeoBoot successfully updated. You can restart the plugin now.\nHave fun !!!'))
+
 
     def myClose(self, message):
         ImageChoose = self.session.open(NeoBootImageChoose)
@@ -1341,7 +1345,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.InstallSettings = ConfigYesNo(default=False)        
         self.ZipDelete = ConfigYesNo(default=False) 
         self.RepairFTP = ConfigYesNo(default=False)                                                    
-        #self.UbiReader = ConfigYesNo(default=False)
+        self.BlackHole = ConfigYesNo(default=False)
         self.target.value = ''
         self.curselimage = ''
 
@@ -1381,7 +1385,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_('Copy Settings to the new Image'), self.InstallSettings))                                                                                
         self.list.append(getConfigListEntry(_('Delete Image zip after Install ?'), self.ZipDelete)) 
         self.list.append(getConfigListEntry(_('Repair FTP ? (Recommended only other image if it does not work.)'), self.RepairFTP))
-        #self.list.append(getConfigListEntry(_('Uzyj UbiReader by rozpakowac image ? (Only for mips)'), self.UbiReader))
+        self.list.append(getConfigListEntry(_('Path BlackHole ? (Not recommended for VuPlus)'), self.BlackHole))
      
     def typeChange(self, value):
         self.createSetup()
@@ -1438,7 +1442,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                 message += _('Please, wait...\n')                
                 message += "'"
                 cmd1 = 'python ' + pluginpath + '/ex_init.py'
-                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
+                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
                  source,
                  target.replace(' ', '.'),
                  str(self.CopyFiles.value),                 
@@ -1449,7 +1453,8 @@ class InstalacjaImage(Screen, ConfigListScreen):
                  str(self.Sterowniki.value),                                                                                                                        
                  str(self.InstallSettings.value), 
                  str(self.ZipDelete.value),                                                                    
-                 str(self.RepairFTP.value))                                  
+                 str(self.RepairFTP.value),                                  
+                 str(self.BlackHole.value))  
                 print '[NEO-BOOT]: ', cmd
                 self.session.open(Console, _('NEOBoot: Install new image'), [message, cmd])
 

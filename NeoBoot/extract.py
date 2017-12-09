@@ -2,20 +2,23 @@
 # -*- coding: utf-8 -*-
 import time, sys, os, struct, shutil 
 
+
+def getBoxHostName():
+    if os.path.exists('/etc/hostname'):
+        with open('/etc/hostname', 'r') as f:
+            myboxname = f.readline().strip()
+            f.close()   
+    return myboxname 
+
 def getCPUSoC():
     chipset='UNKNOWN'
     if os.path.exists('/proc/stb/info/chipset'):
         with open('/proc/stb/info/chipset', 'r') as f:
             chipset = f.readline().strip()
             f.close()     
-        if chipset == '7405(with 3D)':
-            chipset = '7405'
-        elif os.path.exists('/etc/hostname'):
-            with open('/etc/hostname', 'r') as f:
-                myboxname = f.readline().strip()
-                f.close()   
-        if myboxname == 'vuultimo':
-            chipset = '7405'
+    elif chipset = '7405(with 3D)' or getBoxHostName() = 'vuultimo': 
+        chipset = '7405'
+                    
     return chipset
       
 def getBoxVuModel():
@@ -43,20 +46,13 @@ def getKernelVersion():
         return open('/proc/version', 'r').read().split(' ', 4)[2].split('-', 2)[0]
     except:
         return _('unknown')
-        
-def getBoxHostName():
-    if os.path.exists('/etc/hostname'):
-        with open('/etc/hostname', 'r') as f:
-            myboxname = f.readline().strip()
-            f.close()   
-    return myboxname         
-
+             
 media = '/media/neoboot'
 mediahome = media + '/ImageBoot/'
 extensions_path = '/usr/lib/enigma2/python/Plugins/Extensions/'
 dev_null = ' > /dev/null 2>&1'
 
-def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP):
+def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP, BlackHole):
     media_target = mediahome + target
     list_one = ['rm -r ' + media_target + dev_null, 'mkdir ' + media_target + dev_null, 'chmod -R 0777 ' + media_target]
     for command in list_one:
@@ -105,8 +101,9 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         rc = os.system(cmd)
         cmd = 'cp -r /usr/share/enigma2/rc_models %s/ImageBoot/%s/usr/share/enigma2 > /dev/null 2>&1' % (media, target)
         rc = os.system(cmd)            
+        #or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' 
         if CopyKernel == 'True':        
-            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
+            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin STB-MIPS"')
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
@@ -405,33 +402,27 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                     os.rename(filename2, filename)
                     cmd = 'chmod -R 0755 %s' % filename
                     rc = os.system(cmd)
-                    
-    rc = os.system('sync')
-    with open("/proc/sys/vm/drop_caches", "w") as f: f.write("3\n")
-                                                                                               
-    if os.path.exists('%s/ImageBoot/%s/etc/issue' % (media, target)):
-        os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
-        os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
-        cmd = 'touch /tmp/.init_reboot'
-        rc = os.system(cmd)
-        out = open(mediahome + '.neonextboot', 'w')
-        out.write(target)
-        out.close()
-        os.system('cp /media/neoboot/ImageBoot/.neonextboot /media/neoboot/ImageBoot/%s/.multinfo' % target)
-        out = open(mediahome + '.neonextboot', 'w')
-        out.write('Flash')
-        out.close()
-        cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh %s/ImageBoot/%s/etc/rcS.d > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        os.system('echo "Zako\xc5\x84czono instalacj\xc4\x99 nowego systemu. EXIT "')
-        os.system('echo "End of installation:"; date +%T')                                 
-        print 'Model STB: %s | OS release: %s | Chipset: %s | CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())            
-    elif '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/issue' % (media, target)):
+                                                                                                                   
+    os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
+    os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
+    cmd = 'touch /tmp/.init_reboot'
+    rc = os.system(cmd)
+    out = open(mediahome + '.neonextboot', 'w')
+    out.write(target)
+    out.close()
+    os.system('cp /media/neoboot/ImageBoot/.neonextboot /media/neoboot/ImageBoot/%s/.multinfo' % target)
+    out = open(mediahome + '.neonextboot', 'w')
+    out.write('Flash')
+    out.close()
+    cmd = 'cp -r -p /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S51checkpoint.sh %s/ImageBoot/%s/etc/rcS.d > /dev/null 2>&1' % (media, target)
+    rc = os.system(cmd)
+    os.system('echo "Zako\xc5\x84czono instalacj\xc4\x99 nowego systemu. EXIT "')
+    os.system('echo "End of installation:"; date +%T')                                 
+    print 'Model STB: %s | OS release: %s | Chipset: %s | CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())            
+    if '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/issue' % (media, target)):
             os.system('echo ""; echo "Nie zainstalowano systemu ! Powodem b\xc5\x82\xc4\x99du instalacji mo\xc5\xbce by\xc4\x87 \xc5\xbale spakowany plik image w zip lub nie jest to sytem dla Twojego modelu ."')
-            os.system('echo "NEOBOOT usunal instalowany system !"')
-            os.system('rm -r %s/ImageBoot/%s' % (media, target))
-    else:
-         pass
+            os.system('echo "Instalowany system moze sie nie uruchomic poprawnie !"')
+            #os.system('rm -r %s/ImageBoot/%s' % (media, target))
 
     if os.path.exists('/media/neoboot/ubi'):
         os.system('rm -rf /media/neoboot/ubi')          
@@ -443,7 +434,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
     os.system("echo 3 > /proc/sys/vm/drop_caches")
     rc = RemoveUnpackDirs()
 
-def NEOBootExtract(source, target, ZipDelete):
+def NEOBootExtract(source, target, ZipDelete, BlackHole):
     os.system('echo "Start of installation:"; date +%T')
     RemoveUnpackDirs()
     if os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
@@ -710,7 +701,8 @@ def NEOBootExtract(source, target, ZipDelete):
         else:
             os.system('echo "NeoBoot wykryl blad !!! Prawdopodobnie brak pliku instalacyjnego."')
 
-    if 'BlackHole' in source and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Blackhole' % (media, target)):
+    if BlackHole == 'True':
+        if 'BlackHole' in source and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Blackhole' % (media, target)):
             ver = source.replace('BlackHole-', '')
             try:
                 text = ver.split('-')[0]
