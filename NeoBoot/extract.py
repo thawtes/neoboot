@@ -421,7 +421,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
     print 'Model STB: %s | OS release: %s | Chipset: %s | CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())            
     if '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/issue' % (media, target)):
             os.system('echo ""; echo "Nie zainstalowano systemu ! Powodem b\xc5\x82\xc4\x99du instalacji mo\xc5\xbce by\xc4\x87 \xc5\xbale spakowany plik image w zip lub nie jest to sytem dla Twojego modelu ."')
-            os.system('echo "Instalowany system moze sie nie uruchomic poprawnie !"')
+            os.system('echo "Instalowany system moze sie nie uruchomic poprawnie! Sprawdz poprawnosc kataogow w instalwoanym image!!!"')
             #os.system('rm -r %s/ImageBoot/%s' % (media, target))
 
     if os.path.exists('/media/neoboot/ubi'):
@@ -465,12 +465,6 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system('rm -rf ' + sourcefile)
         os.system('echo "Rozpakowywanie pliku instalacyjnego..."')
     if os.path.exists(sourcefile) and getCPUtype() != 'ARMv7':
-        for i in range(0, 20):
-            mtdfile = '/dev/mtd' + str(i)
-            if os.path.exists(mtdfile) is False:
-                break
-                
-        mtd = str(i)
         os.chdir(media + '/ImagesUpload')
         if os.path.exists('/media/neoboot/ubi') is False:
             rc = os.system('mkdir /media/neoboot/ubi')
@@ -609,6 +603,12 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system("echo 3 > /proc/sys/vm/drop_caches") 
 
             if os.path.exists('/lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko' % getKernelVersion())is True:
+                for i in range(0, 20):
+                    mtdfile = '/dev/mtd' + str(i)
+                    if os.path.exists(mtdfile) is False:
+                        break
+                
+                mtd = str(i)
                 rc = os.system('insmod /lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko cache_file=/media/neoboot/image_cache first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15;sleep 5' % getKernelVersion())
                 cmd = 'dd if=%s of=/dev/mtdblock%s bs=2048' % (rootfname, mtd)
                 rc = os.system(cmd)
