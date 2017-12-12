@@ -1,7 +1,3 @@
-#
-UWAGA!!! ver. 6.31 ma błąd, proszę nie instalować i poczekać na 6.32, prace trwają
-#
-
 
 
 
