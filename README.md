@@ -1,3 +1,10 @@
+#
+UWAGA!!! ver. 6.31 ma błąd, proszę nie instalować i poczekać na 6.32, prace trwają
+#
+
+
+
+
 Wspierane tunery: Wszytkie modele VuPlus - klony też, Octagon SF4008, MiracleBox Mini, ( Testy- DM900)
 
 NeoBoot nie działa jeszcze w pełni sprawnie w  modelach DM900 i OctagonSF4008 - prace nad ulepszeniem trwają..
