@@ -1,33 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-  
-    #Machine BCM
-    #cat /proc/stb/info/chipset:
-
-    #et8500   :        bcm7241
-    #Formuler F1       bcm7356
-    #Formuler F3:      7362    
-    #atemio6000 :      bcm7362
-
-    #SF4008   :        bcm7251
-    #MBmini   :        bcm7358
-    #Miraclebox Micro: bcm7362
-    
-    #Ultimo4k :        7444s
-    #Solo4k   :        7376
-    #Uno 4K   :        7252s 
-    #Zero 4K  :        72604 
-    
-    #Ultimo   :        7405(with 3D)
-    #Uno      :        7405(with 3D)
-    #Duo2     :        7424
-    #Duo      :	       7335
-    #Solo2    :        7356
-    #Solose   :        7241
-    #Solose-v2:        7241
-    #Solo     :        7325
-    #Zero     :        7362   
- 
-                               
+                                
 from __init__ import _
 from Plugins.Extensions.NeoBoot.files import Harddisk                                                                                                                                                     
 from Plugins.Extensions.NeoBoot.files.stbbranding import getKernelVersionString, getKernelImageVersion, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
@@ -71,7 +44,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.33'
+UPDATEVERSION = '6.34'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
