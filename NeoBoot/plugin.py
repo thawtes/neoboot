@@ -1334,7 +1334,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.source = ConfigSelection(choices=sourcelist)
         self.target = ConfigText(fixed_size=False)
         self.CopyFiles = ConfigYesNo(default=False)
-        self.CopyKernel = ConfigYesNo(default=False)
+        self.CopyKernel = ConfigYesNo(default=True)
         self.TvList = ConfigYesNo(default=True) 
         self.Montowanie = ConfigYesNo(default=True)
         self.LanWlan = ConfigYesNo(default=True)
