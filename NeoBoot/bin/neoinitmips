@@ -67,7 +67,6 @@ else
                   echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
 		  reboot -f
 	fi 
-        ln -sfn /sbin/init.sysvinit /sbin/init  
 	TARGET=Flash
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
