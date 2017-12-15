@@ -22,8 +22,7 @@ else
 		/bin/mount -t sysfs sysfs /sys > /dev/null 2>&1
 		/sbin/depmod -Ae > /dev/null 2>&1                
 	fi 	
-	sleep 5	
-	mount -a 	
+	sleep 2	
 	mnttest="nouuid"
 	if [ -e $NEOBOOT/bin/install  ]; then
         	orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
