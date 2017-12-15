@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# ver. 6.32
+# ver. 6.35
 import time, sys, os, struct, shutil 
 
 def getBoxHostName():
@@ -282,8 +282,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
     out.write('Flash')
     out.close()
     os.system('echo "Zako\xc5\x84czono instalacj\xc4\x99 nowego systemu. EXIT "')
-    os.system('echo "End of installation:"; date +%T')                                 
-    print 'Model STB: %s | OS release: %s | Chipset: %s | CPU: %s ' % (getBoxVuModel(), getKernelVersion(), getCPUSoC(), getCPUtype())            
+    os.system('echo "End of installation:"; date +%T')                                                                        
     if '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/issue' % (media, target)):
             os.system('echo ""; echo "Nie zainstalowano systemu ! Powodem b\xc5\x82\xc4\x99du instalacji mo\xc5\xbce by\xc4\x87 \xc5\xbale spakowany plik image w zip lub nie jest to sytem dla Twojego modelu ."')
             os.system('echo "Instalowany system moze sie nie uruchomic poprawnie! Sprawdz poprawnosc kataogow w instalwoanym image!!!"')

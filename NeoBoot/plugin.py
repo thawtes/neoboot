@@ -72,7 +72,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.35'
+UPDATEVERSION = '6.36'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -430,11 +430,8 @@ class NeoBootInstallation(Screen):
                     return False
             else:
                 dir = configele
-                if fileExists('/etc/vtiversion.info'):
-                    return True
-                else:
-                    self.session.open(MessageBox, _('The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\nMake sure you select a valid partition type.') % dir, type=MessageBox.TYPE_ERROR)
-                    return False
+                self.session.open(MessageBox, _('The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\nMake sure you select a valid partition type.') % dir, type=MessageBox.TYPE_ERROR)
+                return False
         else:
             dir = configele
             self.session.open(MessageBox, _('The directory %s is not a EXT2, EXT3, EXT4 or NFS partition.\nMake sure you select a valid partition type.') % dir, type=MessageBox.TYPE_ERROR)
@@ -578,14 +575,9 @@ class NeoBootInstallation(Screen):
         if yesno:
                 try:
                     system('opkg update;opkg configure;sleep 5')                    
-                    #OctagonSF4008 DM900
-                    if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
-                        os.system('cp -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; chmod 0755 /sbin/neoinitarm; ln -sfn /sbin/neoinitarm /sbin/init')                             
-
                     #VUPLUS ARM                                    
-                    elif getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
+                    if getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -f ./bin/neoinitarm /sbin/neoinitarm; cp -f ./bin/neoinitarmvu /sbin/neoinitarmvu; cd;  chmod 0755 /sbin/neoinitarm; chmod 0755 /sbin/neoinitarmvu; ln -sfn /sbin/neoinitarmvu /sbin/init; opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; dd if=/dev/mmcblk0p1 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % ( getBoxVuModel(),  getBoxVuModel()))
-
                     #VUPLUS MIPS    
                     elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424'  or getCPUSoC() == '7241' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7358' or getBoxHostName() == 'mbmini':   
 
@@ -618,6 +610,10 @@ class NeoBootInstallation(Screen):
                             os.system('/bin/tar -xzvf /tmp/plik.tar.gz -C /;rm -fr /tmp/*.tar.gz')                                                                
                         os.system('opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())
                             
+                    #OctagonSF4008 DM900
+                    elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
+                        os.system('cp -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; chmod 0755 /sbin/neoinitarm; ln -sfn /sbin/neoinitarm /sbin/init')                             
+
                     else:
                          self.messagebox = self.session.open(MessageBox, _('Canceled ... NeoBoot will not work properly !!! NeoBoot works only on VuPlus box, Ultimo4k, Solo4k, Uno4k !!!'), MessageBox.TYPE_INFO, 20)
 
@@ -625,7 +621,7 @@ class NeoBootInstallation(Screen):
                     cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh', 'w')
                     cel.write('#!/bin/sh\n#DESCRIPTION=This script by gutosie\n\ntouch /tmp/.init_reboot\n\nif [ -f /etc/init.d/neobootmount.sh ] ; then\n    sync; rm -f /etc/init.d/neobootmount.sh;  \nfi \n')
                     cel.close()                                                                
-                    os.system('chmod -R 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh; ln -s /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh /etc/rcS.d/S50neo; touch /etc/name') 
+                    os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh; ln -s /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh /etc/rcS.d/S50neo; touch /etc/name') 
                     cel = open('/etc/name', 'w')
                     cel.write('gutosie')
                     cel.close()
@@ -635,11 +631,13 @@ class NeoBootInstallation(Screen):
                     if os.system('opkg list-installed | grep python-argparse') != 0:
                             os.system('opkg install python-argparse')
                     if os.system('opkg list-installed | grep curl') != 0:
-                            os.system('opkg install curl')                     
-                    os.system('opkg configure update-modules')       
-
+                            os.system('opkg install curl')                           
+                    cmd = 'opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade kernel-image'
+                    system(cmd)
+                    os.system('opkg configure update-modules') 
+                    
                     if getCPUtype() == 'ARMv7':       
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./neologo.mvi; rm ./neowait.mvi; rm ./bin/rebootbot; rm ./bin/neoinitmips; rm -f /sbin/neoinitmips; rm -r ./bin/nanddump; rm ./bin/nfidump; cd')
+                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/rebootbot; rm ./bin/neoinitmips; rm -f /sbin/neoinitmips; rm -r ./bin/nanddump; rm ./bin/nfidump; cd')
                                                         
                     self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
 
@@ -724,7 +722,7 @@ class NeoBootImageChoose(Screen):
         if fileExists('/tmp/.init_reboot'):
             system('rm /tmp/.init_reboot')
          
-        if fileExists('/.multinfo') or getCPUtype() == 'ARMv7':
+        if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
                 if getCPUSoC() == 'bcm7251' or getBoxHostName == 'sf4008':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')  
@@ -734,7 +732,7 @@ class NeoBootImageChoose(Screen):
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p2 /media/mmc')
                     
             if os.path.exists('/proc/stb/info/vumodel'):
-                if  getBoxVuModel() == 'uno4k' or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k':
+                if  getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'uno4kse' or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k' or  getBoxVuModel() == 'zero4k':
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')
 
         self.list = []
@@ -871,7 +869,7 @@ class NeoBootImageChoose(Screen):
                     if not fileExists('/tmp/neoboot.zip'):
                         self.session.open(MessageBox, _('Unfortunately, at the moment not found an update, try again later.'), MessageBox.TYPE_INFO, 8)
             else:
-                    os.system('cd /tmp/; unzip -qn ./neoboot.zip; rm -f ./neoboot.zip; cp -rf -p ./neoboot-master/NeoBoot /usr/lib/enigma2/python/Plugins/Extensions; rm -rf /tmp/neoboot-master;  rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt; cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoinit*;  chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; chmod 0755 ./bin/rebootbot; cp -rf ./bin/neoinit* /sbin; chmod 755 /sbin/neoinit*; cd;')
+                    os.system('cd /tmp/; unzip -qn ./neoboot.zip; rm -f ./neoboot.zip; cp -rf -p ./neoboot-master/NeoBoot /usr/lib/enigma2/python/Plugins/Extensions; rm -rf /tmp/neoboot-master;  rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt; cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoinit*;  chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; chmod 755 .files/neobootup.sh; chmod 0755 ./bin/rebootbot; cp -rf ./bin/neoinit* /sbin; chmod 755 /sbin/neoinit*; cd;')
                     restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
                     restartbox.setTitle(_('Restart GUI now ?'))
         else:
@@ -1303,9 +1301,9 @@ class UruchamianieImage(Screen):
             else:
                 os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                 self.messagebox = self.session.open(MessageBox, _('Wyglada na to ze model stbnie jest wpierany przez neoboota !!! '), MessageBox.TYPE_INFO, 8)
-                self.close()             
-
-
+                self.close()           
+                
+                
 class InstalacjaImage(Screen, ConfigListScreen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
