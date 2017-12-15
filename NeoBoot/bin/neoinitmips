@@ -1,6 +1,5 @@
 #!/bin/sh
 #script mod by gutosie
-
 IMAGE=/media/neoboot/ImageBoot
 IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot          
 NEO=/media/neoboot
@@ -11,7 +10,7 @@ FINDBOOT=/media/*/ImageBoot/.neonextboot
 CELBOOT=`cat $FINDBOOT`
 
 if [ $CELBOOT = "Flash" ] || [ -e /tmp/.init_reboot ] ; then 
-                   exec /sbin/init.sysvinit $1	                               
+	exec /sbin/init.sysvinit $1	                               
 else         
 	LIBDIR=/lib/modules/`uname -r`
 	if [ ! -d $LIBDIR ]; then
@@ -22,7 +21,7 @@ else
 		/bin/mount -t sysfs sysfs /sys > /dev/null 2>&1
 		/sbin/depmod -Ae > /dev/null 2>&1                
 	fi 
-	sleep 2; sync
+	sleep 2
 	mnttest="nouuid"
 	if [ -e $NEOBOOT/bin/install  ]; then
         	orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
@@ -67,11 +66,12 @@ else
 	elif [ $mnttest == "uuid" ]; then	
 		echo "NEOBOOT mount by UUID"
 	fi
-
 	if [ ! -e $IMAGEBOOT ]; then
 		  ln -sfn /sbin/init.sysvinit /sbin/init
+                  echo "Flash "  > $IMAGEBOOT
+                  echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
 		  reboot -f
-	fi  
+	fi    
 	TARGET=Flash
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
@@ -83,7 +83,11 @@ else
 		/bin/umount /media/hdd > /dev/null 2>&1
 	else
 		echo "NEOBOOT is booting" $TARGET " from " $DEVICE
-		if [ -d $NEO/ImageBoot/$TARGET ]; then			
+		if [ -d $NEO/ImageBoot/$TARGET ]; then
+			if [ -f $NEO/ImageBoot/$TARGET/etc/init.d/udev ]; then
+				sed -ie s!"\$4"!"\$3"!g $NEO/ImageBoot/$TARGET/etc/init.d/udev
+			fi
+                	sleep 1		
 			/bin/mount -o bind /dev $NEO/ImageBoot/$TARGET/dev
 			/bin/mount -o bind /proc $NEO/ImageBoot/$TARGET/proc
 			/bin/mount -o bind /sys $NEO/ImageBoot/$TARGET/sys

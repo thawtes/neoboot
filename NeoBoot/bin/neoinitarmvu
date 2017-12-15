@@ -1,7 +1,6 @@
 #!/bin/sh
 #script mod by gutosie
-#neo init arm
-
+#neo init arm 
 IMAGE=/media/neoboot/ImageBoot
 IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot          
 NEO=/media/neoboot
@@ -12,7 +11,7 @@ FINDBOOT=/media/*/ImageBoot/.neonextboot
 CELBOOT=`cat $FINDBOOT`
 
 if [ $CELBOOT = "Flash" ] || [ -e /tmp/.init_reboot ] ; then 
-                   exec /sbin/init.sysvinit $1	                               
+	exec /sbin/init.sysvinit $1	                               
 else         
 	LIBDIR=/lib/modules/`uname -r`
 	if [ ! -d $LIBDIR ]; then
@@ -22,8 +21,9 @@ else
 		/bin/mount -t proc proc /proc > /dev/null 2>&1
 		/bin/mount -t sysfs sysfs /sys > /dev/null 2>&1
 		/sbin/depmod -Ae > /dev/null 2>&1                
-	fi 
-	sleep 2; sync
+	fi 	
+	sleep 5	
+	mount -a 	
 	mnttest="nouuid"
 	if [ -e $NEOBOOT/bin/install  ]; then
         	orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
@@ -74,8 +74,6 @@ else
                   echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
 		  reboot -f
 	fi   
-        #ln -sfn /sbin/init.sysvinit /sbin/init
-
 	TARGET=Flash
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
@@ -87,10 +85,8 @@ else
 		/bin/umount /media/hdd > /dev/null 2>&1
 	else
 		if [ -d $NEO/ImageBoot/$TARGET ]; then			
-			if [ -f $NEO/ImageBoot/$TARGET/usr/share/bootlogo.mvi ]; then
-				/usr/bin/showiframe $NEO/ImageBoot/$TARGET/usr/share/bootlogo.mvi
-			else
-				/usr/bin/showiframe $NEO/ImageBoot/$TARGET/usr/share/bootlogo.mvi
+			if [ -f $NEO/ImageBoot/$TARGET/etc/init.d/udev ]; then
+				sed -ie s!"\$4"!"\$3"!g $NEO/ImageBoot/$TARGET/etc/init.d/udev
 			fi
 			sleep 1
 			/bin/mount -o bind /dev $NEO/ImageBoot/$TARGET/dev
@@ -115,18 +111,7 @@ else
                                fi    
                            done	
                         chmod 755 $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh   
-
-                        #powrot do flasza jesli image sie nie uruchomi
-			if [ ! -e $IMAGE/$TARGET/checkpoint ]; then                                    
-                                    touch $IMAGE/$TARGET/checkpoint 
-
-			elif [ -f $IMAGE/$TARGET/checkpoint ]; then                                                                        
-                                    ln -sfn /sbin/init.sysvinit /sbin/init
-                                    echo "Flash "  > $IMAGEBOOT
-                                    echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                                    reboot -f
-                        fi
-                        #
+                        #/bin/mount /dev/sda1 /media/neoboot/ImageBoot/$TARGET/media/hdd                                
 			if [ -f $IMAGE/$TARGET/sbin/init.sysvinit ]; then                                    
                                     exec /usr/sbin/chroot $IMAGE/$TARGET /sbin/init.sysvinit 
 			elif [ -f $IMAGE/$TARGET/sbin/init ]; then                                    
@@ -150,4 +135,3 @@ if [ -f /sbin/init.sysvinit ]; then
 fi
 
 exit 0
-
