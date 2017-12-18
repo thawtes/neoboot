@@ -618,7 +618,9 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
                     os.chdir('zero')
                     rootfname = 'root_cfe_auto.bin'
 
-            #Instalacja image               
+            #Instalacja image  
+            if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
+                os.system('mv -f root_cfe_auto.* rootfs.bin') 
             cmd = 'chmod 777 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py'
             rc = os.system(cmd)
             cmd = 'python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py rootfs.bin -o /media/neoboot/ubi'
