@@ -75,22 +75,15 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
 
     if CopyFiles == 'True':
         os.system('echo "No copying of files..."')
-        os.system('touch  /media/neoboot/ImageBoot/.without_copying')              
+        os.system('touch  /media/neoboot/ImageBoot/.without_copying; sleep 5')              
 
     if not os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
-        os.system('mkdir -p ' + media_target + '/media/hdd' + dev_null)
-        os.system('mkdir -p ' + media_target + '/media/usb' + dev_null)
-        os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
-        os.system('mkdir -p ' + media_target + '/var/lib/opkg/info/' + dev_null)        
-        cmd = 'cp -a /usr/share/enigma2/rc_models/* %s/ImageBoot/%s/usr/share/enigma2/rc_models/ > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        cmd = 'cp -r /usr/share/enigma2/rc_models %s/ImageBoot/%s/usr/share/enigma2 > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)            
-
         if CopyKernel == 'True':        
-            if getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362' or getBoxHostName() == 'vuultimo':
+            #mips
+            if getBoxHostName() == 'vuultimo' or getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin STB-MIPS"')
+            #arm
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
                 os.system('echo "Skopiowano kernel.bin STB-ARM"')                
@@ -270,6 +263,11 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                     rc = os.system(cmd)
                     os.system('echo "EGAMI-installed OK. Installation continues, wait..."')
                                                                                                                                    
+    os.system('mkdir -p ' + media_target + '/media/hdd' + dev_null)
+    os.system('mkdir -p ' + media_target + '/media/usb' + dev_null)
+    os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
+    os.system('mkdir -p ' + media_target + '/var/lib/opkg/info/' + dev_null) 
+
     os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
     os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
     cmd = 'touch /tmp/.init_reboot'
@@ -618,7 +616,7 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
                     os.chdir('zero')
                     rootfname = 'root_cfe_auto.bin'
 
-            #Instalacja image  
+            #Instalacja image               
             if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
                 os.system('mv -f root_cfe_auto.* rootfs.bin') 
             cmd = 'chmod 777 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py'
