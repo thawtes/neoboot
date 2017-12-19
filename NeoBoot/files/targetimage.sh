@@ -168,6 +168,7 @@ else
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " VUPLUS z procesorem arm zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                                    echo "Typ procesora: " $CHIPSET " STB"
                                     sleep 5; /etc/init.d/reboot                              
                                 fi
                         else              
@@ -181,6 +182,7 @@ else
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " VU+ zmieniony."
                                     echo "Za chwile nastapi restart systemu..."
                                     echo "Used Kernel: " $TARGET  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                                    echo "Typ procesora: " $CHIPSET " STB"
                                     sleep 5; /etc/init.d/reboot
                         fi
                         
@@ -204,6 +206,7 @@ else
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                                    echo "Typ procesora: " $CHIPSET " STB"
                                     sleep 5; /etc/init.d/reboot 
                                 fi
                         else
@@ -220,6 +223,7 @@ else
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                                    echo "Typ procesora: " $CHIPSET " STB"
                                     sleep 5; /etc/init.d/reboot
                         fi
 	                                                    	     
@@ -230,15 +234,13 @@ else
                                     echo "NEOBOOT is booting image from " $TARGET
                                     sleep 5; /etc/init.d/reboot
                                 else                                    
-                                    echo "Przenoszenie pliku kernel do /tmp"
-                                    sleep 2
-                                    cp -r -f $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz /tmp/vmlinux.gz
-                                    echo "Kasowanie kernel z /dev/mtd2"
+
+                                    echo "Kasowanie kernel z /dev/mtd1"
                                     sleep 2
                                     flash_eraseall /dev/mtd1
-                                    echo "Wgrywanie kernel do /dev/mtd2"                                    
+                                    echo "Wgrywanie kernel do /dev/mtd1"                                    
                                     sleep 2
-		                    nandwrite -p /dev/mtd1 //tmp/vmlinux.gz  
+		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz  
 		                    rm -f /tmp/vmlinux.gz
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
@@ -246,20 +248,16 @@ else
                                     sleep 5; /etc/init.d/reboot 
                                 fi
                         else
-                                    echo "Przenoszenie pliku kernel do /tmp"
-                                    sleep 2
-                                    cp -r -f $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz /tmp/vmlinux.gz
                                     echo "Kasowanie kernel z /dev/mtd1"
                                     sleep 2
                                     flash_eraseall /dev/mtd1 
                                     echo "Wgrywanie kernel do /dev/mtd1"
                                     sleep 2                                                     
-		                    nandwrite -p /dev/mtd1 //tmp/vmlinux.gz  
+		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz 
 		                    rm -f /tmp/vmlinux.gz                                                                                                      
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
-                                    echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                                    echo "Typ procesora: " $CHIPSET " STB"   
+                                    echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel                                       
                                     sleep 5; /etc/init.d/reboot 
                         fi
 
