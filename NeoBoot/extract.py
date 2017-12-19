@@ -476,7 +476,7 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
                     os.chdir('zero')
                     rootfname = 'root_cfe_auto.bin'
                     
-            #Instalacja image                                     
+            #Instalacja image nandsim                                     
             rc = os.system('insmod /lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko cache_file=/media/neoboot/image_cache first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15;sleep 5' % getKernelVersion())
             cmd = 'dd if=%s of=/dev/mtdblock%s bs=2048' % (rootfname, mtd)
             rc = os.system(cmd)
@@ -494,26 +494,16 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
 
         #UBI_READER
         elif os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py'):
-            #zgemma
-            if os.path.exists('/media/neoboot/ImagesUpload/zgemma'):
-                os.chdir('zgemma')
-                brand = 'zgemma'
-                rootfname = 'rootfs.bin'
-                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/sh1'):
-                    os.chdir('sh1')
-                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/sh2'):
-                    os.chdir('sh2')
-                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h2'):
-                    os.chdir('h2')
-                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h3'):
-                    os.chdir('h3')
-                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h5'):
-                    os.chdir('h5')
-            #miraclebox
+            if os.path.exists('/media/neoboot/ImagesUpload/venton-hdx'):
+                os.chdir('venton-hdx')
+            if os.path.exists('/media/neoboot/ImagesUpload/hde'):
+                os.chdir('hde')
+            if os.path.exists('/media/neoboot/ImagesUpload/hdx'):
+                os.chdir('hdx')
+            if os.path.exists('/media/neoboot/ImagesUpload/hdp'):
+                os.chdir('hdp')
             if os.path.exists('/media/neoboot/ImagesUpload/miraclebox'):
                 os.chdir('miraclebox')
-                brand = 'miraclebox'
-                rootfname = 'rootfs.bin'
                 if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/mini'):
                     os.chdir('mini')
                 if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/miniplus'):
@@ -526,98 +516,133 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
                     os.chdir('ultra')
                 if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/micro'):
                     os.chdir('micro')
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/microv2'):
+                    os.chdir('microv2')
                 if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/twinplus'):
                     os.chdir('twinplus')
-            #atemio
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/mini4k'):
+                    os.chdir('mini4k')
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/ultra4k'):
+                    os.chdir('ultra4k')
             if os.path.exists('/media/neoboot/ImagesUpload/atemio'):
-                    os.chdir('atemio')
-                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/5x00'):
-                        os.chdir('5x00')
-                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6000'):
-                        os.chdir('6000')
-                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6100'):
-                        os.chdir('6100')
-                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6200'):
-                        os.chdir('6200')
-                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/8x00'):
-                        os.chdir('8x00')
-                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/8x00'):
-                        os.chdir('8x00')
-            #Xtrend
-            if os.path.exists('/media/neoboot/ImagesUpload/et10000'):
-                os.chdir('et10000')
-                brand = 'et10000'
-            if os.path.exists('/media/neoboot/ImagesUpload/et9x00'):
-                os.chdir('et9x00')
-                brand = 'et9x00'
-            if os.path.exists('/media/neoboot/ImagesUpload/et8500'):
-                os.chdir('et8500')
-                brand = 'et8500'
-            if os.path.exists('/media/neoboot/ImagesUpload/et8000'):
-                os.chdir('et8000')
-                brand = 'et8000'
-            if os.path.exists('/media/neoboot/ImagesUpload/et7x00'):
-                os.chdir('et7x00')
-                brand = 'et7x00'
-            if os.path.exists('/media/neoboot/ImagesUpload/et6x00'):
-                os.chdir('et6x00')
-                brand = 'et6x00'
-            if os.path.exists('/media/neoboot/ImagesUpload/et5x00'):
-                os.chdir('et5x00')
-                brand = 'et5x00'
-            if os.path.exists('/media/neoboot/ImagesUpload/et4x00'):
-                os.chdir('et4x00')
-                brand = 'et4x00'
-            #formuler
-            if os.path.exists('/media/neoboot/ImagesUpload/formuler1'):
-                os.chdir('formuler1')
-                brand = 'formuler1'
-            if os.path.exists('/media/neoboot/ImagesUpload/formuler2'):
-                os.chdir('formuler2')
-                brand = 'formuler2'
-            if os.path.exists('/media/neoboot/ImagesUpload/formuler3'):
-                os.chdir('formuler3')
-                brand = 'formuler3'
-            if os.path.exists('/media/neoboot/ImagesUpload/formuler4turbo'):
-                os.chdir('formuler4turbo')
-                brand = 'formuler4turbo'
-            #inne
-            if os.path.exists('/media/neoboot/ImagesUpload/sf3038'):
-                os.chdir('sf3038')
+                os.chdir('atemio')
+                if os.path.exists('/media/neoboot/ImagesUpload/atemio/5x00'):
+                    os.chdir('5x00')
+                if os.path.exists('/media/neoboot/ImagesUpload/atemio/6000'):
+                    os.chdir('6000')
+                if os.path.exists('/media/neoboot/ImagesUpload/atemio/6100'):
+                    os.chdir('6100')
+                if os.path.exists('/media/neoboot/ImagesUpload/atemio/6200'):
+                    os.chdir('6200')
+                if os.path.exists('/media/neoboot/ImagesUpload/atemio/8x00'):
+                    os.chdir('8x00')
             if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx'):
                 os.chdir('xpeedlx')
-                brand = 'xpeedlx'
             if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx3'):
                 os.chdir('xpeedlx3')
-                brand = 'xpeedlx3'
-            #vuplus
+            if os.path.exists('/media/neoboot/ImagesUpload/bwidowx'):
+                os.chdir('bwidowx')
+            if os.path.exists('/media/neoboot/ImagesUpload/bwidowx2'):
+                os.chdir('bwidowx2')
+            if os.path.exists('/media/neoboot/ImagesUpload/beyonwiz'):
+                os.chdir('beyonwiz')
+                if os.path.exists('/media/neoboot/ImagesUpload/beyonwiz/hdx'):
+                    os.chdir('hdx')
+                if os.path.exists('/media/neoboot/ImagesUpload/beyonwiz/hdp'):
+                    os.chdir('hdp')
+                if os.path.exists('/media/neoboot/ImagesUpload/beyonwiz/hde2'):
+                    os.chdir('hde2')
             if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
                 os.chdir('vuplus')
-                brand = 'vuplus'
-                rootfname = 'root_cfe_auto.jffs2'
-                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/uno'):
-                    os.chdir('uno')
                 if os.path.exists('/media/neoboot/ImagesUpload/vuplus/duo'):
                     os.chdir('duo')
-                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/ultimo'):
-                    os.chdir('ultimo')
+                    os.system('mv root_cfe_auto.jffs2 rootfs.bin')
                 if os.path.exists('/media/neoboot/ImagesUpload/vuplus/solo'):
                     os.chdir('solo')
-                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/duo2'):
-                    os.chdir('duo2')
-                    rootfname = 'root_cfe_auto.bin'
-                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/solo2'):
-                    os.chdir('solo2')
-                    rootfname = 'root_cfe_auto.bin'
+                    os.system('mv -f root_cfe_auto.jffs2 rootfs.bin')
                 if os.path.exists('/media/neoboot/ImagesUpload/vuplus/solose'):
                     os.chdir('solose')
-                    rootfname = 'root_cfe_auto.bin'
+                    os.system('mv -f root_cfe_auto.jffs2 rootfs.bin')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/ultimo'):
+                    os.chdir('ultimo')
+                    os.system('mv -f root_cfe_auto.jffs2 rootfs.bin')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/uno'):
+                    os.chdir('uno')
+                    os.system('mv -f root_cfe_auto.jffs2 rootfs.bin')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/solo2'):
+                    os.chdir('solo2')
+                    os.system('mv -f root_cfe_auto.bin rootfs.bin')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/duo2'):
+                    os.chdir('duo2')
+                    os.system('mv -f root_cfe_auto.bin rootfs.bin')
                 if os.path.exists('/media/neoboot/ImagesUpload/vuplus/zero'):
                     os.chdir('zero')
-                    rootfname = 'root_cfe_auto.bin'
+                    os.system('mv -f root_cfe_auto.bin rootfs.bin')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/solo4k'):
+                    os.chdir('solo4k')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/uno4k'):
+                    os.chdir('uno4k')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/ultimo4k'):
+                    os.chdir('ultimo4k')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/zero4k'):
+                    os.chdir('zero4k')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/uno4kse'):
+                    os.chdir('uno4kse')
+            if os.path.exists('/media/neoboot/ImagesUpload/et10000'):
+                os.chdir('et10000')
+            if os.path.exists('/media/neoboot/ImagesUpload/et9x00'):
+                os.chdir('et9x00')
+            if os.path.exists('/media/neoboot/ImagesUpload/et8500'):
+                os.chdir('et8500')
+            if os.path.exists('/media/neoboot/ImagesUpload/et8000'):
+                os.chdir('et8000')
+            if os.path.exists('/media/neoboot/ImagesUpload/et7x00'):
+                os.chdir('et7x00')
+            if os.path.exists('/media/neoboot/ImagesUpload/et6x00'):
+                os.chdir('et6x00')
+            if os.path.exists('/media/neoboot/ImagesUpload/et5x00'):
+                os.chdir('et5x00')
+            if os.path.exists('/media/neoboot/ImagesUpload/et4x00'):
+                os.chdir('et4x00')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf8'):
+                os.chdir('sf')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf98'):
+                os.chdir('sf98')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf108'):
+                os.chdir('sf108')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf128'):
+                os.chdir('sf128')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf138'):
+                os.chdir('sf138')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf208'):
+                os.chdir('sf208')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf228'):
+                os.chdir('sf228')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf3038'):
+                os.chdir('sf3038')
+            if os.path.exists('/media/neoboot/ImagesUpload/sf4008'):
+                os.chdir('sf4008')
+            if os.path.exists('/media/neoboot/ImagesUpload/gigablue'):
+                os.chdir('gigablue')
+                if os.path.exists('/media/neoboot/ImagesUpload/gigablue/quad'):
+                    os.chdir('quad')
+            if os.path.exists('/media/neoboot/ImagesUpload/hd2400'):
+                os.chdir('hd2400')
+            if os.path.exists('/media/neoboot/ImagesUpload/hd51'):
+                os.chdir('hd51')
+            if os.path.exists('/media/neoboot/ImagesUpload/zgemma'):
+                os.chdir('zgemma')
+                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h3'):
+                    os.chdir('h3')
+                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h5'):
+                    os.chdir('h5')
+                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h7'):
+                    os.chdir('h7')
+            if os.path.exists('/media/neoboot/ImagesUpload/dm900'):
+                os.chdir('dm900')
 
-            #Instalacja image               
-            if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
+            #Instalacja image unb_reader              
+            if os.path.exists('/media/neoboot/ImagesUpload/vuplus/root_cfe_auto.*'):
                 os.system('mv -f root_cfe_auto.* rootfs.bin') 
             cmd = 'chmod 777 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py'
             rc = os.system(cmd)
