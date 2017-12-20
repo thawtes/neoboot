@@ -1209,7 +1209,7 @@ class UruchamianieImage(Screen):
                         self.close() 
 
             #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
-            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':
+            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362':
                         if  getImageNeoBoot() == 'Flash':                    
                             if fileExists('/.multinfo'):   
                                 os.system('/etc/init.d/reboot')             
@@ -1217,6 +1217,18 @@ class UruchamianieImage(Screen):
                                 cmd = 'ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'
                         elif getImageNeoBoot() != 'Flash':                     
                                 cmd = 'ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'                                                          
+                        self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
+                        self.close()
+			
+            #MiracleBox - MIPS    
+            elif getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':
+                        if  getImageNeoBoot() == 'Flash':                    
+                            if fileExists('/.multinfo'):   
+                                os.system('/etc/init.d/reboot')             
+                            elif not fileExists('/.multinfo'): 
+                                cmd = 'ln -sfn /sbin/neoinitmipsvu /sbin/init; /etc/init.d/reboot'
+                        elif  getImageNeoBoot() != 'Flash':                     
+                                cmd = 'ln -sfn /sbin/neoinitmipsvu /sbin/init; /etc/init.d/reboot'                                                          
                         self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
                         self.close() 
 
