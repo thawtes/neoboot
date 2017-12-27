@@ -843,7 +843,7 @@ class NeoBootImageChoose(Screen):
                 os.system('rm /tmp/*.zip')
             os.system('cd /tmp; curl -O --ftp-ssl https://codeload.github.com/gutosie/neoboot/zip/master; mv /tmp/master /tmp/neoboot.zip; cd /')
             if not fileExists('/tmp/neoboot.zip'):
-                    os.system('cd /tmp;fullwget --no-check-certificate https://codeload.github.com/gutosie/neoboot/zip/master; mv /tmp/master /tmp/neoboot.zip; sleep 3;cd /')
+                    os.system('cd /tmp;fullwget --no-check-certificate https://codeload.github.com/gutosie/neoboot/zip/master; mv /tmp/master /tmp/neoboot.zip; sleep 3;cd ')
                     if not fileExists('/tmp/neoboot.zip'):
                         self.session.open(MessageBox, _('Unfortunately, at the moment not found an update, try again later.'), MessageBox.TYPE_INFO, 8)
             else:
@@ -853,12 +853,13 @@ class NeoBootImageChoose(Screen):
                 os.system('cd /tmp/; unzip -qn ./neoboot.zip; rm -f ./neoboot.zip; cp -rf ./neoboot-master/NeoBoot /usr/lib/enigma2/python/Plugins/Extensions; rm -rf /tmp/neoboot-master;  rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt; cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoini*;  chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; cd')                    
                 if getCPUtype() == 'MIPS':
                     os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -rf ./bin/neoinitmips /sbin; cp -rf ./bin/neoinitmipsvu /sbin; chmod 755 /sbin/neoinitmips; chmod 755 /sbin/neoinitmipsvu')                    
-                    restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
-                    restartbox.setTitle(_('Restart GUI now ?')
+                    #restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
+                    #restartbox.setTitle(_('Restart GUI now ?')
                 elif getCPUtype() == 'ARMv7':
-                    os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 755 ./files/neobootup.sh; chmod 0755 ./bin/rebootbot; cp -rf ./bin/neoinitarm /sbin; cp -rf ./bin/neoinitarmvu /sbin; chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu')                                                                
-                    restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
-                    restartbox.setTitle(_('Restart GUI now ?'))
+                    os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 755 ./files/neobootup.sh; chmod 0755 ./bin/rebootbot; cp -rf ./bin/neoinitarm /sbin; cp -rf ./bin/neoinitarmvu /sbin; chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu; cd')                                                                
+
+                restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
+                restartbox.setTitle(_('Restart GUI now ?'))
 
 
         else:
