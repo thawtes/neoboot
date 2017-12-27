@@ -16,8 +16,8 @@ def getCPUSoC():
         with open('/proc/stb/info/chipset', 'r') as f:
             chipset = f.readline().strip()
             f.close()     
-        if chipset == '7405(with 3D)':
-            chipset == '7405'
+        if chipset = '7405(with 3D)':
+            chipset = '7405'
                                             
     return chipset
       
@@ -78,6 +78,8 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         os.system('touch  /media/neoboot/ImageBoot/.without_copying; sleep 5')              
 
     if not os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
+        cmd = 'cp /etc/hostname %s/ImageBoot/%s/etc/hostname > /dev/null 2>&1' % (media, target)
+        rc = os.system(cmd)
         if CopyKernel == 'True':        
             #mips
             if getBoxHostName() == 'vuultimo' or getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
