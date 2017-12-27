@@ -407,7 +407,7 @@ class DevicesConf(Screen, ConfigListScreen):
             line = self.device_uuid + '\t' + self.mountp + '\t' + self.device_type + '\tdefaults\t0 0\n'
             out.write(line)
             out.close()
-            system('touch /tmp/mount.tmp')
+            system('cp -r -f /etc/fstab /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files')
             self.device_uuid2 = result.split('UUID=')[1].split(' ')[0].replace('"', '')
             if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager2'):
                 out1 = open('/etc/devicemanager.cfg', 'a')

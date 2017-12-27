@@ -235,10 +235,10 @@ else
                                     sleep 5; /etc/init.d/reboot
                                 else                                    
 
-                                    echo "Kasowanie kernel z /dev/mtd1"
+                                    echo "Kasowanie kernel z /dev/mtd2"
                                     sleep 2
                                     flash_eraseall /dev/mtd1
-                                    echo "Wgrywanie kernel do /dev/mtd1"                                    
+                                    echo "Wgrywanie kernel do /dev/mtd2"                                    
                                     sleep 2
 		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz  
 		                    rm -f /tmp/vmlinux.gz
