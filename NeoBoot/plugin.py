@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-  
-                                
+                               
 from __init__ import _
 from Plugins.Extensions.NeoBoot.files import Harddisk                                                                                                                                                     
 from Plugins.Extensions.NeoBoot.files.stbbranding import getKernelVersionString, getKernelImageVersion, getCPUtype, getCPUSoC,  getImageNeoBoot, getBoxVuModel, getBoxHostName, getTunerModel
@@ -295,12 +295,9 @@ class NeoBootInstallation(Screen):
          'green': self.install,
          'yellow': self.datadrive,
          'blue': self.devices, 
-         'back': self.close_exit})      
+         'back': self.close})             
         self.updateList()
-
-    def close_exit(self):  
-        os.system('sync;killall -9 enigma2')
-
+                
     def Instrukcja(self):
         self.session.open(MyHelp)
 
@@ -781,15 +778,11 @@ class NeoBootImageChoose(Screen):
                 out = open('/media/neoboot/ImageBoot/.neonextboot', 'w')
                 out.write(imagefile)
                 out.close()
-            self.close_exit2()
         else:
             system('touch /tmp/.init_reboot')
             out = open('/media/neoboot/ImageBoot/.neonextboot', 'w')
             out.write('Flash')
             out.close()
-            self.close_exit2()
-
-    def close_exit2(self):
         self.close()
                         
     def ReinstallKernel(self):
@@ -847,10 +840,14 @@ class NeoBootImageChoose(Screen):
                     if not fileExists('/tmp/neoboot.zip'):
                         self.session.open(MessageBox, _('Unfortunately, at the moment not found an update, try again later.'), MessageBox.TYPE_INFO, 8)
             else:
-                    os.system('cd /tmp/; unzip -qn ./neoboot.zip; rm -f ./neoboot.zip; cp -rf -p ./neoboot-master/NeoBoot /usr/lib/enigma2/python/Plugins/Extensions; rm -rf /tmp/neoboot-master;  rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt; cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoinit*;  chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; chmod 755 ./files/neobootup.sh; chmod 0755 ./bin/rebootbot; cp -rf ./bin/neoinit* /sbin; chmod 755 /sbin/neoinit*; cd;')
-                    restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
-                    restartbox.setTitle(_('Restart GUI now ?'))
+                os.system('cd /tmp/; unzip -qn ./neoboot.zip; rm -f ./neoboot.zip; cp -rf ./neoboot-master/NeoBoot /usr/lib/enigma2/python/Plugins/Extensions; rm -rf /tmp/neoboot-master;  rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt; cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoini*;  chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; cd')                    
+                if getCPUtype() == 'MIPS':
+                    os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -rf ./bin/neoinitmips /sbin; cp -rf ./bin/neoinitmipsvu /sbin; chmod 755 /sbin/neoinitmips; chmod 755 /sbin/neoinitmipsvu')                    
+                elif getCPUtype() == 'ARMv7':
+                    os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 755 ./files/neobootup.sh; chmod 0755 ./bin/rebootbot; cp -rf ./bin/neoinitarm /sbin; cp -rf ./bin/neoinitarmvu /sbin; chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu; cd')                                                                
 
+                restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
+                restartbox.setTitle(_('Restart GUI now ?'))
         else:
             os.system('rm -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt')
             self.session.open(MessageBox, _('The update has been canceled.'), MessageBox.TYPE_INFO, 8)

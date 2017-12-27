@@ -16,8 +16,8 @@ def getCPUSoC():
         with open('/proc/stb/info/chipset', 'r') as f:
             chipset = f.readline().strip()
             f.close()     
-        if chipset = '7405(with 3D)':
-            chipset = '7405'
+        if chipset == '7405(with 3D)':
+            chipset == '7405'
                                             
     return chipset
       
