@@ -1266,12 +1266,12 @@ class UruchamianieImage(Screen):
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
                                     cmd = '/etc/init.d/reboot'                                                                 
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    os.system('ln -sf "neoinitmips" "/sbin/init"')
+                                    os.system('ln -sf "neoinitmipsvu" "/sbin/init"')
                                                
                                     cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i'                  
                             elif fileExists('/.multinfo'):    #rozruch innego image z uruchomionego oprogramowania w neoboocie
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    cmd = 'cp -Rf /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitmips" "/media/mmc/sbin/init"; /etc/init.d/reboot' % (getBoxVuModel())
+                                    cmd = 'cp -Rf /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf "neoinitmipsvu" "/media/mmc/sbin/init"; /etc/init.d/reboot' % (getBoxVuModel())
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
                                     cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i'
 
