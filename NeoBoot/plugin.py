@@ -44,7 +44,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.40'
+UPDATEVERSION = '6.040'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1216,10 +1216,10 @@ class UruchamianieImage(Screen):
                             if fileExists('/.multinfo'):   
                                 os.system('/etc/init.d/reboot')             
                             elif not fileExists('/.multinfo'): 
-                                cmd = 'ln -sf "neoinitmips" "/sbin/init"; /etc/init.d/reboot'
+                                cmd = 'ln -sf "neoinitmipsvu" "/sbin/init"; /etc/init.d/reboot'
                                                                        
                         elif  getImageNeoBoot() != 'Flash':                     
-                                cmd = 'ln -sf "neoinitmips" "/sbin/init"; /etc/init.d/reboot'                                                                                                
+                                cmd = 'ln -sf "neoinitmipsvu" "/sbin/init"; /etc/init.d/reboot'                                                                                                
                         self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
                         self.close() 
             #VUPLUS ARM                             
