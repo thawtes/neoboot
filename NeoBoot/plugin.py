@@ -44,7 +44,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.42'
+UPDATEVERSION = '6.43'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -547,9 +547,9 @@ class NeoBootInstallation(Screen):
                     #VUPLUS ARM 
                     if getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
-                        os.system('cp -f ./bin/neoinitarm /sbin/neoinitarm')
-                        os.system('cp -f ./bin/neoinitarmvu /sbin/neoinitarmvu; cd')  
-                        os.system('chmod 0755 /sbin/neoinitarm; chmod 0755 /sbin/neoinitarmvu')
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarmvu /sbin/neoinitarmvu; cd')  
+                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu')
                         os.system('opkg download kernel-image')
                         os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())                    
                         os.system('dd if=/dev/mmcblk0p1 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel())
@@ -573,10 +573,9 @@ class NeoBootInstallation(Screen):
                         if not fileExists('/usr/lib/enigma2/python/Tools/DreamboxInfoHandler.pyo'):
                             os.system('ln -sfn /usr/lib/enigma2/python/Components/PackageInfo.pyo /usr/lib/enigma2/python/Tools/DreamboxInfoHandler.pyo')                            
 
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/') 
-                        os.system('cp -rf ./bin/neoinitmips /sbin; cp -rf ./bin/neoinitmipsvu /sbin') 
-                        os.system('chmod 0755 ./bin/nfidump; rm ./bin/neoinitar*; cd')
-                        os.system('chmod 0755 /sbin/neoinitmips; chmod 0755 /sbin/neoinitmipsvu')
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitmips /sbin/neoinitmips; cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitmipsvu /sbin/neoinitmipsvu') 
+                        os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nfidump; chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump; rm -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; cd')
+                        os.system('chmod 755 /sbin/neoinitmips; chmod 0755 /sbin/neoinitmipsvu')
    
                         if getBoxHostName() == 'bm750' or getBoxHostName() == 'duo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo':
                              os.system('cd /media/neoboot/ImagesUpload/.kernel/')
@@ -711,15 +710,15 @@ class NeoBootImageChoose(Screen):
         if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
                 if getCPUSoC() == 'bcm7251' or getBoxHostName == 'sf4008':   
-                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')  
+                    os.system('mkdir -p /media/neoboot/mmc; mount /dev/mmcblk0p4 /media/neoboot/mmc')  
 
             elif os.path.exists('/proc/stb/info/model'):
                 if getTunerModel() == 'dm900' or getCPUSoC() == 'BCM97252SSFF':   
-                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p2 /media/mmc')
+                    os.system('mkdir -p /media/neoboot/mmc; mount /dev/mmcblk0p2 /media/neoboot/mmc')
                     
             elif os.path.exists('/proc/stb/info/vumodel'):
                 if  getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'uno4kse' or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k' or  getBoxVuModel() == 'zero4k':
-                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')
+                    os.system('mkdir -p /media/neoboot/mmc; mount /dev/mmcblk0p4 /media/neoboot/mmc')
             else:
                 pass
 
@@ -1021,9 +1020,9 @@ class NeoBootImageChoose(Screen):
                     except:
                         False
             if fileExists('/.multinfo'):
-                if fileExists('/media/mmc/etc/issue.net'):
+                if fileExists('/media/neoboot/mmc/etc/issue.net'):
                     try:
-                        obraz = open('/media/mmc/etc/issue.net', 'r').readlines()
+                        obraz = open('/media/neoboot/mmc/etc/issue.net', 'r').readlines()
                         imagetype = obraz[0][:-3]
                         image = imagetype
                         open('/media/neoboot/ImageBoot/.Flash', 'w').write(image)
@@ -1204,30 +1203,30 @@ class UruchamianieImage(Screen):
         self['list'].list = self.list
 
     def KeyOk(self):                              
-        system('sync; chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh') 
-        if fileExists('/.multinfo'):
-            if fileExists('/checkpoint'):
-                system('rm /checkpoint')              
+        system('sync; echo 3 > /proc/sys/vm/drop_caches; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh')               
         self.sel = self['list'].getCurrent()
         if self.sel:
             self.sel = self.sel[2]
         if self.sel == 0:          
-            if fileExists('/media/mmc/etc/init.d/neobootmount.sh'):
-                os.system('rm -f /media/mmc/etc/init.d/neobootmount.sh;')
+            if fileExists('/media/neoboot/mmc/etc/init.d/neobootmount.sh'):
+                os.system('rm -f /media/neoboot/mmc/etc/init.d/neobootmount.sh;')
 
             #Octagon SF4008
             if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
                         if getImageNeoBoot() == 'Flash':                    
                             if fileExists('/.multinfo'):   
-                                os.system('cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init; /etc/init.d/reboot')                 
+                                os.system('cd /media/neoboot/mmc; ln -sfn /sbin/init.sysvinit /media/neoboot/mmc/sbin/init; /etc/init.d/reboot')                 
                             elif not fileExists('/.multinfo'): 
-                                cmd = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
+                                os.system('ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot')
                                 
                         elif getImageNeoBoot() != 'Flash':                     
-                                    cmd = 'ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'                                                          
-                        self.session.open(Console, _('NeoBoot SF4008....'), [cmd])
-                        self.close() 
+                                    os.system('ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot')                                                          
 
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wyglada na to ze model stbnie jest wpierany przez neoboota !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+                            
             #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
             elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':
                         if getImageNeoBoot() == 'Flash':                    
@@ -1238,82 +1237,97 @@ class UruchamianieImage(Screen):
                                                                        
                         elif getImageNeoBoot() != 'Flash':                     
                                 os.system('ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot')                                                                                                
-                        self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
-                        self.close() 
+
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wyglada na to ze model stbnie jest wpierany przez neoboota !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
 
             #VUPLUS ARM                             
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
                         if getImageNeoBoot() == 'Flash':                                               
                             if fileExists('/.multinfo'):
-                                os.system('cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init')
-                                cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                  
+                                cmd='cd /media/neoboot/mmc; ln -sfn /sbin/init.sysvinit /media/neoboot/mmc/sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                  
                             elif not fileExists('/.multinfo'):   
-                                os.system('ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot')                     
-                                        
+                                cmd='ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot'                                                            
+                                system(cmd)
+
                         elif getImageNeoBoot() != 'Flash':                                                 
                             if not fileExists('/.multinfo'):  
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):   
-                                    os.system('ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot')
+                                    cmd='ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'
                                            
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):     
-                                    os.system('ln -sfn /sbin/neoinitarmvu /sbin/init')                                                  
-                                    cmd ='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                    
+                                    cmd='ln -sfn /sbin/neoinitarmvu /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                   
 
                             elif fileExists('/.multinfo'):    
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    #cmd = 'dd if=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin of=/dev/mmcblk0p1; cd /media/mmc;ln -sfn /sbin/neoinitarm /media/mmc/sbin/init' %  getBoxVuModel() 
-                                    cmd = 'cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk /tmp/zImage.ipk; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk; cd /media/mmc;ln -sf /sbin/neoinitarm /media/mmc/sbin/init; /etc/init.d/reboot' %  getBoxVuModel() 
+                                    cmd='opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; cd /media/neoboot/mmc; ln -sf /sbin/neoinitarm /media/neoboot/mmc/sbin/init; /etc/init.d/reboot' %  getBoxVuModel()
 
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    os.system('cd /media/mmc; ln -sfn /sbin/neoinitarmvu /media/mmc/sbin/init')
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                                                                                       
+                                    cmd='cd /media/neoboot/mmc; ln -sfn /sbin/neoinitarmvu /media/neoboot/mmc/sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                                                                                      
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wyglada na to ze model stbnie jest wpierany przez neoboota !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
 
-                        self.session.open(Console, _('NeoBoot ARM VU+....'), [cmd])
-                        self.close()                                                                        
-
-            #VUPLUS MIPS  mtd2            
-            elif getCPUSoC() == '7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424'  or getCPUSoC() == '7241' or getCPUSoC() == '7362' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vusolose'  or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vuzero':
-                        if getImageNeoBoot() == 'Flash':                    
-                            if fileExists('/.multinfo'):   #start image flasz z uruchomionego oprogramowania w neoboocie
-                                cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                  
-                            elif not fileExists('/.multinfo'):   #start image flasz z flasz
-                                os.system('ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot')
-                                      
-                        elif getImageNeoBoot() != 'Flash':   #rozruch innego image z flasza                    
-                            if not fileExists('/.multinfo'):                        
-                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    os.system('ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot')                                                                 
-                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    os.system('ln -sfn /sbin/neoinitmipsvu /sbin/init')                                               
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'  
-                                                    
-                            elif fileExists('/.multinfo'):    #rozruch innego image z uruchomionego oprogramowania w neoboocie
-                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    os.system('opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' % getBoxVuModel())   
-                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'
+                        self.session.open(Console, _('NeoBoot Arm....'), [cmd])
+                        self.close() 
 
             #VUPLUS MIPS mtd1              
             elif getCPUSoC() == '7335'  or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'bm750' or getBoxHostName() == 'duo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuduo':                              
                         if getImageNeoBoot() == 'Flash':                    
-                            if fileExists('/.multinfo'):   #start image flasz z uruchomionego oprogramowania w neoboocie
-                                cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                 
-                            elif not fileExists('/.multinfo'):   #start image flasz z flasz
-                                os.system('ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot')
+                            if fileExists('/.multinfo'):   
+                                cmd1='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                 
+                            elif not fileExists('/.multinfo'):   
+                                cmd1='ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot'
                                         
-                        elif getImageNeoBoot() != 'Flash':   #rozruch innego image z flasza                    
+                        elif getImageNeoBoot() != 'Flash':                    
                             if not fileExists('/.multinfo'):                        
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    os.system('ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot')                                                                 
+                                    cmd1='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'                                                                 
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    os.system('ln -sfn /sbin/neoinitmipsvu /sbin/init')
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                  
-                            elif fileExists('/.multinfo'):    #rozruch innego image z uruchomionego oprogramowania w neoboocie
+                                    cmd1='ln -sfn /sbin/neoinitmipsvu /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                  
+                            elif fileExists('/.multinfo'):   
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    os.system('opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' % getBoxVuModel())
+                                    cmd1='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' % getBoxVuModel()
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    cmd = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'
-                        self.session.open(Console, _('NeoBoot MIPS....'), [cmd])
+                                    cmd1='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wyglada na to ze model stbnie jest wpierany przez neoboota !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
+                        self.session.open(Console, _('NeoBoot Arm....'), [cmd1])
+                        self.close()
+
+            #VUPLUS MIPS  mtd2            
+            elif getCPUSoC() == '7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424'  or getCPUSoC() == '7241' or getCPUSoC() == '7362' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vusolose'  or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vuzero':
+                        if getImageNeoBoot() == 'Flash':                    
+                            if fileExists('/.multinfo'):  
+                                cmd2='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                  
+                            elif not fileExists('/.multinfo'):  
+                                cmd2='ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot'
+                                      
+                        elif getImageNeoBoot() != 'Flash':                    
+                            if not fileExists('/.multinfo'):                        
+                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd2='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'                                                                                                     
+                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):                                              
+                                    cmd2='ln -sfn /sbin/neoinitmipsvu /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'               
+
+                            elif fileExists('/.multinfo'):    
+                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd2='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' % getBoxVuModel()   
+                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd2='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'
+
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wyglada na to ze model stbnie jest wpierany przez neoboota !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
+                        self.session.open(Console, _('NeoBoot Arm....'), [cmd2])
                         self.close()
             else:
                 os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
