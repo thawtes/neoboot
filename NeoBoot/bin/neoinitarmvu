@@ -1,5 +1,6 @@
 #!/bin/sh
 #script mod by gutosie
+#neo init arm 
 IMAGE=/media/neoboot/ImageBoot
 IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot          
 NEO=/media/neoboot
@@ -20,14 +21,14 @@ else
 		/bin/mount -t proc proc /proc > /dev/null 2>&1
 		/bin/mount -t sysfs sysfs /sys > /dev/null 2>&1
 		/sbin/depmod -Ae > /dev/null 2>&1                
-	fi 
-	sleep 2
+	fi 	
+	sleep 2	
 	mnttest="nouuid"
 	if [ -e $NEOBOOT/bin/install  ]; then
         	orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
 		selectinstall=`cat $NEOBOOT/bin/install`
 		for item in $orgimag1; do
-			selectmnt=`blkid | sed '/$selectinstall/!d' | cut -d":" -f1`
+			selectmnt=`blkid | sed "/$selectinstall/!d" | cut -d":" -f1`
 			if [ $selectmnt == $item ]; then
 				echo "selectmnt=" $selectmnt
                         	mnttest="uuid"
@@ -45,7 +46,7 @@ else
 	if [ ! -e $NEO  ]; then
 		mkdir $NEO > /dev/null 2>&1
 	fi        
-	if [ $mnttest == "nouuid" ] ; then
+	if [ $mnttest="nouuid" ] ; then
 	        echo "NeoBoot mount by Device"
 		DEVICES1=`find /dev/sd??`
 		for DEVICE in $DEVICES1;
@@ -63,7 +64,7 @@ else
 				break;
 			fi 
 		done
-	elif [ $mnttest == "uuid" ]; then	
+	elif [ $mnttest="uuid" ]; then	
 		echo "NEOBOOT mount by UUID"
 	fi
 	if [ ! -e $IMAGEBOOT ]; then
@@ -71,7 +72,7 @@ else
                   echo "Flash "  > $IMAGEBOOT
                   echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
 		  reboot -f
-	fi    
+	fi   
 	TARGET=Flash
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
@@ -82,13 +83,12 @@ else
 		/bin/umount /media/usb > /dev/null 2>&1
 		/bin/umount /media/hdd > /dev/null 2>&1
 	else
-		echo "NEOBOOT is booting" $TARGET " from " $DEVICE
                 echo 3 > /proc/sys/vm/drop_caches
-		if [ -d $NEO/ImageBoot/$TARGET ]; then
+		if [ -d $NEO/ImageBoot/$TARGET ]; then			
 			if [ -f $NEO/ImageBoot/$TARGET/etc/init.d/udev ]; then
 				sed -ie s!"\$4"!"\$3"!g $NEO/ImageBoot/$TARGET/etc/init.d/udev
 			fi
-                	sleep 1		
+			sleep 1
 			/bin/mount -o bind /dev $NEO/ImageBoot/$TARGET/dev
 			/bin/mount -o bind /proc $NEO/ImageBoot/$TARGET/proc
 			/bin/mount -o bind /sys $NEO/ImageBoot/$TARGET/sys
@@ -111,7 +111,7 @@ else
                                fi    
                            done	
                         chmod 755 $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh   
-
+                        #/bin/mount /dev/sda1 /media/neoboot/ImageBoot/$TARGET/media/hdd                                
 			if [ -f $IMAGE/$TARGET/sbin/init.sysvinit ]; then                                    
                                     exec /usr/sbin/chroot $IMAGE/$TARGET /sbin/init.sysvinit 
 			elif [ -f $IMAGE/$TARGET/sbin/init ]; then                                    
@@ -122,7 +122,8 @@ else
                                     echo "Nie odnaleziono poprawnie rozpakowanego image "$TARGET" z partycji " $DEVICE
                                     echo " Sprawdz poprawnosc rozpakowanych katalogow w wybranym image.              "
                                     echo "                      Powrot do image Flash...                             "
-                                    rm -f $IMAGEBOOT; touch $IMAGEBOOT; echo "Flash "  >> $IMAGEBOOT 
+                                    rm -f $IMAGEBOOT; touch $IMAGEBOOT; echo "Flash "  > $IMAGEBOOT 
+                                    /usr/bin/showiframe $NEOBOOT/error.mvi > /dev/null 2>&1
                                     sync; sleep 10; exec /sbin/init.sysvinit $1
 			fi
 			exit 0

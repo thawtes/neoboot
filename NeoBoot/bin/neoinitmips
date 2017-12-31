@@ -199,6 +199,7 @@ else
                 echo "----------------------------------"
 	else
 		        echo " " 
+                        echo 3 > /proc/sys/vm/drop_caches
 		        echo "NEOBOOT is booting image" $TARGET " from " $DEVICE
 		        echo " " 
 		        if [ -d $IMAGE/$TARGET ]; then
