@@ -710,15 +710,15 @@ class NeoBootImageChoose(Screen):
         if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
                 if getCPUSoC() == 'bcm7251' or getBoxHostName == 'sf4008':   
-                    os.system('mkdir -p /media/neoboot/mmc; mount /dev/mmcblk0p4 /media/neoboot/mmc')  
+                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')  
 
             elif os.path.exists('/proc/stb/info/model'):
                 if getTunerModel() == 'dm900' or getCPUSoC() == 'BCM97252SSFF':   
-                    os.system('mkdir -p /media/neoboot/mmc; mount /dev/mmcblk0p2 /media/neoboot/mmc')
+                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p2 /media/mmc')
                     
             elif os.path.exists('/proc/stb/info/vumodel'):
                 if  getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'uno4kse' or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k' or  getBoxVuModel() == 'zero4k':
-                    os.system('mkdir -p /media/neoboot/mmc; mount /dev/mmcblk0p4 /media/neoboot/mmc')
+                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')
             else:
                 pass
 
@@ -1020,9 +1020,9 @@ class NeoBootImageChoose(Screen):
                     except:
                         False
             if fileExists('/.multinfo'):
-                if fileExists('/media/neoboot/mmc/etc/issue.net'):
+                if fileExists('/media/mmc/etc/issue.net'):
                     try:
-                        obraz = open('/media/neoboot/mmc/etc/issue.net', 'r').readlines()
+                        obraz = open('/media/mmc/etc/issue.net', 'r').readlines()
                         imagetype = obraz[0][:-3]
                         image = imagetype
                         open('/media/neoboot/ImageBoot/.Flash', 'w').write(image)
@@ -1208,14 +1208,14 @@ class UruchamianieImage(Screen):
         if self.sel:
             self.sel = self.sel[2]
         if self.sel == 0:          
-            if fileExists('/media/neoboot/mmc/etc/init.d/neobootmount.sh'):
-                os.system('rm -f /media/neoboot/mmc/etc/init.d/neobootmount.sh;')
+            if fileExists('/media/mmc/etc/init.d/neobootmount.sh'):
+                os.system('rm -f /media/mmc/etc/init.d/neobootmount.sh;')
 
             #Octagon SF4008
             if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
                         if getImageNeoBoot() == 'Flash':                    
                             if fileExists('/.multinfo'):   
-                                os.system('cd /media/neoboot/mmc; ln -sfn /sbin/init.sysvinit /media/neoboot/mmc/sbin/init; /etc/init.d/reboot')                 
+                                os.system('cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init; /etc/init.d/reboot')                 
                             elif not fileExists('/.multinfo'): 
                                 os.system('ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot')
                                 
@@ -1247,7 +1247,7 @@ class UruchamianieImage(Screen):
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
                         if getImageNeoBoot() == 'Flash':                                               
                             if fileExists('/.multinfo'):
-                                cmd='cd /media/neoboot/mmc; ln -sfn /sbin/init.sysvinit /media/neoboot/mmc/sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                  
+                                cmd='cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                  
                             elif not fileExists('/.multinfo'):   
                                 cmd='ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot'                                                            
                                 system(cmd)
@@ -1262,10 +1262,10 @@ class UruchamianieImage(Screen):
 
                             elif fileExists('/.multinfo'):    
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    cmd='opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; cd /media/neoboot/mmc; ln -sf /sbin/neoinitarm /media/neoboot/mmc/sbin/init; /etc/init.d/reboot' %  getBoxVuModel()
+                                    cmd='opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; cd /media/mmc; ln -sf /sbin/neoinitarm /media/mmc/sbin/init; /etc/init.d/reboot' %  getBoxVuModel()
 
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    cmd='cd /media/neoboot/mmc; ln -sfn /sbin/neoinitarmvu /media/neoboot/mmc/sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                                                                                      
+                                    cmd='cd /media/mmc; ln -sfn /sbin/neoinitarmvu /media/mmc/sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh -i start'                                                                                      
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                             self.messagebox = self.session.open(MessageBox, _('Wyglada na to ze model stbnie jest wpierany przez neoboota !!! '), MessageBox.TYPE_INFO, 8)
