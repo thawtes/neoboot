@@ -50,18 +50,39 @@ if [ $TARGET = "Flash" ]; then
                     elif [ $VUMODEL = "solo2" ] || [ $VUMODEL = "duo2" ] || [ $VUMODEL = "solose" ] || [ $VUMODEL = "zero" ]; then 
                             if [ -f /proc/stb/info/vumodel ]; then
                                 if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
-                                    echo "Instalacja kernel do /dev/mtd2..." 
-                                    sleep 2                                
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk
+                                    echo "Przenoszenie pliku kernel do /tmp..."
+                                    sleep 2
+                                    cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk  
+                                    echo "Instalacja kernel do /dev/mtd2..."                                 
+                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
+                                elif [ -e /media/neoboot/ImagesUpload/.kernel/vmlinux.gz ] ; then
+                                    echo "Kasowanie kernel z /dev/mtd2..."                                    
+                                    flash_eraseall /dev/mtd2 
+                                    sleep 2 
+                                    echo "Instalacja kernel do /dev/mtd2..."                
+		                    nandwrite -p /dev/mtd2 //media/neoboot/ImagesUpload/.kernel/vmlinux.gz 
+                                    update-alternatives --remove vmlinux vmlinux-$KERNEL || true
+
                                 fi                            
                             fi                        
 
                     elif [ $VUMODEL = "bm750" ] || [ $VUMODEL = "duo" ] || [ $VUMODEL = "solo" ] || [ $VUMODEL = "uno" ] || [ $VUMODEL = "ultimo" ]; then
                             if [ -f /proc/stb/info/vumodel ]; then
                                 if [ -e /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk ] ; then
-                                    echo "Instalacja kernel do /dev/mtd1..."  
-                                    sleep 2                                                                     
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk
+                                    echo "Przenoszenie pliku kernel do /tmp..."
+                                    sleep 2                                
+                                    cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk 
+                                    echo "Instalacja kernel do /dev/mtd1..."                                                                       
+                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
+                                elif [ -e /media/neoboot/ImagesUpload/.kernel/vmlinux.gz ] ; then
+                                    echo "Kasowanie kernel z /dev/mtd1..."
+                                    sleep 2                                
+                                    flash_eraseall /dev/mtd1  
+                                    echo "Instalacja kernel do /dev/mtd1..." 
+                                    sleep 2                                                    
+		                    nandwrite -p /dev/mtd1 //media/neoboot/ImagesUpload/.kernel/vmlinux.gz 
+                                    update-alternatives --remove vmlinux vmlinux-$KERNEL || true
+
                                 fi                            
                             fi 
                     fi
@@ -88,7 +109,15 @@ if [ $TARGET = "Flash" ]; then
                                     sleep 2 
                                     cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk 
                                     echo "Instalacja kernel zImage.ipk..."                                   
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk
+                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
+                                elif [ -e /media/neoboot/ImagesUpload/.kernel/vmlinux.gz ] ; then
+                                    echo "Kasowanie kernel z /dev/mtd1..."
+                                    sleep 2
+                                    flash_eraseall /dev/mtd1   
+                                    echo "Wgrywanie kernel do /dev/mtd1..."
+                                    sleep 2                                                   
+		                    nandwrite -p /dev/mtd1 //media/neoboot/ImagesUpload/.kernel/vmlinux.gz 
+                                    update-alternatives --remove vmlinux vmlinux-$KERNEL || true
                                 fi                            
                                 
                             elif [ $VUMODEL = "solo2" ] || [ $VUMODEL = "duo2" ] || [ $VUMODEL = "solose" ] || [ $VUMODEL = "zero" ]; then 
@@ -97,7 +126,16 @@ if [ $TARGET = "Flash" ]; then
                                     sleep 2                                 
                                     cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$VUMODEL.ipk /tmp/zImage.ipk   
                                     echo "Instalacja kernel zImage.ipk..."                                                                      
-                                    opkg install --force-reinstall --force-overwrite --force-downgrade /tmp/zImage.ipk
+                                    opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
+                                elif [ -e /media/neoboot/ImagesUpload/.kernel/vmlinux.gz ] ; then
+                                    echo "Kasowanie kernel z /dev/mtd2..."
+                                    sleep 2                                
+                                    flash_eraseall /dev/mtd2   
+                                    echo "Wgrywanie kernel do /dev/mtd2..."
+                                    sleep 2                                                    
+		                    nandwrite -p /dev/mtd2 //media/neoboot/ImagesUpload/.kernel/vmlinux.gz 
+                                    update-alternatives --remove vmlinux vmlinux-$KERNEL || true
+
                                 fi                            
                             fi
                             
@@ -155,12 +193,15 @@ else
                                     echo "NEOBOOT is booting image from " $TARGET
                                     sleep 5; /etc/init.d/reboot
                                 else                                  
+                                    echo "Przenoszenie pliku kernel do /tmp"
+                                    sleep 2
+                                    cp -f $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz /tmp/vmlinux.gz 
                                     echo "Kasowanie kernel z /dev/mtd2"
                                     sleep 2 
                                     flash_eraseall /dev/mtd2
                                     echo "Wgrywanie kernel do /dev/mtd2"                                    
                                     sleep 2
-		                    nandwrite -p /dev/mtd2 $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz
+		                    nandwrite -p /dev/mtd2 //tmp/vmlinux.gz 
 		                    rm -f //tmp/vmlinux.gz
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
@@ -169,12 +210,16 @@ else
                                     sleep 5; /etc/init.d/reboot 
                                 fi
                         else
+                                    echo "Przenoszenie pliku kernel do /tmp"
+                                    sleep 2
+                                    cp -f $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz /tmp/vmlinux.gz
                                     echo "Kasowanie kernel z /dev/mtd2"
                                     sleep 2                                    
                                     flash_eraseall /dev/mtd2 
                                     echo "Wgrywanie kernel do /dev/mtd2"                                    
                                     sleep 2                                                                       
-		                    nandwrite -p /dev/mtd2 $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz 
+		                    nandwrite -p /dev/mtd2 /tmp/vmlinux.gz 
+		                    rm -f /tmp/vmlinux.gz
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
@@ -190,12 +235,12 @@ else
                                     sleep 5; /etc/init.d/reboot
                                 else                                    
 
-                                    echo "Kasowanie kernel z /dev/mtd2"
+                                    echo "Kasowanie kernel z /dev/mtd1"
                                     sleep 2
                                     flash_eraseall /dev/mtd1
-                                    echo "Wgrywanie kernel do /dev/mtd2"                                    
+                                    echo "Wgrywanie kernel do /dev/mtd1"                                    
                                     sleep 2
-		                    nandwrite -p /dev/mtd1 $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz  
+		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz  
 		                    rm -f /tmp/vmlinux.gz
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
@@ -208,7 +253,7 @@ else
                                     flash_eraseall /dev/mtd1 
                                     echo "Wgrywanie kernel do /dev/mtd1"
                                     sleep 2                                                     
-		                    nandwrite -p /dev/mtd1 $IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz 
+		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz 
 		                    rm -f /tmp/vmlinux.gz                                                                                                      
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
