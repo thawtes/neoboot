@@ -285,7 +285,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
     os.system('echo "End of installation:"; date +%T')                                                                        
     if '.tar.xz' not in source and not os.path.exists('%s/ImageBoot/%s/etc/issue' % (media, target)):
             os.system('echo ""; echo "Nie zainstalowano systemu ! Powodem b\xc5\x82\xc4\x99du instalacji mo\xc5\xbce by\xc4\x87 \xc5\xbale spakowany plik image w zip lub nie jest to sytem dla Twojego modelu ."')
-            os.system('echo "Instalowany system moze sie nie uruchomic poprawnie! Sprawdz poprawnosc kataogow w instalwoanym image!!!"')
+            os.system('echo "Instalowany system może sieę nie uruchomić poprawnie! Sprawdż poprawność kataogow w instalwoanym image!!!"')
             os.system('rm -r %s/ImageBoot/%s' % (media, target))
 
     if os.path.exists('/media/neoboot/ubi'):
@@ -655,7 +655,7 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             cmd = 'chmod -R +x /media/neoboot/ImageBoot/' + target
             rc = os.system(cmd)
         else:
-            os.system('echo "NeoBoot wykryl blad !!! Prawdopodobnie brak ubi_reader lub nandsim."')
+            os.system('echo "NeoBoot wykrył błąd !!! Prawdopodobnie brak ubi_reader lub nandsim."')
 
     #ARM
     elif getCPUtype() == 'ARMv7':
@@ -721,7 +721,7 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         else:
-            os.system('echo "NeoBoot wykryl blad !!! Prawdopodobnie brak pliku instalacyjnego."')
+            os.system('echo "NeoBoot wykrył dłąd!!! Prawdopodobnie brak pliku instalacyjnego."')
 
     if BlackHole == 'True':
         if 'BlackHole' in source and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/Blackhole' % (media, target)):
