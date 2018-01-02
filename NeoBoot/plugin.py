@@ -856,8 +856,11 @@ class NeoBootImageChoose(Screen):
                 elif getCPUtype() == 'ARMv7':
                     os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 755 ./files/neobootup.sh; chmod 0755 ./bin/rebootbot; cp -rf ./bin/neoinitarm /sbin; cp -rf ./bin/neoinitarmvu /sbin; chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu; cd')                                                                
 
-                restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
+                #restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Completed update NeoBoot. You need to restart the E2 !!!\nRestart now ?'), MessageBox.TYPE_YESNO)
+                #restartbox.setTitle(_('Restart GUI now ?'))
+                restartbox = self.session.openWithCallback(self.restartGUI, MessageBox, _('Zaktualizowac NeoBoota na wszystkich zainstalowanych image ?'), MessageBox.TYPE_YESNO)
                 restartbox.setTitle(_('Restart GUI now ?'))
+
         else:
             os.system('rm -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt')
             self.session.open(MessageBox, _('The update has been canceled.'), MessageBox.TYPE_INFO, 8)
@@ -865,9 +868,10 @@ class NeoBootImageChoose(Screen):
 
     def restartGUI(self, answer):
         if answer is True:
-            self.session.open(TryQuitMainloop, 3)
+            from Plugins.Extensions.NeoBoot.files.tools import MyUpgrade2
+            self.session.open(MyUpgrade2)
         else:
-            self.close()
+            self.session.open(TryQuitMainloop, 3)
 
     def curlimport(self, answer):
         if answer is True:
