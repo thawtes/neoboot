@@ -873,13 +873,6 @@ class NeoBootImageChoose(Screen):
         else:
             self.session.open(TryQuitMainloop, 3)
 
-    def curlimport(self, answer):
-        if answer is True:
-            from Plugins.Extensions.NeoBoot.files.tools import CurlInstall
-            self.session.open(CurlInstall)
-        else:
-            self.session.open(MessageBox, _('The installation has been canceled.\nNeoBoot without module curl will not download the update.'), MessageBox.TYPE_INFO, 8)
-
     def installMedia(self):
         images = False
         myimages = os.listdir('/media/neoboot/ImagesUpload')
