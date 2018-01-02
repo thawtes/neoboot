@@ -178,7 +178,7 @@ else
 		  reboot -f
 	fi 
 
-	if [ ! -e $NEOBOOT/bin/neobm ]; then
+	if [ -e $NEOBOOT/bin/neobm ]; then
 	    $NEOBOOT/neologo.mvi > /dev/null 2>&1
 	    sleep 1
 	    $NEOBOOT/bin/neobm > /dev/null 2>&1
