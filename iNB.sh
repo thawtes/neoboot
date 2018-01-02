@@ -25,6 +25,4 @@ echo "#####################################################"
 echo "#             PLEASE RESTART YOUR STB               #"
 echo "#####################################################"
 echo ""
-echo "Potrzebny restart GUI. q(-_-)p Restartuje..."
-sleep 5; killall -9 enigma2
 exit 0
