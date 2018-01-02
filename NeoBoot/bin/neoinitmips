@@ -7,7 +7,6 @@ IMAGE=/media/neoboot/ImageBoot
 IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot
 NEO=/media/neoboot
 NEOBOOT=/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot
-MODPROBE=/sbin/modprobe
 BOXNAME=`cat /etc/hostname`
 FINDBOOT=/media/*/ImageBoot/.neonextboot
 CELBOOT=`cat $FINDBOOT`
@@ -37,7 +36,6 @@ else
         echo "====================================================> "
 	
 	/etc/init.d/sysfs.sh
-	/etc/init.d/modutils.sh
 	
 	echo "NEOBOOT is starting mdev"
         echo " "
@@ -65,26 +63,7 @@ else
 	ln -s ../fb0 /dev/fb/0
 
 	sleep 1
-	
-	if [ -e /etc/videomode ]; then
-	    cat /etc/videomode > /proc/stb/video/videomode
-	fi
-	if [ -e /etc/videomode2 ]; then
-	    cat /etc/videomode2 > /proc/stb/video/videomode
-	fi
-
-	(
-	if [ -d /proc/stb ]; then
-		while true; do
-			if [ -e /dev/dvb/adapter0/video0 ]; then
-				break;
-			fi;
-		done;
-	fi;
-	[ -e /etc/dropbear/dropbear_rsa_host_key ] && /usr/bin/showiframe /usr/share/bootlogo.mvi;
-
-	) &
-	
+		
 	DEVICES1=`find /dev/sd??`
 	for DEVICE in $DEVICES1;
 	do
@@ -159,13 +138,33 @@ else
 
         #dodatkowe szukanie neoboota
         #mount /dev/sdb1 $NEO > /dev/null 2>&1  # <<< tu mozesz zmienic sdb1 i wpisac Twoje montowanie dysku dla neoboot
-
+        
+        MODPROBE=/sbin/modprobe
         echo "NEOBOOT is loading modules."
         for mod in dvb; do
-                  echo "=======================> NeoBoot is loading modules"
               $MODPROBE $mod
         done 
 
+	/etc/init.d/modutils.sh
+
+	if [ -e /etc/videomode ]; then
+	    cat /etc/videomode > /proc/stb/video/videomode
+	fi
+	if [ -e /etc/videomode2 ]; then
+	    cat /etc/videomode2 > /proc/stb/video/videomode
+	fi
+
+	(
+	if [ -d /proc/stb ]; then
+		while true; do
+			if [ -e /dev/dvb/adapter0/video0 ]; then
+				break;
+			fi;
+		done;
+	fi;
+	[ -e /etc/dropbear/dropbear_rsa_host_key ] && /usr/bin/showiframe /usr/share/bootlogo.mvi;
+
+	) &
 
 	if [ -f $LIBDIR/kernel/fs/autofs4/autofs4.ko ]; then
 		/sbin/insmod $LIBDIR/kernel/fs/autofs4/autofs4.ko > /dev/null 2>&1
