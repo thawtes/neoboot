@@ -541,10 +541,6 @@ class MyUpgrade2(Screen):
             self.myClose(_('Sorry, NeoBoot can installed or upgraded only when booted from Flash STB'))
             self.close()
         else:
-            system('chown -R root:root /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot')
-            system('chmod -R a+x /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin')
-            system('chmod a+x /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/nandsim.pyo')
-            system('chmod a+x /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi.pyo')
             for fn in listdir('/media/neoboot/ImageBoot'):
                 dirfile = '/media/neoboot/ImageBoot/' + fn
                 if isdir(dirfile):
@@ -554,8 +550,6 @@ class MyUpgrade2(Screen):
                     cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot ' + target
                     system(cmd)
 
-            cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/multinit /sbin/multinit'
-            system(cmd)
             out = open('/media/neoboot/ImageBoot/.version', 'w')
             out.write(PLUGINVERSION)
             out.close()
