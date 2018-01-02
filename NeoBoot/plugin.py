@@ -581,14 +581,12 @@ class NeoBootInstallation(Screen):
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -f ./bin/fontforneoboot.ttf /usr/share/fonts; cp -f ./bin/libpngneo /usr/lib; cp -f ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 ./bin/neobm; chmod 0755 /usr/lib/libpngneo; cd; chmod 0755 /sbin/neoinitmips; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage')
 
                         elif getBoxHostName() == 'bm750' or getBoxHostName() == 'duo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo':
-                            os.system('cd /media/neoboot/ImagesUpload/.kernel/')
-                            os.system('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd1 -o -b > vmlinux.gz')
+                            os.system('cd /media/neoboot/ImagesUpload/.kernel; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd1 -o -b > vmlinux.gz')
                             os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/vmlinux.gz; cd')  
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/libpngneo; rm ./bin/fontforneoboot.ttf; cd')
 
                         elif getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero':
-                            os.system('cd /media/neoboot/ImagesUpload/.kernel/')
-                            os.system('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd2 -o -b > vmlinux.gz')
+                            os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd2 -o -b > vmlinux.gz')
                             os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/vmlinux.gz,cd') 
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/libpngneo; rm ./bin/fontforneoboot.ttf; cd')  
  
@@ -863,12 +861,20 @@ class NeoBootImageChoose(Screen):
             os.system('rm -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt')
             self.session.open(MessageBox, _('The update has been canceled.'), MessageBox.TYPE_INFO, 8)
 
+
     def restartGUI(self, answer):
         if answer is True:
             self.session.open(TryQuitMainloop, 3)
         else:
             self.close()
-	
+
+    def curlimport(self, answer):
+        if answer is True:
+            from Plugins.Extensions.NeoBoot.files.tools import CurlInstall
+            self.session.open(CurlInstall)
+        else:
+            self.session.open(MessageBox, _('The installation has been canceled.\nNeoBoot without module curl will not download the update.'), MessageBox.TYPE_INFO, 8)
+
     def installMedia(self):
         images = False
         myimages = os.listdir('/media/neoboot/ImagesUpload')
