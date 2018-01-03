@@ -82,7 +82,9 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         rc = os.system(cmd)
         if CopyKernel == 'True':        
             #mips
-            if getBoxHostName() == 'vuultimo' or getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
+            if getBoxHostName() == 'vuultimo' or getCPUSoC() == '7405' and os.path.exists('%s/ImageBoot/%s/etc/vtiversion.info' % (media, target)):
+                os.system('echo "Nie skopiowano kernel.bin dla Ultimo HD - NIE ZALECANE DLA TEGO MODELU."')             
+            elif getBoxHostName() == 'vuultimo' or getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin STB-MIPS"')
             #arm
