@@ -64,17 +64,6 @@ else
 
 	sleep 1
 		
-	DEVICES1=`find /dev/sd??`
-	for DEVICE in $DEVICES1;
-	do
-		if [ ! -e /media/neoboot/ImageBoot/.neonextboot  ]; then
-     		mount $DEVICE /media/neoboot > /dev/null 2>&1
-    	fi                    
-   		if [ ! -e /media/neoboot/ImageBoot/.neonextboot  ]; then
-       		umount /media/neoboot > /dev/null 2>&1 
-    	fi 
-	done
-
 	LIBDIR=/lib/modules/`uname -r`
 	if [ ! -d $LIBDIR ]; then
 		LIBDIR=/lib/modules/`ls /lib/modules | tail -n 1`
@@ -88,6 +77,18 @@ else
 
 	sleep 1
         echo " "
+	
+	DEVICES1=`find /dev/sd??`
+	for DEVICE in $DEVICES1;
+	do
+		if [ ! -e /media/neoboot/ImageBoot/.neonextboot  ]; then
+     		mount $DEVICE /media/neoboot > /dev/null 2>&1
+    	fi                    
+   		if [ ! -e /media/neoboot/ImageBoot/.neonextboot  ]; then
+       		umount /media/neoboot > /dev/null 2>&1 
+    	fi 
+	done	
+	
         echo "Search NEOBOOT... "
         #sed=grep
 	mnttest="nouuid"
@@ -170,17 +171,17 @@ else
 		/sbin/insmod $LIBDIR/kernel/fs/autofs4/autofs4.ko > /dev/null 2>&1
 	fi
         		     	
+	if [ -e $NEOBOOT/bin/neobm ]; then
+	    $NEOBOOT/neologo.mvi > /dev/null 2>&1
+	    sleep 1
+	    $NEOBOOT/bin/neobm > /dev/null 2>&1
+	fi
+	
 	if [ ! -e $IMAGEBOOT ]; then
 		  ln -sfn /sbin/init.sysvinit /sbin/init
                   echo "Flash "  > $IMAGEBOOT
                   echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
 		  reboot -f
-	fi 
-
-	if [ -e $NEOBOOT/bin/neobm ]; then
-	    $NEOBOOT/neologo.mvi > /dev/null 2>&1
-	    sleep 1
-	    $NEOBOOT/bin/neobm > /dev/null 2>&1
 	fi
 
 	TARGET=Flash
