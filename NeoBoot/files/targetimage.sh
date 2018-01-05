@@ -234,14 +234,12 @@ else
                                     echo "NEOBOOT is booting image from " $TARGET
                                     sleep 5; /etc/init.d/reboot
                                 else                                    
-
                                     echo "Kasowanie kernel z /dev/mtd1"
                                     sleep 2
                                     flash_eraseall /dev/mtd1
                                     echo "Wgrywanie kernel do /dev/mtd1"                                    
                                     sleep 2
 		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz  
-		                    rm -f /tmp/vmlinux.gz
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
@@ -253,8 +251,7 @@ else
                                     flash_eraseall /dev/mtd1 
                                     echo "Wgrywanie kernel do /dev/mtd1"
                                     sleep 2                                                     
-		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz 
-		                    rm -f /tmp/vmlinux.gz                                                                                                      
+		                    nandwrite -p /dev/mtd1 //$IMAGE/$TARGET/boot/$VUMODEL.vmlinux.gz                                                                                                     
                                     update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel                                       
