@@ -44,7 +44,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.45'
+UPDATEVERSION = '6.46'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -578,16 +578,19 @@ class NeoBootInstallation(Screen):
                         os.system('chmod 755 /sbin/neoinitmips; chmod 0755 /sbin/neoinitmipsvu')
    
                         if getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':
-                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -f ./bin/fontforneoboot.ttf /usr/share/fonts; cp -f ./bin/libpngneo /usr/lib; cp -f ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 ./bin/neobm; chmod 0755 /usr/lib/libpngneo; cd; chmod 0755 /sbin/neoinitmips; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage; rm /sbin/neoinitmipsvu')
+                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; mv ./bin/fontforneoboot.ttf /usr/share/fonts; mv ./bin/libpngneo /usr/lib; cp -f ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 ./bin/neobm; chmod 0755 /usr/lib/libpngneo; cd; chmod 0755 /sbin/neoinitmips; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage; rm /sbin/neoinitmips')
 
                         elif getBoxHostName() == 'bm750' or getBoxHostName() == 'duo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo':
-                            os.system('cd /media/neoboot/ImagesUpload/.kernel; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd1 -o -b > vmlinux.gz; cd')
+                            os.system('cd /media/neoboot/ImagesUpload/.kernel/')
+                            os.system('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd1 -o -b > vmlinux.gz')
                             os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/vmlinux.gz; cd')  
-                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/libpngneo; rm ./bin/fontforneoboot.ttf; cd')
+                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; cd')
 
                         elif getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero':
-                            os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd2 -o -b > vmlinux.gz;cd') 
-                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/libpngneo; rm ./bin/fontforneoboot.ttf; cd')  
+                            os.system('cd /media/neoboot/ImagesUpload/.kernel/')
+                            os.system('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd2 -o -b > vmlinux.gz')
+                            os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/vmlinux.gz,cd') 
+                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; cd')  
  
                         if fileExists('/tmp/plik.tar.gz'):
                             cmd = 'mkdir -p ' + self.mysel + 'ImagesUpload/.egami'    #private non-public use patch
@@ -622,7 +625,7 @@ class NeoBootInstallation(Screen):
                     os.system('opkg configure update-modules') 
                     
                     if getCPUtype() == 'ARMv7':       
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neoinitmip*; rm -r ./bin/nanddump; rm ./bin/nfidump; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/libpngneo; cd')   
+                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neoinitmip*; rm -r ./bin/nanddump; rm ./bin/nfidump; rm ./bin/neobm; rm ./neologo.mvi; cd')   
                     elif getCPUtype() == 'MIPS':       
                         os.system('rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/rebootbot')
                                                                                 
@@ -709,8 +712,11 @@ class NeoBootImageChoose(Screen):
                 if getTunerModel() == 'dm900' or getCPUSoC() == 'BCM97252SSFF':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p2 /media/mmc')
                     
-            if  getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'uno4kse' or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k' or  getBoxVuModel() == 'zero4k':
+            if  getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'uno4kse' or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k':
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')
+
+            if  getBoxVuModel() == 'zero4k':
+                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p7 /media/mmc')
 
 
         self.list = []
@@ -860,19 +866,11 @@ class NeoBootImageChoose(Screen):
             os.system('rm -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt')
             self.session.open(MessageBox, _('The update has been canceled.'), MessageBox.TYPE_INFO, 8)
 
-
     def restartGUI(self, answer):
         if answer is True:
             self.session.open(TryQuitMainloop, 3)
         else:
             self.close()
-
-    def curlimport(self, answer):
-        if answer is True:
-            from Plugins.Extensions.NeoBoot.files.tools import CurlInstall
-            self.session.open(CurlInstall)
-        else:
-            self.session.open(MessageBox, _('The installation has been canceled.\nNeoBoot without module curl will not download the update.'), MessageBox.TYPE_INFO, 8)
 
     def installMedia(self):
         images = False
@@ -1017,6 +1015,16 @@ class NeoBootImageChoose(Screen):
                         obraz = open('/media/mmc/etc/issue.net', 'r').readlines()
                         imagetype = obraz[0][:-3]
                         image = imagetype
+                        open('/media/neoboot/ImageBoot/.Flash', 'w').write(image)
+                    except:
+                        False
+                elif fileExists('/etc/issue.net'):
+                    try:
+                        obraz = open('/etc/issue.net', 'r').readlines()
+                        imagetype = obraz[0][:-1]
+                        lines = open('/etc/hostname', 'r').readlines()
+                        boxtype = lines[0][:-1]
+                        image = imagetype[0:-2] + ' ' + boxtype
                         open('/media/neoboot/ImageBoot/.Flash', 'w').write(image)
                     except:
                         False
@@ -1223,14 +1231,15 @@ class UruchamianieImage(Screen):
 
             #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
             elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':
-                        if getImageNeoBoot() == 'Flash':                    
-                            if fileExists('/.multinfo'):   
-                                os.system('/etc/init.d/reboot')             
-                            elif not fileExists('/.multinfo'): 
-                                cmd0='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'
-                                                                       
-                        elif getImageNeoBoot() != 'Flash':                     
-                                cmd0='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'                                                                                                
+
+                        if fileExists('/.multinfo') and getImageNeoBoot() == 'Flash':   
+                                cmd0='/etc/init.d/reboot'            
+                        elif not fileExists('/.multinfo') and getImageNeoBoot() == 'Flash': 
+                                cmd0='ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot'
+                        elif fileExists('/.multinfo') and getImageNeoBoot() != 'Flash':   
+                                cmd0='/etc/init.d/reboot'                                                                                             
+                        elif not fileExists('/.multinfo') and getImageNeoBoot() != 'Flash':                      
+                                cmd0='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'  
 
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
@@ -1239,7 +1248,7 @@ class UruchamianieImage(Screen):
 
                         self.session.open(Console, _('NeoBoot Arm....'), [cmd0])
 
-            #VUPLUS ARM                             
+            #VUPLUS ARM                                                        
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
                         if getImageNeoBoot() == 'Flash':                                               
                             if fileExists('/.multinfo'):

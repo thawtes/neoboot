@@ -77,20 +77,23 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         os.system('echo "No copying of files..."')
         os.system('touch  /media/neoboot/ImageBoot/.without_copying; sleep 5')              
 
-    if not os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
-        cmd = 'cp /etc/hostname %s/ImageBoot/%s/etc/hostname > /dev/null 2>&1' % (media, target)
-        rc = os.system(cmd)
-        if CopyKernel == 'True':        
+    if CopyKernel == 'True':        
             #mips
             if getBoxHostName() == 'vuultimo' or getCPUSoC() == '7405' and os.path.exists('%s/ImageBoot/%s/etc/vtiversion.info' % (media, target)):
-                os.system('echo "Nie skopiowano kernel.bin dla Ultimo HD - NIE ZALECANE DLA TEGO MODELU."')             
+                os.system('touch  /media/neoboot/ImageBoot/.without_copying; sleep 5; echo "Nie skopiowano kernel.bin dla Ultimo HD - NIE ZALECANE DLA TEGO MODELU."')  
+                        
             elif getBoxHostName() == 'vuultimo' or getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin STB-MIPS"')
             #arm
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
-                os.system('echo "Skopiowano kernel.bin STB-ARM"')                
+                os.system('echo "Skopiowano kernel.bin STB-ARM"')   
+
+
+    if not os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
+        cmd = 'cp /etc/hostname %s/ImageBoot/%s/etc/hostname > /dev/null 2>&1' % (media, target)
+        rc = os.system(cmd)             
 
         if os.path.exists('/usr/bin/fullwget'):
             cmd = 'cp -r /usr/bin/fullwget %s/ImageBoot/%s/usr/bin/fullwget > /dev/null 2>&1' % (media, target)
@@ -254,7 +257,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         if not os.path.exists('/usr/lib/enigma2/python/EGAMI') and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/EGAMI' % (media, target)):
             if getBoxVuModel() == 'ultimo4k' or getBoxVuModel() == 'solo4k' or getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'bm750' or getBoxVuModel() == 'duo' or getBoxVuModel() == 'solo' or getBoxVuModel() == 'uno' or getBoxVuModel() == 'ultimo' or getBoxVuModel() == 'solo2' or getBoxVuModel() == 'duo2' or getBoxVuModel() == 'solose' or getBoxVuModel() == 'zero':
                 if not os.path.exists('/media/neoboot/ImagesUpload/.egami/patchE.tar.gz'):
-                    os.system('echo "System EGAMI nie jest przeznaczony tego odbiornika !!! "')
+                    os.system('echo "System EGAMI nie jest przeznaczony do tego odbiornika !!! "')
                 else:
                     cmd = 'cp -r /media/neoboot/ImagesUpload/.egami/patchE.tar.gz %s/ImageBoot/%s/home/root/ > /dev/null 2>&1' % (media, target)
                     rc = os.system(cmd)
