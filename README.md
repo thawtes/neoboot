@@ -24,7 +24,10 @@ lub pobrać plik ipk:
 
 http://www.sat-4-all.com/board/index.php?app=core&module=attach&section=attach&attach_id=11571
 
-wkleić do /tmp
+wypakować z zip
+
+
+wkleić do /tmp plik o nazwie NeoBoot-BY-gutosie_20180102-iNB.sh-packed.Lucek_all.ipk
 
 zainstalować poleceniem:
 
