@@ -299,8 +299,8 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         os.system('rm /media/neoboot/image_cache')
     if os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
         os.system('rm /media/neoboot/ImageBoot/.without_copying') 
-    rc = os.system('sync')
-    os.system("echo 3 > /proc/sys/vm/drop_caches")
+    #rc = os.system('sync')
+    #os.system("echo 3 > /proc/sys/vm/drop_caches")
     rc = RemoveUnpackDirs()
 
 def NEOBootExtract(source, target, ZipDelete, BlackHole):
