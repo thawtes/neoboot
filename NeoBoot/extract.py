@@ -80,7 +80,21 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
     if CopyKernel == 'True':        
             #mips
             if getBoxHostName() == 'vuultimo' or getCPUSoC() == '7405' and os.path.exists('%s/ImageBoot/%s/etc/vtiversion.info' % (media, target)):
-                os.system('touch  /media/neoboot/ImageBoot/.without_copying; sleep 5; echo "Nie skopiowano kernel.bin dla Ultimo HD - NIE ZALECANE DLA TEGO MODELU."')  
+                if os.path.exists('%s/ImageBoot/%s/lib/modules' % (media, target)):
+                    cmd = 'rm -r %s/ImageBoot/%s/lib/modules' % (media, target)
+                    rc = os.system(cmd)
+                cmd = 'mkdir -p %s/ImageBoot/%s/lib/modules > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)
+                cmd = 'cp -r /lib/modules  %s/ImageBoot/%s/lib  > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)
+                if os.path.exists('%s/ImageBoot/%s/lib/firmware' % (media, target)):
+                    cmd = 'rm -r %s/ImageBoot/%s/lib/firmware' % (media, target)
+                    rc = os.system(cmd)
+                cmd = 'mkdir -p %s/ImageBoot/%s/lib/firmware > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)
+                cmd = 'cp -r /lib/firmware %s/ImageBoot/%s/lib > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)
+                os.system('echo "Skopiowano sterowniki systemu."';'touch  /media/neoboot/ImageBoot/.without_copying; sleep 5; echo "Nie skopiowano kernel.bin dla Ultimo HD - NIE ZALECANE DLA TEGO MODELU."')  
                         
             elif getBoxHostName() == 'vuultimo' or getCPUSoC() == '7335' or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7356' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7362':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_cfe_auto.bin ' + media_target + '/boot/' + getBoxVuModel() + '.vmlinux.gz' + dev_null)        
