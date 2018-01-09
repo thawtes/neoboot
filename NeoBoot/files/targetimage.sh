@@ -166,26 +166,40 @@ else
                                     cp -f $IMAGE/$TARGET/boot/zImage.$VUMODEL /tmp/zImage
                                     echo "Instalacja kernel do /dev/mmcblk0p1..."
                                     sleep 2                                     
-                                    dd if=/tmp/zImage of=/dev/mmcblk0p1 
-                                    update-alternatives --remove vmlinux vmlinux-`uname -r` || true
-                                    echo "Kernel dla potrzeb startu systemu " $TARGET " VUPLUS z procesorem arm zostal zmieniony!!!"
-                                    echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                                    echo "Typ procesora: " $CHIPSET " STB"
-                                    sleep 5; /etc/init.d/reboot                              
+                                    if [ -d /proc/stb ] ; then
+                                                    dd if=/tmp/zImage conv=noerror conv=sync conv=fsync of=/dev/mmcblk0p1
+                                            fi
+                                            rm -f /tmp/zImage
+                                            true 
+                                            #dd if=/tmp/zImage of=/dev/mmcblk0p1 
+                                            update-alternatives --remove vmlinux vmlinux-`uname -r` || true
+                                            echo "Kernel dla potrzeb startu systemu " $TARGET " VUPLUS z procesorem arm zostal zmieniony!!!"
+                                            echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                                            echo "Typ procesora: " $CHIPSET " STB"
+                                            sleep 5; /etc/init.d/reboot                              
                                 fi
                         else              
                                     echo "Przenoszenie pliku kernel do /tmp"
                                     sleep 2
                                     cp -fR $IMAGE/$TARGET/boot/zImage.$VUMODEL /tmp/zImage
                                     echo "Instalacja kernel do /dev/mmcblk0p1..."
-                                    sleep 2                                     
-                                    dd if=/tmp/zImage of=/dev/mmcblk0p1 
-                                    update-alternatives --remove vmlinux vmlinux-`uname -r` || true
-                                    echo "Kernel dla potrzeb startu systemu " $TARGET " VU+ zmieniony."
-                                    echo "Za chwile nastapi restart systemu..."
-                                    echo "Used Kernel: " $TARGET  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                                    echo "Typ procesora: " $CHIPSET " STB"
-                                    sleep 5; /etc/init.d/reboot
+                                    sleep 2 
+                                    if [ -d /proc/stb ] ; then
+                                                    dd if=/tmp/zImage conv=noerror conv=sync conv=fsync of=/dev/mmcblk0p1
+                                            fi
+                                            rm -f /tmp/zImage
+                                            true                                    
+                                            #dd if=/tmp/zImage of=/dev/mmcblk0p1 
+                                            update-alternatives --remove vmlinux vmlinux-`uname -r` || true
+                                            echo "Kernel dla potrzeb startu systemu " $TARGET " VU+ zmieniony."
+                                            sleep 2
+                                            echo "Za chwile nastapi restart systemu..."
+                                            sleep 2
+                                            echo "Used Kernel: " $TARGET  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
+                                            sleep 2
+                                            echo "Typ procesora: " $CHIPSET " STB"
+                                            sleep 5 
+                                            /etc/init.d/reboot > /dev/null 2>&1
                         fi
                         
             elif [ $VUMODEL = "solo2" ] || [ $VUMODEL = "duo2" ] || [ $VUMODEL = "solose" ] || [ $VUMODEL = "zero" ] ; then	     
