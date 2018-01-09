@@ -622,7 +622,7 @@ class NeoBootInstallation(Screen):
                     os.system('opkg configure update-modules') 
                     
                     if getCPUtype() == 'ARMv7':       
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neoinitmip*; rm -r ./bin/nanddump; rm ./bin/nfidump; rm ./bin/neobm; rm ./neologo.mvi; cd')   
+                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neoinitmip*; rm -r ./bin/nanddump; rm ./bin/nfidump; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')   
                     elif getCPUtype() == 'MIPS':       
                         os.system('rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/rebootbot')
                                                                                 
