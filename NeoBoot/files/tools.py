@@ -647,8 +647,8 @@ class ReinstallKernel(Screen):
          'red': self.kernel_image})
 
     def kernel_image(self):
-        if fileExists('/.multinfo'):
-            if myboxname == 'vuuno4k' or myboxname == 'vuultimo4k' or myboxname == 'vusolo4k' or myboxname == 'bm750' or myboxname == 'vuduo' or myboxname == 'vuuno' or myboxname == 'vuultimo' or myboxname == 'vusolo' or myboxname == 'vusolo2' or myboxname == 'vusolose'  or myboxname == 'vuduo2' or myboxname == 'vuzero' or myboxname == 'vuduo':
+        if fileExists('/.multinfo'):   
+            if myboxname == 'vuuno4k' or myboxname == 'vuultimo4k' or myboxname == 'vusolo4k' or myboxname == 'vuzero4k' or myboxname == 'vuuno4kse' or myboxname == 'vuunose4k' or myboxname == 'bm750' or myboxname == 'vuduo' or myboxname == 'vuuno' or myboxname == 'vuultimo' or myboxname == 'vusolo' or myboxname == 'vusolo2' or myboxname == 'vusolose'  or myboxname == 'vuduo2' or myboxname == 'vuzero' or myboxname == 'vuduo':
                 cmd1 = 'opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; opkg configure update-modules' % (vumodel, vumodel)
                 self.session.open(Console, _('NeoBoot....'), [cmd1])
             elif myboxname == 'sf4008' :
