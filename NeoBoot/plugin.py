@@ -1211,7 +1211,8 @@ class UruchamianieImage(Screen):
             #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
             if getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':                                      
                         if getImageNeoBoot() == 'Flash':                                        
-                            self.session.open(TryQuitMainloop, 2)
+                            cmd = 'ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'
+                            self.session.open(Console, _('NeoBoot Arm....'), [cmd])
                         elif getImageNeoBoot() != 'Flash':                     
                                 cmd='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot' 
                                 self.session.open(Console, _('NeoBoot Arm....'), [cmd])                                                         
