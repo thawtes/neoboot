@@ -577,7 +577,7 @@ class NeoBootInstallation(Screen):
                         os.system('chmod 755 /sbin/neoinitmips; chmod 0755 /sbin/neoinitmipsvu')
    
                         if getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':
-                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; mv ./bin/fontforneoboot.ttf /usr/share/fonts; mv ./bin/libpngneo /usr/lib; cp -f ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 ./bin/neobm; chmod 0755 /usr/lib/libpngneo; cd; chmod 0755 /sbin/neoinitmips; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage; rm /sbin/neoinitmips')
+                            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; mv ./bin/fontforneoboot.ttf /usr/share/fonts; mv ./bin/libpngneo /usr/lib; cp -f ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 ./bin/neobm; chmod 0755 /usr/lib/libpngneo; cd; chmod 0755 /sbin/neoinitmips; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage')
 
                         elif getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo':
                             os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd1 -o -b > vmlinux.gz')
@@ -852,7 +852,7 @@ class NeoBootImageChoose(Screen):
             else:
                 os.system('cd /tmp/; unzip -qn ./neoboot.zip; rm -f ./neoboot.zip; cp -rf ./neoboot-master/NeoBoot /usr/lib/enigma2/python/Plugins/Extensions; rm -rf /tmp/neoboot-master;  rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt; cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoini*;  chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; cd')                    
                 if getCPUtype() == 'MIPS':
-                    os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -rf ./bin/neoinitmipsvu /sbin; chmod 755 /sbin/neoinitmipsvu')                    
+                    os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -rf ./bin/neoinitmipsvu /sbin; chmod 755 /sbin/neoinitmipsvu; cp -rf ./bin/neoinitmips /sbin; chmod 755 /sbin/neoinitmips; cd')                    
                 elif getCPUtype() == 'ARMv7':
                     os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 755 ./files/neobootup.sh; chmod 0755 ./bin/rebootbot; cp -rf ./bin/neoinitarm /sbin; cp -rf ./bin/neoinitarmvu /sbin; chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu; cd')                                                                
 
@@ -1211,8 +1211,7 @@ class UruchamianieImage(Screen):
             #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
             if getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':                                      
                         if getImageNeoBoot() == 'Flash':                                        
-                            cmd = 'ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot'
-                            self.session.open(Console, _('NeoBoot Arm....'), [cmd])
+                            self.session.open(TryQuitMainloop, 2)
                         elif getImageNeoBoot() != 'Flash':                     
                                 cmd='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot' 
                                 self.session.open(Console, _('NeoBoot Arm....'), [cmd])                                                         
