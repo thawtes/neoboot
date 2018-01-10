@@ -88,6 +88,10 @@ def getBoxVuModel():
         with open('/proc/stb/info/vumodel', 'r') as f:
             vumodel = f.readline().strip()
             f.close() 
+    elif fileExists("/proc/stb/info/boxtype") and not fileExists("/proc/stb/info/vumodel"):
+        with open('/proc/stb/info/boxtype', 'r') as f:
+            vumodel = f.readline().strip()
+            f.close()
     return vumodel
 
 def getVuModel():
