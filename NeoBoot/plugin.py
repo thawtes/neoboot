@@ -43,6 +43,34 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
+    #Machine BCM
+    #cat /proc/stb/info/chipset:
+
+    #et8500   :        bcm7241
+    #Formuler F1       bcm7356
+    #Formuler F3:      7362    
+    #atemio6000 :      bcm7362
+
+    #SF4008   :        bcm7251
+    #MBmini   :        bcm7358
+    #Miraclebox Micro: bcm7362
+    
+    #Ultimo4k :        7444s
+    #Solo4k   :        7376
+    #Uno 4K   :        7252s 
+    #Uno4kSE  :        7252s
+    #Zero 4K  :        72604 
+    
+    #Ultimo   :        7405(with 3D)
+    #Uno      :        7405(with 3D)
+    #Duo2     :        7424
+    #Duo      :	       7335
+    #Solo2    :        7356
+    #Solose   :        7241
+    #Solose-v2:        7241
+    #Solo     :        7325
+    #Zero     :        7362
+
 PLUGINVERSION = '6.00 '
 UPDATEVERSION = '6.50'
          
@@ -545,7 +573,7 @@ class NeoBootInstallation(Screen):
                 try:
                     system('opkg update;opkg configure;sleep 5')                    
                     #VUPLUS ARM 
-                    if getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
+                    if getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuuno4kse' :
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
                         os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')
                         os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarmvu /sbin/neoinitarmvu; cd')  
@@ -553,8 +581,16 @@ class NeoBootInstallation(Screen):
                         os.system('opkg download kernel-image')
                         os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())                    
                         os.system('dd if=/dev/mmcblk0p1 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel())
-                        os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel()) 
-      
+                         
+                    elif getCPUSoC() == '72604' or getBoxHostName() == 'vuzero4k':
+                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')
+                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarmvu /sbin/neoinitarmvu; cd')  
+                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu')
+                        os.system('opkg download kernel-image')
+                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())                    
+                        os.system('dd if=/dev/mmcblk0p4 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel())      
+
                     #VUPLUS MIPS                                                                                                                                                                                                                 
                     elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7358' or getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero' or getBoxHostName() == 'mbmini':   
                         if os.system('opkg list-installed | grep mtd-utils') != 0:
@@ -580,13 +616,11 @@ class NeoBootInstallation(Screen):
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; mv ./bin/fontforneoboot.ttf /usr/share/fonts; mv ./bin/libpngneo /usr/lib; cp -f ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 ./bin/neobm; chmod 0755 /usr/lib/libpngneo; cd; chmod 0755 /sbin/neoinitmips; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage')
 
                         elif getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo':
-                            os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd1 -o -b > vmlinux.gz')
-                            os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/vmlinux.gz; cd')  
+                            os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd1 -o -b > vmlinux.gz') 
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')
 
                         elif getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero':
                             os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd2 -o -b > vmlinux.gz')
-                            os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/vmlinux.gz,cd') 
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')  
  
                         if fileExists('/tmp/plik.tar.gz'):
@@ -625,7 +659,8 @@ class NeoBootInstallation(Screen):
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neoinitmip*; rm -r ./bin/nanddump; rm ./bin/nfidump; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')   
                     elif getCPUtype() == 'MIPS':       
                         os.system('rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/rebootbot')
-                                                                                
+
+                    os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/*')                                                            
                     self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
 
                 except:
