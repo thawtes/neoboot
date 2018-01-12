@@ -43,36 +43,16 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-    #Machine BCM
-    #cat /proc/stb/info/chipset:
-
-    #et8500   :        bcm7241
-    #Formuler F1       bcm7356
-    #Formuler F3:      7362    
-    #atemio6000 :      bcm7362
-
-    #SF4008   :        bcm7251
-    #MBmini   :        bcm7358
-    #Miraclebox Micro: bcm7362
-    
-    #Ultimo4k :        7444s
-    #Solo4k   :        7376
-    #Uno 4K   :        7252s 
-    #Uno4kSE  :        7252s
-    #Zero 4K  :        72604 
-    
-    #Ultimo   :        7405(with 3D)
-    #Uno      :        7405(with 3D)
-    #Duo2     :        7424
-    #Duo      :	       7335
-    #Solo2    :        7356
-    #Solose   :        7241
-    #Solose-v2:        7241
-    #Solo     :        7325
-    #Zero     :        7362
+#Machine BCM
+#cat /proc/stb/info/chipset:
+#et8500   :        bcm7241    #SF4008   :        bcm7251     #Ultimo4k :    7444s    #Ultimo   :    7405(with 3D)    #Zero     :        7362
+#Formuler F1       bcm7356    #MBmini   :        bcm735      #Solo4k   :    7376     #Uno      :    7405(with 3D)    #Solo     :        7325
+#Formuler F3:      7362       #atemio6000 :      bcm7362     #Uno 4K   :    7252s    #Duo2     :    7424             #Solose-v2:        7241
+#MBmini   :        bcm7358    #Miraclebox Micro: bcm7362     #Uno4kSE  :    7252s    #Duo      :    7335             #Solose   :        7241
+                                                             #Zero 4K  :    72604    #Solo2    :    7356
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.50'
+UPDATEVERSION = '6.050'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1243,25 +1223,27 @@ class UruchamianieImage(Screen):
             if fileExists('/media/mmc/etc/init.d/neobootmount.sh'):
                 os.system('rm -f /media/mmc/etc/init.d/neobootmount.sh;')
 
-            #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
-            if getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':                                      
-                        if getImageNeoBoot() == 'Flash':                                        
-                            self.session.open(TryQuitMainloop, 2)
+            #Octagon SF4008, DM900
+            if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':                  
+                        if getImageNeoBoot() == 'Flash':                    
+                            if fileExists('/.multinfo'):   
+                                os.system('cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init; /etc/init.d/reboot')                 
+                            elif not fileExists('/.multinfo'): 
+                                os.system('ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot')
                         elif getImageNeoBoot() != 'Flash':                     
-                                cmd='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot' 
-                                self.session.open(Console, _('NeoBoot Arm....'), [cmd])                                                         
+                                os.system('ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot')                                                          
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
                             self.close()
 
-            #Octagon SF4008, DM900
-            elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':                  
+            #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
+            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':                                      
                         if getImageNeoBoot() == 'Flash':                                        
                             self.session.open(TryQuitMainloop, 2)
                         elif getImageNeoBoot() != 'Flash':                     
-                                cmd0='ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'  
-                                self.session.open(Console, _('NeoBoot Arm....'), [cmd0])                                                        
+                                cmd='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot' 
+                                self.session.open(Console, _('NeoBoot Arm....'), [cmd])                                                         
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
                             self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
