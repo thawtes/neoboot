@@ -52,7 +52,7 @@ import time
                                                              #Zero 4K  :    72604    #Solo2    :    7356
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.50'
+UPDATEVERSION = '6.51'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -272,9 +272,9 @@ class Montowanie(Screen):
             self.sel = self.sel[2]
         if self.sel == 0:
             if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg'):
-                system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
+                system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg; touch /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
             if fileExists('/etc/devicemanager.cfg'):
-                system(' rm -f /etc/devicemanager.cfg')
+                system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
             cmd = '/media/neoboot/ImageBoot/Backup_NeoBoot.sh '
             from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
             self.session.open(ManagerDevice)
@@ -425,7 +425,7 @@ class NeoBootInstallation(Screen):
     def device2(self, yesno):
         if yesno:
             if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg'):
-                system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
+                system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg; touch /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
             if fileExists('/etc/devicemanager.cfg'):
                 system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
             from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
@@ -572,7 +572,7 @@ class NeoBootInstallation(Screen):
                         os.system('dd if=/dev/mmcblk0p4 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel())      
 
                     #VUPLUS MIPS                                                                                                                                                                                                                 
-                    elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7358' or getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero' or getBoxHostName() == 'mbmini':   
+                    elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini':   
                         if os.system('opkg list-installed | grep mtd-utils') != 0:
                             os.system('opkg install mtd-utils')
                         if os.system('opkg list-installed | grep mtd-utils-ubifs') != 0:                                                                                                                                                                                                                                                                                                                                                
@@ -592,7 +592,7 @@ class NeoBootInstallation(Screen):
                         os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nfidump; chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump; rm -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; cd')
                         os.system('chmod 755 /sbin/neoinitmips; chmod 0755 /sbin/neoinitmipsvu')
    
-                        if getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':
+                        if getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getTunerModel() == 'ini-1000sv':
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; mv ./bin/fontforneoboot.ttf /usr/share/fonts; mv ./bin/libpngneo /usr/lib; cp -f ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 ./bin/neobm; chmod 0755 /usr/lib/libpngneo; cd; chmod 0755 /sbin/neoinitmips; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage')
 
                         elif getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo':
@@ -641,7 +641,11 @@ class NeoBootInstallation(Screen):
                         os.system('rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/rebootbot')
 
                     os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/*')                                                            
-                    self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
+
+                    if fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
+                        self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
+                    elif not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
+                        self.myclose2(_('Error - nie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) )) 
 
                 except:
                         pass
@@ -796,6 +800,10 @@ class NeoBootImageChoose(Screen):
         self.session.open(Montowanie)
 
     def close_exit(self):
+        if not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
+            mess = _('Error - nie odnaleziono pliku kernela zImage-ipk ')
+            self.session.open(MessageBox, mess, MessageBox.TYPE_INFO)
+
         if fileExists('/.multinfo'):            
             with open('/media/neoboot/ImageBoot/.neonextboot', 'r') as f:
                 imagefile = f.readline().strip()
@@ -1129,7 +1137,7 @@ class NeoBootImageChoose(Screen):
     def ImageInstall(self):
         if not fileExists('/.multinfo'):
             KERNEL_VERSION = getKernelVersionString()        
-            if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getBoxHostName() == 'dm900' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'mbmini':                   
+            if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getBoxHostName() == 'dm900' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini':                   
                 self.extractImage()                
             else:
                 self.messagebox = self.session.open(MessageBox, _('Nie wykryto odpowiedniego STB do instalacji !!!!'), MessageBox.TYPE_INFO, 8)
@@ -1238,7 +1246,7 @@ class UruchamianieImage(Screen):
                             self.close()
 
             #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
-            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getTunerModel() == 'ini-1000sv':                                      
+            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getTunerModel() == 'ini-1000sv':                                      
                         if getImageNeoBoot() == 'Flash':                                        
                             self.session.open(TryQuitMainloop, 2)
                         elif getImageNeoBoot() != 'Flash':                     
