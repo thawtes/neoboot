@@ -341,8 +341,7 @@ class DevicesConf(Screen, ConfigListScreen):
          ('/media/usb', '/media/usb'),
          ('/media/usb1', '/media/usb1'),
          ('/media/usb2', '/media/usb2'),
-         ('/media/usb3', '/media/usb3'),
-         ('/media/neoboot', '/media/neoboot')]))
+         ('/media/usb3', '/media/usb3')]))
         if dtype == 'Linux':
             dtype = 'ext3'
         else:
@@ -354,8 +353,11 @@ class DevicesConf(Screen, ConfigListScreen):
             pass
 
     def saveMypoints(self):
-        system('mount media -a')
-        system('cp -r -f /etc/fstab /etc/fstab.org')
+        system('mount media -a') 
+        if fileExists('/etc/fstab.org'):        
+            system('cp -r -f /etc/fstab.org /etc/fstab; rm /etc/fstab.org ')                               
+        elif not fileExists('/etc/fstab.org'):
+            system('cp -r -f /etc/fstab /etc/fstab.org')
         self.Console = Console()
         mycheck = False
         for x in self['config'].list:
