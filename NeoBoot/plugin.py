@@ -183,13 +183,13 @@ class MyHelp(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
         skin = """<screen position="center,center" size="1920,1080" borderWidth="0" borderColor="transpBlack" flags="wfNoBorder">
-        \n\n\n<eLabel text="INFORMACJE NeoBoot" font="Regular; 35" position="71,20" size="1777,112" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />
-        \n<widget name="lab1" position="69,134" size="1780,913" font="Regular;35"    />
-        \n</screen>"""
+                    <eLabel text="INFORMACJE NeoBoot" font="Regular; 35" position="71,20" size="1777,112" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />
+                    <widget name="lab1" position="69,134" size="1780,913" font="Regular;35"    />
+                  </screen>"""
     else:
         skin = """<screen position="center,center" size="1280,720" title="NeoBoot - Informacje">
-        \n<widget name="lab1" position="18,19" size="1249,615" font="Regular;20" backgroundColor="black" transparent="1" />
-        \n</screen>"""
+                    <widget name="lab1" position="18,19" size="1249,615" font="Regular;20" backgroundColor="black" transparent="1" />
+                  </screen>"""
     __module__ = __name__
 
     def __init__(self, session):
@@ -298,14 +298,18 @@ class Opis(Screen):
             self.close()
 
 class Montowanie(Screen):
-    skin = """\n\t<screen position="center,center" size="590,330" title="Devices Panel">
-    \n\t\t<widget source="list" render="Listbox" position="10,16" size="570,300" scrollbarMode="showOnDemand" >
-    \n\t\t\t<convert type="TemplatedMultiContent">\n                \t\t{"template": [
-    \n                    \t\t\tMultiContentEntryText(pos = (50, 1), size = (520, 36), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
-    \n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (4, 2), size = (36, 36), png = 1),\n                    \t\t\t],
-    \n                    \t\t\t"fonts": [gFont("Regular", 22)],\n                    \t\t\t"itemHeight": 36\n                \t\t}
-    \n            \t\t</convert>\n\t\t</widget>
-    \n        </screen>"""
+    skin = """<screen position="center,center" size="590,330" title="Devices Panel">
+                <widget source="list" render="Listbox" position="10,16" size="570,300" scrollbarMode="showOnDemand" >
+                  <convert type="TemplatedMultiContent">
+                    {"template": [MultiContentEntryText(pos = (50, 1), size = (520, 36), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
+                                  MultiContentEntryPixmapAlphaTest(pos = (4, 2), size = (36, 36), png = 1),
+                                 ],
+                                 "fonts": [gFont("Regular", 22)],
+                                 "itemHeight": 36
+                    }
+                  </convert>
+                </widget>
+              </screen>"""
     __module__ = __name__
 
     def __init__(self, session):
@@ -343,22 +347,22 @@ class NeoBootInstallation(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
         skin = """<screen position="410,138" size="1200,850" title="NeoBoot">
-        \n <widget name="label3" position="10,632" size="1178,114" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="blue" />
-        \n <ePixmap position="643,282" zPosition="-2" size="531,331" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrix.png" />
-        <eLabel position="15,76" size="1177,2" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="10,622" size="1168,3" backgroundColor="blue" foregroundColor="blue" name="linia" />
-        <eLabel position="14,752" size="1168,3" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="15,276" size="1183,2" backgroundColor="blue" foregroundColor="blue" name="linia" />
-        <widget name="label1" position="14,4" size="1180,62" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="red" />
-        \n  <widget name="label2" position="15,82" size="1178,190" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="blue" />
-        \n  <widget name="config" position="15,285" size="641,329" font="Regular; 32" itemHeight="42" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor.png" scrollbarMode="showOnDemand" />
-        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="48,812" size="140,28" alphatest="on" />
-        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="311,816" size="185,28" alphatest="on" />
-        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="614,815" size="150,28" alphatest="on" />
-        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="958,817" size="140,26" alphatest="on" />
-        \n  <widget name="key_red" position="19,760" zPosition="1" size="221,47" font="Regular; 35" halign="center" valign="center" backgroundColor="red" transparent="1" foregroundColor="red" />
-        \n  <widget name="key_green" position="289,761" zPosition="1" size="227,47" font="Regular; 35" halign="center" valign="center" backgroundColor="green" transparent="1" foregroundColor="green" />
-        \n  <widget name="key_yellow" position="583,760" zPosition="1" size="224,51" font="Regular; 35" halign="center" valign="center" backgroundColor="yellow" transparent="1" foregroundColor="yellow" />
-        \n  <widget name="key_blue" position="856,761" zPosition="1" size="326,52" font="Regular; 35" halign="center" valign="center" backgroundColor="blue" transparent="1" foregroundColor="blue" />
-        \n</screen>"""
+                    <widget name="label3" position="10,632" size="1178,114" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="blue" />
+                    <ePixmap position="643,282" zPosition="-2" size="531,331" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrix.png" />
+                    <eLabel position="15,76" size="1177,2" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="10,622" size="1168,3" backgroundColor="blue" foregroundColor="blue" name="linia" />
+                    <eLabel position="14,752" size="1168,3" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="15,276" size="1183,2" backgroundColor="blue" foregroundColor="blue" name="linia" />
+                    <widget name="label1" position="14,4" size="1180,62" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="red" />
+                    <widget name="label2" position="15,82" size="1178,190" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="blue" />
+                    <widget name="config" position="15,285" size="641,329" font="Regular; 32" itemHeight="42" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor.png" scrollbarMode="showOnDemand" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="48,812" size="140,28" alphatest="on" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="311,816" size="185,28" alphatest="on" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="614,815" size="150,28" alphatest="on" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="958,817" size="140,26" alphatest="on" />
+                    <widget name="key_red" position="19,760" zPosition="1" size="221,47" font="Regular; 35" halign="center" valign="center" backgroundColor="red" transparent="1" foregroundColor="red" />
+                    <widget name="key_green" position="289,761" zPosition="1" size="227,47" font="Regular; 35" halign="center" valign="center" backgroundColor="green" transparent="1" foregroundColor="green" />
+                    <widget name="key_yellow" position="583,760" zPosition="1" size="224,51" font="Regular; 35" halign="center" valign="center" backgroundColor="yellow" transparent="1" foregroundColor="yellow" />
+                    <widget name="key_blue" position="856,761" zPosition="1" size="326,52" font="Regular; 35" halign="center" valign="center" backgroundColor="blue" transparent="1" foregroundColor="blue" />
+                </screen>"""
     else:
         skin = """<screen position="center, center" size="835, 500" title="NeoBoot">
         <ePixmap position="0,0" zPosition="-1" size="835,500" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/frame835x500.png"  />
@@ -411,11 +415,11 @@ class NeoBootInstallation(Screen):
 
     def updateList(self):
         if fileExists('/proc/mounts'):
-            f = open('/proc/mounts', 'r')
-            for line in f.readlines():
-                if line.startswith('/dev/sd') and line.find('ext4') != -1 and line.find('/media/neoboot') == -1:
-                    try: self.list.append(line.split(' ')[1] + '/')
-                    except Exception: pass # nie powinno sie zdarzyc, ale w razie czego
+            with open('/proc/mounts', 'r') as f:
+                for line in f.readlines():
+                    if line.startswith('/dev/sd') and line.find('/media/neoboot') == -1 and (line.find('ext4') != -1 or line.find('ext3') != -1):
+                        try: self.list.append(line.split(' ')[1] + '/')
+                        except Exception: pass # nie powinno sie zdarzyc, ale w razie czego
         if len(self.list) == 0:
             self['label2'].setText(_('Sorry it seems that there are not Linux formatted devices mounted on your STB. To install NeoBoot you need a Linux formatted part1 device. Click on the blue button to open Devices Panel'))
         self['config'].setList(self.list)
@@ -481,41 +485,18 @@ class NeoBootInstallation(Screen):
     def first_installation(self):
         check = False
         if fileExists('/proc/mounts'):
-            fileExists('/proc/mounts')
-            f = open('/proc/mounts', 'r')
-            for line in f.readlines():
-                if line.find('/media/cf') != -1:
-                    check = True
-                    continue
-                if line.find('/media/usb') != -1:
-                    check = True
-                    continue
-                if line.find('/media/usb2') != -1:
-                    check = True
-                    continue
-                if line.find('/media/usb3') != -1:
-                    check = True
-                    continue
-                if line.find('/media/card') != -1:
-                    check = True
-                    continue
-                if line.find('/media/ntfs') != -1:
-                    check = True
-                    continue
-                if line.find('/hdd') != -1:
-                    check = True
-                    continue
+            with open('/proc/mounts', 'r') as f:
+                for line in f.readlines():
+                    if line.startswith('/dev/sd') and line.find('/media/neoboot') == -1 and (line.find('ext4') != -1 or line.find('ext3') != -1):
+                        check = True
+                        break
 
-            f.close()
-        else:
-            fileExists('/proc/mounts')
         if check == False:
             self.session.open(MessageBox, _('Sorry, there is not any connected devices in your STB.\nPlease connect HDD or USB to install NeoBoot!'), MessageBox.TYPE_INFO)
         else:
             if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/fstab'):
                 self.session.open(MessageBox, _('Device Manager encountered an error, disk drives not installed correctly !!!'), MessageBox.TYPE_INFO)
                 self.close()
-            fileExists('/boot/dummy')
             self.mysel = self['config'].getCurrent()
             if self.checkReadWriteDir(self.mysel):
                 message = _('Do You really want to install NeoBoot in:\n ') + self.mysel + '?'
