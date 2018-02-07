@@ -410,66 +410,16 @@ class NeoBootInstallation(Screen):
             pass
 
     def updateList(self):
-        mycf, myusb, myusb2, myusb3, mysd, myhdd = ('', '', '', '', '', '')
-        myoptions = []
         if fileExists('/proc/mounts'):
-            fileExists('/proc/mounts')
             f = open('/proc/mounts', 'r')
             for line in f.readlines():
-                if line.find('/media/cf') != -1:
-                    mycf = '/media/cf/'
-                    continue
-                if line.find('/media/usb') != -1:
-                    myusb = '/media/usb/'
-                    continue
-                if line.find('/media/usb2') != -1:
-                    myusb2 = '/media/usb2/'
-                    continue
-                if line.find('/media/usb3') != -1:
-                    myusb3 = '/media/usb3/'
-                    continue
-                if line.find('/media/card') != -1:
-                    mysd = '/media/card/'
-                    continue
-                if line.find('/media/ntfs') != -1:
-                    mysd = '/media/ntfs/'
-                    continue
-                if line.find('/hdd') != -1:             
-                    myhdd = '/media/hdd/'
-                    continue
-
-            f.close()
-        else:
+                if line.startswith('/dev/sd') and line.find('ext4') != -1 and line.find('/media/neoboot') == -1:
+                    try: self.list.append(line.split(' ')[1] + '/')
+                    except Exception: pass # nie powinno sie zdarzyc, ale w razie czego
+        if len(self.list) == 0:
             self['label2'].setText(_('Sorry it seems that there are not Linux formatted devices mounted on your STB. To install NeoBoot you need a Linux formatted part1 device. Click on the blue button to open Devices Panel'))
-            fileExists('/proc/mounts')
-        if mycf:
-            self.list.append(mycf)
-        else:
-            mycf
-        if myusb:
-            self.list.append(myusb)
-        else:
-            myusb
-        if myusb2:
-            self.list.append(myusb2)
-        else:
-            myusb2
-        if myusb3:
-            self.list.append(myusb3)
-        else:
-            myusb3
-        if mysd:
-            mysd
-            self.list.append(mysd)
-        else:
-            mysd
-        if myhdd:
-            myhdd
-            self.list.append(myhdd)
-        else:
-            myhdd
         self['config'].setList(self.list)
-
+ 
     def checkReadWriteDir(self, configele):
         from Plugins.Extensions.NeoBoot.files import Harddisk
         import os.path
@@ -1743,27 +1693,23 @@ def checkversion(session):
 
 def main(session, **kwargs):
     try:
-        f = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r')
-        mypath = f.readline().strip()
-        f.close()
+        doMount=True
+        with open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.location', 'r') as f:
+            mypath = f.readline().strip()
         if not os.path.exists('/media/neoboot'):
             system('mkdir /media/neoboot')
-        cmd = 'mount ' + mypath + ' /media/neoboot'
-        system(cmd)
-        f = open('/proc/mounts', 'r')
-        for line in f.readlines():
-            if line.find('/media/neoboot') != -1:
-                line = line[0:9]
-                break
-
-        cmd = 'mount ' + line + ' ' + mypath
-        system(cmd)
-        cmd = 'mount ' + mypath + ' /media/neoboot'
-        system(cmd)
-    except:
+        with open('/proc/mounts', 'r') as f:
+            for line in f.readlines():
+                if line.find('/media/neoboot') != -1:
+                    doMount=False
+                    break
+        if doMount:
+            cmd = 'mount ' + mypath + ' /media/neoboot'
+            system(cmd)
+    except Exception:
         pass
 
-    checkversion(session)
+    checkversion(session) 
 
 def menu(menuid, **kwargs):
     if menuid == 'mainmenu':
