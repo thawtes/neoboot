@@ -16,7 +16,7 @@ def localeInit():
 def _(txt):
     t = gettext.dgettext(PluginLanguageDomain, txt)
     if t == txt:
-        print '[NeoBoot] fallback to default translation for', txt
+        #print '[NeoBoot] fallback to default translation for', txt
         t = gettext.dgettext('enigma2', txt)
     return t
 

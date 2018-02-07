@@ -7,7 +7,7 @@ if `grep -q 'osd.language=pl_PL' </etc/enigma2/settings`; then
 fi
 [ -e /tmp/neoboot.zip ] && rm -f /tmp/neoboot.zip
 [ -e /tmp/neoboot-master ] && rm -rf /tmp/neoboot-master
-[ $PL ] && echo "Pobieranie pliku..." || echo "Downloading the file..."
+[ $PL ] && echo "Pobieranie archiwum..." || echo "Downloading archive file..."
 URL='https://github.com/gutosie/neoboot/archive/master.zip'
 curl -kLs $URL  -o /tmp/neoboot.zip
 cd /tmp/
