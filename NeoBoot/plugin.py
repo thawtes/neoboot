@@ -57,9 +57,37 @@ UPDATEVERSION = '6.51'
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
-        skin = '<screen position="center,center" size="1280,570" title="Tools Neoboot">\n\t\t\t<ePixmap position="594,226" zPosition="-2" size="623,313" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrix.png" /> <widget source="list" render="Listbox" position="33,127" size="1229,82" scrollbarMode="showOnDemand">\n\t\t\t\t<convert type="TemplatedMultiContent">\n                \t\t{"template": [\n                    \t\t\tMultiContentEntryText(pos = (90, 1), size = (920, 66), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),\n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (8, 4), size = (66, 66), png = 1),\n                    \t\t\t],\n                    \t\t\t"fonts": [gFont("Regular", 40)],\n                    \t\t\t"itemHeight": 66\n                \t\t}\n            \t\t</convert>\n\t\t</widget>\n    <eLabel text="NeoBoot wykry\xc5\x82 nowsz\xc4\x85 wersj\xc4\x99. " font="Regular; 40" position="27,40" size="1042,70" halign="center" foregroundColor="red" backgroundColor="black" transparent="1" />\n\t\t <eLabel text="EXIT - Zrezygnuj" font="Regular; 40" position="27,441" size="389,80" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />\n\t\t        </screen>'
+        skin = """<screen position="center,center" size="1280,570" title="Tools Neoboot">
+                  <ePixmap position="594,226" zPosition="-2" size="623,313" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrix.png" />
+                  <widget source="list" render="Listbox" position="33,127" size="1229,82" scrollbarMode="showOnDemand">
+                  <convert type="TemplatedMultiContent">\
+                    {"template": [MultiContentEntryText(pos = (90, 1), size = (920, 66), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
+                                  MultiContentEntryPixmapAlphaTest(pos = (8, 4), size = (66, 66), png = 1),
+                                 ],
+                                 "fonts": [gFont("Regular", 40)],
+                                 "itemHeight": 66
+                    }
+                  </convert>
+                  </widget>
+                  <eLabel text="NeoBoot wykry\xc5\x82 nowsz\xc4\x85 wersj\xc4\x99. " font="Regular; 40" position="27,40" size="1042,70" halign="center" foregroundColor="red" backgroundColor="black" transparent="1" />
+                  <eLabel text="EXIT - Zrezygnuj" font="Regular; 40" position="27,441" size="389,80" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />
+                </screen>"""
     else:
-        skin = '<screen position="center,center" size="1127,569" title="Tools NeoBoot">\n\t\t\t<ePixmap position="492,223" zPosition="-2" size="589,298" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrix.png" /> <widget source="list" render="Listbox" position="18,122" size="1085,82" scrollbarMode="showOnDemand">\n\t\t\t\t<convert type="TemplatedMultiContent">\n                \t\t{"template": [\n                    \t\t\tMultiContentEntryText(pos = (90, 1), size = (920, 66), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),\n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (8, 4), size = (66, 66), png = 1),\n                    \t\t\t],\n                    \t\t\t"fonts": [gFont("Regular", 40)],\n                    \t\t\t"itemHeight": 66\n                \t\t}\n            \t\t</convert>\n\t\t</widget>\n    <eLabel text="NeoBoot wykry\xc5\x82 nowsz\xc4\x85 wersj\xc4\x99 wtyczki. " font="Regular; 40" position="27,40" size="1042,70" halign="center" foregroundColor="red" backgroundColor="black" transparent="1" />\n\t\t <eLabel text="EXIT - Zrezygnuj" font="Regular; 40" position="27,441" size="389,80" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />\n\t\t        </screen>'
+        skin = """<screen position="center,center" size="1127,569" title="Tools NeoBoot">
+                  <ePixmap position="492,223" zPosition="-2" size="589,298" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrix.png" />
+                  <widget source="list" render="Listbox" position="18,122" size="1085,82" scrollbarMode="showOnDemand">
+                    <convert type="TemplatedMultiContent">
+                      {"template": [MultiContentEntryText(pos = (90, 1), size = (920, 66), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
+                                    MultiContentEntryPixmapAlphaTest(pos = (8, 4), size = (66, 66), png = 1),
+                                   ],
+                                   "fonts": [gFont("Regular", 40)],
+                                   "itemHeight": 66
+                      }
+                    </convert>
+                  </widget>
+                  <eLabel text="NeoBoot wykry\xc5\x82 nowsz\xc4\x85 wersj\xc4\x99 wtyczki. " font="Regular; 40" position="27,40" size="1042,70" halign="center" foregroundColor="red" backgroundColor="black" transparent="1" />
+                  <eLabel text="EXIT - Zrezygnuj" font="Regular; 40" position="27,441" size="389,80" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />
+                </screen>"""
     __module__ = __name__
 
     def __init__(self, session):
@@ -104,9 +132,9 @@ class MyUpgrade(Screen):
 class MyUpgrade2(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
-        skin = '<screen position="center,center" size="900,450" title="NeoBoot">\n\t\t<widget name="lab1" position="23,42" size="850,350" font="Regular;35" halign="center" valign="center" transparent="1" />\n</screen>'
+        skin = '<screen position="center,center" size="900,450" title="NeoBoot"><widget name="lab1" position="23,42" size="850,350" font="Regular;35" halign="center" valign="center" transparent="1"/></screen>'
     else:
-        skin = '<screen position="center,center" size="400,200" title="NeoBoot">\n\t\t<widget name="lab1" position="10,10" size="380,180" font="Regular;24" halign="center" valign="center" transparent="1"/>\n\t</screen>'
+        skin = '<screen position="center,center" size="400,200" title="NeoBoot"><widget name="lab1" position="10,10" size="380,180" font="Regular;24" halign="center" valign="center" transparent="1"/></screen>'
 
     def __init__(self, session):
         Screen.__init__(self, session)
@@ -154,9 +182,14 @@ class MyUpgrade2(Screen):
 class MyHelp(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
-        skin = '<screen position="center,center" size="1920,1080" borderWidth="0" borderColor="transpBlack" flags="wfNoBorder">\n\n\n<eLabel text="INFORMACJE NeoBoot" font="Regular; 35" position="71,20" size="1777,112" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />\n<widget name="lab1" position="69,134" size="1780,913" font="Regular;35"    />\n</screen>'
+        skin = """<screen position="center,center" size="1920,1080" borderWidth="0" borderColor="transpBlack" flags="wfNoBorder">
+        \n\n\n<eLabel text="INFORMACJE NeoBoot" font="Regular; 35" position="71,20" size="1777,112" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />
+        \n<widget name="lab1" position="69,134" size="1780,913" font="Regular;35"    />
+        \n</screen>"""
     else:
-        skin = '<screen position="center,center" size="1280,720" title="NeoBoot - Informacje">\n<widget name="lab1" position="18,19" size="1249,615" font="Regular;20" backgroundColor="black" transparent="1" />\n</screen>'
+        skin = """<screen position="center,center" size="1280,720" title="NeoBoot - Informacje">
+        \n<widget name="lab1" position="18,19" size="1249,615" font="Regular;20" backgroundColor="black" transparent="1" />
+        \n</screen>"""
     __module__ = __name__
 
     def __init__(self, session):
@@ -189,9 +222,27 @@ class MyHelp(Screen):
 class Opis(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
-        skin = '<screen position="center,center" size="1920,1080" flags="wfNoBorder">   <ePixmap position="0,0" zPosition="-1" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/frame_base-fs8.png"  />  <widget source="session.VideoPicture" render="Pig" position=" 1253,134" size="556,313" zPosition="3" backgroundColor="#ff000000"/>    <eLabel text="INFORMACJE NeoBoot" position="340,50"  size="500,55" font="Regular;40" halign="left" foregroundColor="#58bcff" backgroundColor="black" transparent="1"/>  <widget name="key_red" position="30,950" size="430,50" zPosition="1" font="Regular; 30" halign="center" backgroundColor="red" transparent="1" foregroundColor="white" />          <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/scroll.png" position="1144,160" size="26,685" zPosition="5" alphatest="blend"/>   <ePixmap position="1350,750" zPosition="1" size="400,241" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrixhd.png" />   <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="100,1000" size="230,36" alphatest="blend" />    \n<widget name="lab1" position="100,160" size="1070,680" font="Regular; 30"  backgroundColor="black" transparent="1" />\n</screen>'                  		 		   		
+        skin = """<screen position="center,center" size="1920,1080" flags="wfNoBorder">
+                  <ePixmap position="0,0" zPosition="-1" size="1920,1080" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/frame_base-fs8.png"  />
+                  <widget source="session.VideoPicture" render="Pig" position=" 1253,134" size="556,313" zPosition="3" backgroundColor="#ff000000"/>
+                  <eLabel text="INFORMACJE NeoBoot" position="340,50"  size="500,55" font="Regular;40" halign="left" foregroundColor="#58bcff" backgroundColor="black" transparent="1"/>
+                  <widget name="key_red" position="30,950" size="430,50" zPosition="1" font="Regular; 30" halign="center" backgroundColor="red" transparent="1" foregroundColor="white" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/scroll.png" position="1144,160" size="26,685" zPosition="5" alphatest="blend"/>
+                  <ePixmap position="1350,750" zPosition="1" size="400,241" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrixhd.png" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="100,1000" size="230,36" alphatest="blend" />
+                  <widget name="lab1" position="100,160" size="1070,680" font="Regular; 30"  backgroundColor="black" transparent="1" />
+                </screen>"""                  		 		   		
     else:
-        skin = '<screen position="center,center" size="1280,720" title="NeoBoot - Informacje">\n<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1frame_base-fs8.png"  position="0,0" zPosition="-1" size="1280,720" />\n<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="50,680" size="230,36" alphatest="blend"  />\n<widget name="key_red" position="35,630" zPosition="1" size="270,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" />\n<widget name="lab1" position="50,100" size="730,450" font="Regular;20" backgroundColor="black"  />  <widget source="session.VideoPicture" render="Pig" position=" 836,89" size="370,208" zPosition="3" backgroundColor="#ff000000" />    <widget source="Title" render="Label"  position="200,25" size="800,30" font="Regular;28" halign="left" foregroundColor="#58bcff" backgroundColor="transpBlack" transparent="1"/> <ePixmap position="920,520" zPosition="1" size="228,130" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1matrix.png" />   <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/scroll.png" position="754,100" size="26,455" zPosition="5" alphatest="blend"/> backgroundColor="black" transparent="1" \n</screen>'
+        skin = """<screen position="center,center" size="1280,720" title="NeoBoot - Informacje">
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1frame_base-fs8.png"  position="0,0" zPosition="-1" size="1280,720" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="50,680" size="230,36" alphatest="blend"  />
+                  <widget name="key_red" position="35,630" zPosition="1" size="270,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" />
+                  <widget name="lab1" position="50,100" size="730,450" font="Regular;20" backgroundColor="black"  />
+                  <widget source="session.VideoPicture" render="Pig" position=" 836,89" size="370,208" zPosition="3" backgroundColor="#ff000000" />
+                  <widget source="Title" render="Label"  position="200,25" size="800,30" font="Regular;28" halign="left" foregroundColor="#58bcff" backgroundColor="transpBlack" transparent="1"/>
+                  <ePixmap position="920,520" zPosition="1" size="228,130" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1matrix.png" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/scroll.png" position="754,100" size="26,455" zPosition="5" alphatest="blend" backgroundColor="black" transparent="1" />
+                </screen>"""
     __module__ = __name__
 
     def __init__(self, session):
@@ -247,7 +298,14 @@ class Opis(Screen):
             self.close()
 
 class Montowanie(Screen):
-    skin = '\n\t<screen position="center,center" size="590,330" title="Devices Panel">\n\t\t<widget source="list" render="Listbox" position="10,16" size="570,300" scrollbarMode="showOnDemand" >\n\t\t\t<convert type="TemplatedMultiContent">\n                \t\t{"template": [\n                    \t\t\tMultiContentEntryText(pos = (50, 1), size = (520, 36), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),\n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (4, 2), size = (36, 36), png = 1),\n                    \t\t\t],\n                    \t\t\t"fonts": [gFont("Regular", 22)],\n                    \t\t\t"itemHeight": 36\n                \t\t}\n            \t\t</convert>\n\t\t</widget>\n        </screen>'
+    skin = """\n\t<screen position="center,center" size="590,330" title="Devices Panel">
+    \n\t\t<widget source="list" render="Listbox" position="10,16" size="570,300" scrollbarMode="showOnDemand" >
+    \n\t\t\t<convert type="TemplatedMultiContent">\n                \t\t{"template": [
+    \n                    \t\t\tMultiContentEntryText(pos = (50, 1), size = (520, 36), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
+    \n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (4, 2), size = (36, 36), png = 1),\n                    \t\t\t],
+    \n                    \t\t\t"fonts": [gFont("Regular", 22)],\n                    \t\t\t"itemHeight": 36\n                \t\t}
+    \n            \t\t</convert>\n\t\t</widget>
+    \n        </screen>"""
     __module__ = __name__
 
     def __init__(self, session):
@@ -284,9 +342,39 @@ class Montowanie(Screen):
 class NeoBootInstallation(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
-        skin = '<screen position="410,138" size="1200,850" title="NeoBoot">\n <widget name="label3" position="10,632" size="1178,114" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="blue" />\n <ePixmap position="643,282" zPosition="-2" size="531,331" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrix.png" />  <eLabel position="15,76" size="1177,2" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="10,622" size="1168,3" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="14,752" size="1168,3" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="15,276" size="1183,2" backgroundColor="blue" foregroundColor="blue" name="linia" /><widget name="label1" position="14,4" size="1180,62" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="red" />\n  <widget name="label2" position="15,82" size="1178,190" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="blue" />\n  <widget name="config" position="15,285" size="641,329" font="Regular; 32" itemHeight="42" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor.png" scrollbarMode="showOnDemand" />\n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="48,812" size="140,28" alphatest="on" />\n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="311,816" size="185,28" alphatest="on" />\n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="614,815" size="150,28" alphatest="on" />  \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="958,817" size="140,26" alphatest="on" />\n  <widget name="key_red" position="19,760" zPosition="1" size="221,47" font="Regular; 35" halign="center" valign="center" backgroundColor="red" transparent="1" foregroundColor="red" />\n  <widget name="key_green" position="289,761" zPosition="1" size="227,47" font="Regular; 35" halign="center" valign="center" backgroundColor="green" transparent="1" foregroundColor="green" />\n  <widget name="key_yellow" position="583,760" zPosition="1" size="224,51" font="Regular; 35" halign="center" valign="center" backgroundColor="yellow" transparent="1" foregroundColor="yellow" />  \n  <widget name="key_blue" position="856,761" zPosition="1" size="326,52" font="Regular; 35" halign="center" valign="center" backgroundColor="blue" transparent="1" foregroundColor="blue" />\n</screen>'
+        skin = """<screen position="410,138" size="1200,850" title="NeoBoot">
+        \n <widget name="label3" position="10,632" size="1178,114" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="blue" />
+        \n <ePixmap position="643,282" zPosition="-2" size="531,331" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrix.png" />
+        <eLabel position="15,76" size="1177,2" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="10,622" size="1168,3" backgroundColor="blue" foregroundColor="blue" name="linia" />
+        <eLabel position="14,752" size="1168,3" backgroundColor="blue" foregroundColor="blue" name="linia" /><eLabel position="15,276" size="1183,2" backgroundColor="blue" foregroundColor="blue" name="linia" />
+        <widget name="label1" position="14,4" size="1180,62" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="red" />
+        \n  <widget name="label2" position="15,82" size="1178,190" zPosition="1" halign="center" font="Regular;35" backgroundColor="black" transparent="1" foregroundColor="blue" />
+        \n  <widget name="config" position="15,285" size="641,329" font="Regular; 32" itemHeight="42" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor.png" scrollbarMode="showOnDemand" />
+        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="48,812" size="140,28" alphatest="on" />
+        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="311,816" size="185,28" alphatest="on" />
+        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="614,815" size="150,28" alphatest="on" />
+        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="958,817" size="140,26" alphatest="on" />
+        \n  <widget name="key_red" position="19,760" zPosition="1" size="221,47" font="Regular; 35" halign="center" valign="center" backgroundColor="red" transparent="1" foregroundColor="red" />
+        \n  <widget name="key_green" position="289,761" zPosition="1" size="227,47" font="Regular; 35" halign="center" valign="center" backgroundColor="green" transparent="1" foregroundColor="green" />
+        \n  <widget name="key_yellow" position="583,760" zPosition="1" size="224,51" font="Regular; 35" halign="center" valign="center" backgroundColor="yellow" transparent="1" foregroundColor="yellow" />
+        \n  <widget name="key_blue" position="856,761" zPosition="1" size="326,52" font="Regular; 35" halign="center" valign="center" backgroundColor="blue" transparent="1" foregroundColor="blue" />
+        \n</screen>"""
     else:
-        skin = '<screen position="center, center" size="835, 500" title="NeoBoot">         <ePixmap position="0,0" zPosition="-1" size="835,500" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/frame835x500.png"  />   <widget name="label1" position="10,15" size="840,30" zPosition="1" halign="center" font="Regular;25" foregroundColor="red" backgroundColor="black" transparent="1" />\n  <widget name="label2" position="7,100" size="840,296" zPosition="1" halign="center" font="Regular;20" backgroundColor="black" foregroundColor="#58ccff" transparent="1"/>   <widget name="config" position="220,200" size="440,207" backgroundColor="black" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor1.png" scrollbarMode="showOnDemand"  />  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="48,406" size="140,40" alphatest="on"    />\n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="246,406" size="140,40" alphatest="on" />\n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="474,406" size="150,40" alphatest="on" />  \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="675,406" size="140,40" alphatest="on" />\n  <widget name="key_red" position="48,406" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" />\n  <widget name="key_green" position="248,406" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="green" transparent="1" />\n  <widget name="key_yellow" position="474,406" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" transparent="1" />  \n  <widget name="key_blue" position="672,415" zPosition="1" size="145,45" font="Regular;20" halign="center" valign="center" backgroundColor="blue" transparent="1" />\n  <widget name="label3" position="20,339" size="816,61" zPosition="1" halign="center" font="Regular;24" backgroundColor="black" transparent="1" foregroundColor="#58ccff" /></screen>'
+        skin = """<screen position="center, center" size="835, 500" title="NeoBoot">
+        <ePixmap position="0,0" zPosition="-1" size="835,500" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/frame835x500.png"  />
+        <widget name="label1" position="10,15" size="840,30" zPosition="1" halign="center" font="Regular;25" foregroundColor="red" backgroundColor="black" transparent="1" />
+        \n  <widget name="label2" position="7,100" size="840,296" zPosition="1" halign="center" font="Regular;20" backgroundColor="black" foregroundColor="#58ccff" transparent="1"/>
+        <widget name="config" position="220,200" size="440,207" backgroundColor="black" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor1.png" scrollbarMode="showOnDemand"  />
+        <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="48,406" size="140,40" alphatest="on"    />
+        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="246,406" size="140,40" alphatest="on" />
+        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="474,406" size="150,40" alphatest="on" />
+        \n  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="675,406" size="140,40" alphatest="on" />
+        \n  <widget name="key_red" position="48,406" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" />
+        \n  <widget name="key_green" position="248,406" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="green" transparent="1" />
+        \n  <widget name="key_yellow" position="474,406" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="yellow" transparent="1" />
+        \n  <widget name="key_blue" position="672,415" zPosition="1" size="145,45" font="Regular;20" halign="center" valign="center" backgroundColor="blue" transparent="1" />
+        \n  <widget name="label3" position="20,339" size="816,61" zPosition="1" halign="center" font="Regular;24" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />
+        </screen>"""
 
     def __init__(self, session):
         Screen.__init__(self, session)
@@ -713,7 +801,48 @@ class NeoBootImageChoose(Screen):
         <widget name="label19" position="69,878" zPosition="1" size="513,99" font="Regular;35" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#00FF00" />         
         </screen>"""
     else:
-	    skin = '<screen name="NeoBootImageChoose" position="center,center" size="1280, 720" backgroundColor="transpBlack">\n\t\t\t\t\t\t\t <ePixmap position="0,0" zPosition="-1" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1frame_base-fs8.png"  />\n\t\t\t\t\t\t\t <widget source="session.VideoPicture" render="Pig" position=" 836,89" size="370,208" zPosition="3" backgroundColor="#ff000000"/>  \n\t\t\t\t\t\t\t        <ePixmap position="870,304" zPosition="-1" size="300,14"  pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1chan_p1_bar.png" alphatest="on" />\n\t\t\t\t\t\t\t     <widget source="Title" render="Label"  position="0,5" size="800,30" font="Regular;28" halign="left" foregroundColor="#58bcff" backgroundColor="transpBlack" transparent="1"/>     \n\t\t\t\t\t\t\t  <widget name="label9" position="100,45" zPosition="10" size="800,30" font="Regular;24"  foregroundColor="#58bcff" backgroundColor="black" halign="left"  transparent="1" />     <widget name="config"  enableWrapAround="1" position="30,150" size="270,370" itemHeight="25" font="Regular;18" zPosition="2"  selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1channel_sel.png" foregroundColor="#00cc99" scrollbarMode="showNever" transparent="1" />      <widget name="device_icon" position="530,80" size="146,136" alphatest="on" zPosition="2" />           <widget name="progreso" position="400,200" size="300,10" borderWidth="1" zPosition="3" foregroundColor="white" />        <widget name="label3" position="380,230" zPosition="1" size="450,60" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />    <ePixmap position="300,310" zPosition="4" size="500,4" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/separator.png" alphatest="blend" transparent="1"  />    <widget name="label2" position="310,340" zPosition="1" size="400,22" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />    <widget name="label5" position="630,340" zPosition="1" size="340,22" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />    <widget name="label4" position="310,370" zPosition="1" size="606,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />  <widget name="label6" position="630,370" zPosition="1" size="516,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />        <widget name="label8" position="310,400" zPosition="1" size="466,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />      <widget name="label7" position="660,400" zPosition="1" size="308,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />    <eLabel backgroundColor="black" font="Regular; 20" foregroundColor="#58ccff" position="310,450" size="60,25" text="1 &gt;" transparent="1" />    <eLabel backgroundColor="black" font="Regular; 20" foregroundColor="#58ccff" position="310,480" size="60,25" text="2 &gt;" transparent="1" />    <eLabel backgroundColor="black" font="Regular; 20" foregroundColor="#58ccff" position="310,510" size="60,25" text="3 &gt;" transparent="1" />           <eLabel backgroundColor="black" font="Regular; 20" foregroundColor="#58ccff" position="310,540" size="60,25" text="4 &gt;" transparent="1" />     <widget name="key_1" position="360,450" zPosition="1" size="300,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />               <widget name="key_2" position="360,480" zPosition="1" size="350,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />       <widget name="key_3" position="360,510" zPosition="1" size="300,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />   <widget name="label19" position="360,540" zPosition="1" size="450,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />     <ePixmap position="920,480" zPosition="1" size="228,130" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1matrix.png" />   <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="0,650" size="250,40" alphatest="blend" />   <widget name="key_red" position="0,670" zPosition="2" size="250,40"  font="Regular; 20" halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/green25.png" position="200,650" size="230,36" alphatest="blend" />  <widget name="key_green" position="200,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />   <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellow25.png" position="400,650" size="230,36" alphatest="blend" />  <widget name="key_yellow" position="400,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue25.png" position="600,650" size="230,36" alphatest="blend" />  <widget name="key_blue" position="600,670" size="230,38" zPosition="1" font="Regular; 20" halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />    <widget name="key_menu" position="950,640" zPosition="1" size="249,45" font="Regular;22" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58bcff" />   <eLabel backgroundColor="black" font="Regular; 24" foregroundColor="white" position="900,650" size="155,41" text="MENU &gt;" transparent="1" />  <ePixmap position="20,135" zPosition="1" size="280,400" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/border_menu1.png"  /> 	  <widget source="global.CurrentTime" render="Label" position="780,30" size="450,55" font="RegularAA;24" valign="center" halign="center" backgroundColor="transpBlack" foregroundColor="#58bcff"  zPosition="10" transparent="1">     <convert type="ClockToText">Format:%A  %e  %B  %Y </convert>     </widget>  \t\t\t</screen>' 
+	    skin = """<screen name="NeoBootImageChoose" position="center,center" size="1280, 720" backgroundColor="transpBlack">
+	    \n\t\t\t\t\t\t\t <ePixmap position="0,0" zPosition="-1" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1frame_base-fs8.png"  />
+	    \n\t\t\t\t\t\t\t <widget source="session.VideoPicture" render="Pig" position=" 836,89" size="370,208" zPosition="3" backgroundColor="#ff000000"/>
+	    \n\t\t\t\t\t\t\t        <ePixmap position="870,304" zPosition="-1" size="300,14"  pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1chan_p1_bar.png" alphatest="on" />
+	    \n\t\t\t\t\t\t\t     <widget source="Title" render="Label"  position="0,5" size="800,30" font="Regular;28" halign="left" foregroundColor="#58bcff" backgroundColor="transpBlack" transparent="1"/>
+	    \n\t\t\t\t\t\t\t  <widget name="label9" position="100,45" zPosition="10" size="800,30" font="Regular;24"  foregroundColor="#58bcff" backgroundColor="black" halign="left"  transparent="1" />
+	    <widget name="config"  enableWrapAround="1" position="30,150" size="270,370" itemHeight="25" font="Regular;18" zPosition="2"  selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1channel_sel.png" foregroundColor="#00cc99" scrollbarMode="showNever" transparent="1" />
+	    <widget name="device_icon" position="530,80" size="146,136" alphatest="on" zPosition="2" />
+	    <widget name="progreso" position="400,200" size="300,10" borderWidth="1" zPosition="3" foregroundColor="white" />
+	    <widget name="label3" position="380,230" zPosition="1" size="450,60" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />
+	    <ePixmap position="300,310" zPosition="4" size="500,4" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/separator.png" alphatest="blend" transparent="1"  />
+	    <widget name="label2" position="310,340" zPosition="1" size="400,22" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />
+	    <widget name="label5" position="630,340" zPosition="1" size="340,22" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />
+	    <widget name="label4" position="310,370" zPosition="1" size="606,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />
+	    <widget name="label6" position="630,370" zPosition="1" size="516,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />
+	    <widget name="label8" position="310,400" zPosition="1" size="466,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />
+	    <widget name="label7" position="660,400" zPosition="1" size="308,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58ccff" />
+	    <eLabel backgroundColor="black" font="Regular; 20" foregroundColor="#58ccff" position="310,450" size="60,25" text="1 &gt;" transparent="1" />
+	    <eLabel backgroundColor="black" font="Regular; 20" foregroundColor="#58ccff" position="310,480" size="60,25" text="2 &gt;" transparent="1" />
+	    <eLabel backgroundColor="black" font="Regular; 20" foregroundColor="#58ccff" position="310,510" size="60,25" text="3 &gt;" transparent="1" />
+	    <eLabel backgroundColor="black" font="Regular; 20" foregroundColor="#58ccff" position="310,540" size="60,25" text="4 &gt;" transparent="1" /> 
+	    <widget name="key_1" position="360,450" zPosition="1" size="300,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />
+	    <widget name="key_2" position="360,480" zPosition="1" size="350,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />
+	    <widget name="key_3" position="360,510" zPosition="1" size="300,25" font="Regular;20" halign="left" 
+valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />
+<widget name="label19" position="360,540" zPosition="1" size="450,25" font="Regular;20" halign="left" valign="center" backgroundColor="black" transparent="1" foregroundColor="white" />
+<ePixmap position="920,480" zPosition="1" size="228,130" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1matrix.png" />
+<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="0,650" size="250,40" alphatest="blend" />
+<widget name="key_red" position="0,670" zPosition="2" size="250,40"  font="Regular; 20" halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/green25.png" position="200,650" size="230,36" alphatest="blend" />
+<widget name="key_green" position="200,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellow25.png" position="400,650" size="230,36" alphatest="blend" />
+<widget name="key_yellow" position="400,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue25.png" position="600,650" size="230,36" alphatest="blend" />
+<widget name="key_blue" position="600,670" size="230,38" zPosition="1" font="Regular; 20" halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+<widget name="key_menu" position="950,640" zPosition="1" size="249,45" font="Regular;22" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#58bcff" />
+<eLabel backgroundColor="black" font="Regular; 24" foregroundColor="white" position="900,650" size="155,41" text="MENU &gt;" transparent="1" />
+<ePixmap position="20,135" zPosition="1" size="280,400" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/border_menu1.png"  />
+<widget source="global.CurrentTime" render="Label" position="780,30" size="450,55" font="RegularAA;24" valign="center" halign="center" backgroundColor="transpBlack" foregroundColor="#58bcff"  zPosition="10" transparent="1">
+<convert type="ClockToText">Format:%A  %e  %B  %Y </convert>
+</widget>
+\t\t\t</screen>""" 
 
 
     def __init__(self, session):
@@ -1200,9 +1329,31 @@ class NeoBootImageChoose(Screen):
 class UruchamianieImage(Screen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
-        skin = '<screen position="center, center" size="1241, 850" title="NeoBoot">\n\t\t\t<ePixmap position="491, 673" zPosition="-2" size="365, 160" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrixhd.png" /> <widget source="list" render="Listbox" position="20, 171" size="1194, 290" scrollbarMode="showOnDemand">\n\t\t\t\t<convert type="TemplatedMultiContent">\n                \t\t{"template": [\n                    \t\t\tMultiContentEntryText(pos = (90, 1), size = (920, 66), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),\n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (8, 4), size = (66, 66), png = 1),\n                    \t\t\t],\n                    \t\t\t"fonts": [gFont("Regular", 40)],\n                    \t\t\t"itemHeight": 66\n                \t\t}\n            \t\t</convert>\n\t\t</widget>\n         <widget name="label1" position="21, 29" zPosition="1" size="1184, 116" font="Regular;35" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="red" />\n\t\t        <widget name="label2" position="22, 480" zPosition="-2" size="1205, 168" font="Regular;35" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="red" />\n\t\t        </screen>'
+        skin = """<screen position="center, center" size="1241, 850" title="NeoBoot">
+        \n\t\t\t<ePixmap position="491, 673" zPosition="-2" size="365, 160" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrixhd.png" />
+        <widget source="list" render="Listbox" position="20, 171" size="1194, 290" scrollbarMode="showOnDemand">\n\t\t\t\t<convert type="TemplatedMultiContent">
+        \n                \t\t{"template": [
+        \n                    \t\t\tMultiContentEntryText(pos = (90, 1), size = (920, 66), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
+        \n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (8, 4), size = (66, 66), png = 1),
+        \n                    \t\t\t],
+        \n                    \t\t\t"fonts": [gFont("Regular", 40)],\n                    \t\t\t"itemHeight": 66\n                \t\t}
+        \n            \t\t</convert>\n\t\t</widget>
+        \n         <widget name="label1" position="21, 29" zPosition="1" size="1184, 116" font="Regular;35" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="red" />
+        \n\t\t        <widget name="label2" position="22, 480" zPosition="-2" size="1205, 168" font="Regular;35" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="red" />
+        \n\t\t        </screen>"""
     else:
-        skin = '<screen position="center, center" size="835, 500" title="NeoBoot">\n\t\t\t           <ePixmap position="0,0" zPosition="-1" size="835,500" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/frame835x500.png"  />                <widget source="list" render="Listbox" position="16, 150" size="800, 40"    selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/listselection800x35.png"             scrollbarMode="showOnDemand">\n\t\t\t\t<convert type="TemplatedMultiContent">\n                \t\t{"template": [\n                    \t\t\tMultiContentEntryText(pos = (180, 0), size = (520, 36), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),\n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (4, 2), size = (36, 36), png = 1),\n                    \t\t\t],\n                    \t\t\t"fonts": [gFont("Regular", 22)],\n                    \t\t\t"itemHeight": 35\n               \t\t}\n            \t\t</convert>\n\t\t</widget>\n<widget name="label1" font="Regular; 26" position="15, 70" size="803, 58" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#00cc99" /> <widget name="label2" position="40, 232" zPosition="2" size="806, 294" font="Regular;25" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#00cc99" />\n\t\t        </screen>'
+        skin = """<screen position="center, center" size="835, 500" title="NeoBoot">
+        \n\t\t\t           <ePixmap position="0,0" zPosition="-1" size="835,500" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/frame835x500.png"  />
+        <widget source="list" render="Listbox" position="16, 150" size="800, 40"    selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/listselection800x35.png" scrollbarMode="showOnDemand">
+        \n\t\t\t\t<convert type="TemplatedMultiContent">
+        \n                \t\t{"template": [
+        \n                    \t\t\tMultiContentEntryText(pos = (180, 0), size = (520, 36), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
+        \n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (4, 2), size = (36, 36), png = 1),
+        \n                    \t\t\t],\n                    \t\t\t"fonts": [gFont("Regular", 22)],
+        \n                    \t\t\t"itemHeight": 35\n               \t\t}\n            \t\t</convert>
+        \n\t\t</widget>\n<widget name="label1" font="Regular; 26" position="15, 70" size="803, 58" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#00cc99" />
+        <widget name="label2" position="40, 232" zPosition="2" size="806, 294" font="Regular;25" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#00cc99" />
+        \n\t\t        </screen>"""
 
     __module__ = __name__
     def __init__(self, session):
@@ -1354,9 +1505,37 @@ class UruchamianieImage(Screen):
 class InstalacjaImage(Screen, ConfigListScreen):
     screenwidth = getDesktop(0).size().width()
     if screenwidth and screenwidth == 1920:
-        skin = '<screen position="82,105" size="1650,875" title="NeoBoot - Installation">\n\t\t   <eLabel position="41,107" size="1541,2" backgroundColor="blue" foregroundColor="blue" name="linia" />  <eLabel position="40,744" size="1545,2" backgroundColor="blue" foregroundColor="blue" name="linia" />  <eLabel text="NeoBoot opcje dla instalowanego obrazu" font="Regular; 38" position="40,24" size="1538,74" halign="center" foregroundColor="red" backgroundColor="black" transparent="1" />\n\t\t  <widget name="config" position="38,134" size="1547,593" font="Regular; 32" itemHeight="42" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor.png" scrollbarMode="showOnDemand" transparent="1" backgroundColor="transpBlack" />\n\t\t  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="84,820" size="178,28" alphatest="on" />\n\t\t  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="457,820" size="178,29" alphatest="on" />\n\t\t  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="884,823" size="169,28" alphatest="on" />\n\t\t  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="1288,821" size="167,29" alphatest="on" />\n\t\t  <widget name="HelpWindow" position="330,310" zPosition="5" size="1,1" transparent="1" alphatest="on" />\n\t\t  <widget name="key_red" position="36,762" zPosition="1" size="284,53" font="Regular; 35" halign="center" valign="center" backgroundColor="#FF0000" transparent="1" foregroundColor="red" />\n\t\t  <widget name="key_green" position="403,760" zPosition="1" size="293,55" font="Regular; 35" halign="center" valign="center" backgroundColor="#00FF00" transparent="1" foregroundColor="green" />\n\t\t  <widget name="key_yellow" position="816,761" zPosition="1" size="295,54" font="Regular; 35" halign="center" valign="center" backgroundColor="#FFFF00" transparent="1" foregroundColor="yellow" />\n\t\t   <widget name="key_blue" position="1233,760" zPosition="1" size="272,56" font="Regular; 35" halign="center" valign="center" backgroundColor="#0000FF" transparent="1" foregroundColor="blue" />\n\t\t   </screen>'
+        skin = """<screen position="82,105" size="1650,875" title="NeoBoot - Installation">
+                  <eLabel position="41,107" size="1541,2" backgroundColor="blue" foregroundColor="blue" name="linia" />
+                  <eLabel position="40,744" size="1545,2" backgroundColor="blue" foregroundColor="blue" name="linia" />
+                  <eLabel text="NeoBoot opcje dla instalowanego obrazu" font="Regular; 38" position="40,24" size="1538,74" halign="center" foregroundColor="red" backgroundColor="black" transparent="1" />
+                  <widget name="config" position="38,134" size="1547,593" font="Regular; 32" itemHeight="42" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor.png" scrollbarMode="showOnDemand" transparent="1" backgroundColor="transpBlack" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="84,820" size="178,28" alphatest="on" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="457,820" size="178,29" alphatest="on" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="884,823" size="169,28" alphatest="on" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="1288,821" size="167,29" alphatest="on" />
+                  <widget name="HelpWindow" position="330,310" zPosition="5" size="1,1" transparent="1" alphatest="on" />
+                  <widget name="key_red" position="36,762" zPosition="1" size="284,53" font="Regular; 35" halign="center" valign="center" backgroundColor="#FF0000" transparent="1" foregroundColor="red" />
+                  <widget name="key_green" position="403,760" zPosition="1" size="293,55" font="Regular; 35" halign="center" valign="center" backgroundColor="#00FF00" transparent="1" foregroundColor="green" />
+                  <widget name="key_yellow" position="816,761" zPosition="1" size="295,54" font="Regular; 35" halign="center" valign="center" backgroundColor="#FFFF00" transparent="1" foregroundColor="yellow" />
+                  <widget name="key_blue" position="1233,760" zPosition="1" size="272,56" font="Regular; 35" halign="center" valign="center" backgroundColor="#0000FF" transparent="1" foregroundColor="blue" />\
+               </screen>"""
     else:
-          skin = '<screen position="0,0" size="1280,720" title="NeoBoot - Installation">\n\t\t   <ePixmap position="0,0" zPosition="-1" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1frame_base-fs8.png"  />    <eLabel text="NeoBoot opcje dla instalowanego obrazu" font="Regular; 28" position="10,30" size="700,30" halign="center" foregroundColor="#58ccff" backgroundColor="black" transparent="1" />\n\t\t  <widget name="config" position="0,150" size="780,450" font="Regular; 22" itemHeight="32" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/listselection700x32-fs8.png" scrollbarMode="showOnDemand" transparent="1" backgroundColor="transpBlack" />\n\t\t  <widget name="HelpWindow" position="100,500" zPosition="5" size="1,1" transparent="1" alphatest="on" />  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="0,650" size="250,40" alphatest="blend" />   <widget name="key_red" position="0,670" zPosition="2" size="250,40"  font="Regular; 20" halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />     <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/green25.png" position="200,650" size="230,36" alphatest="blend" />  <widget name="key_green" position="200,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />   <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellow25.png" position="400,650" size="230,36" alphatest="blend" />  <widget name="key_yellow" position="400,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue25.png" position="600,650" size="230,36" alphatest="blend" />         <widget source="session.VideoPicture" render="Pig" position=" 836,89" size="370,208" zPosition="3" backgroundColor="#ff000000"/>   <ePixmap position="920,500" zPosition="1" size="228,130" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1matrix.png" />    </screen>'
+          skin = """<screen position="0,0" size="1280,720" title="NeoBoot - Installation">
+                    <ePixmap position="0,0" zPosition="-1" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1frame_base-fs8.png"  />
+                    <eLabel text="NeoBoot opcje dla instalowanego obrazu" font="Regular; 28" position="10,30" size="700,30" halign="center" foregroundColor="#58ccff" backgroundColor="black" transparent="1" />
+                    <widget name="config" position="0,150" size="780,450" font="Regular; 22" itemHeight="32" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/listselection700x32-fs8.png" scrollbarMode="showOnDemand" transparent="1" backgroundColor="transpBlack" />
+                    <widget name="HelpWindow" position="100,500" zPosition="5" size="1,1" transparent="1" alphatest="on" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="0,650" size="250,40" alphatest="blend" />
+                    <widget name="key_red" position="0,670" zPosition="2" size="250,40"  font="Regular; 20" halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/green25.png" position="200,650" size="230,36" alphatest="blend" />
+                    <widget name="key_green" position="200,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellow25.png" position="400,650" size="230,36" alphatest="blend" />
+                    <widget name="key_yellow" position="400,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue25.png" position="600,650" size="230,36" alphatest="blend" />
+                    <widget source="session.VideoPicture" render="Pig" position=" 836,89" size="370,208" zPosition="3" backgroundColor="#ff000000"/>
+                    <ePixmap position="920,500" zPosition="1" size="228,130" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1matrix.png" />
+                  </screen>"""
 
     def __init__(self, session):
         Screen.__init__(self, session)
