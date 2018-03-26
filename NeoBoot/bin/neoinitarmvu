@@ -86,7 +86,7 @@ else
 		/bin/umount /media/usb > /dev/null 2>&1
 		/bin/umount /media/hdd > /dev/null 2>&1
 	else
-                echo 3 > /proc/sys/vm/drop_caches
+                #echo 3 > /proc/sys/vm/drop_caches
 		if [ -d $NEO/ImageBoot/$TARGET ]; then			
 			if [ -f $NEO/ImageBoot/$TARGET/etc/init.d/udev ]; then
 				sed -ie s!"\$4"!"\$3"!g $NEO/ImageBoot/$TARGET/etc/init.d/udev
