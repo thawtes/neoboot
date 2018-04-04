@@ -52,7 +52,7 @@ import time
                                                              #Zero 4K  :    72604    #Solo2    :    7356
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.51'
+UPDATEVERSION = '6.52'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -1519,10 +1519,12 @@ class InstalacjaImage(Screen, ConfigListScreen):
          'VirtualKeyboardActions'], {'cancel': self.cancel,
          'red': self.cancel,
          'green': self.imageInstall,
-         'yellow': self.openKeyboard}, -2)
+         'yellow': self.HelpInstall,
+         'blue': self.openKeyboard}, -2)        
         self['key_green'] = Label(_('Install'))
         self['key_red'] = Label(_('Cancel'))
-        self['key_yellow'] = Label(_('Keyboard'))
+        self['key_yellow'] = Label(_('Help'))
+        self['key_blue'] = Label(_('Keyboard'))        
         self['HelpWindow'] = Pixmap()
         self['HelpWindow'].hide()
 
@@ -1542,6 +1544,15 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_('Copy settings SoftCam ?'), self.SoftCam))          
         self.list.append(getConfigListEntry(_('Path BlackHole ? (Not recommended for VuPlus)'), self.BlackHole))
      
+    def HelpInstall(self):
+        if fileExists('/.multinfo'):
+            mess = _('Information available only when running Flash.')
+            self.session.open(MessageBox, mess, MessageBox.TYPE_INFO)
+        else:
+            self.session.open(HelpInstall)
+               
+        
+
     def typeChange(self, value):
         self.createSetup()
         self['config'].l.setList(self.list)
@@ -1623,6 +1634,77 @@ class InstalacjaImage(Screen, ConfigListScreen):
 
     def cancel(self):
         self.close()
+
+class HelpInstall(Screen):
+    screenwidth = getDesktop(0).size().width()
+    if screenwidth and screenwidth == 1920:
+        skin = """<screen position="center,center" size="1920,1080" borderWidth="0" borderColor="transpBlack" flags="wfNoBorder">
+                    <eLabel text="Informacje instalacji image w NeoBoot" font="Regular; 35" position="71,20" size="1777,112" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />
+                    <widget name="lab1" position="69,134" size="1780,913" font="Regular;35"    />
+                  </screen>"""
+    else:
+        skin = """<screen position="center,center" size="1280,720" title="NeoBoot - Informacje">
+                    <widget name="lab1" position="18,19" size="1249,615" font="Regular;20" backgroundColor="black" transparent="1" />
+                  </screen>"""
+    __module__ = __name__
+
+    def __init__(self, session):
+        Screen.__init__(self, session)
+        self['lab1'] = ScrollLabel('')
+        self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'DirectionActions'], {'back': self.close,
+         'ok': self.close,
+         'up': self['lab1'].pageUp,
+         'left': self['lab1'].pageUp,
+         'down': self['lab1'].pageDown,
+         'right': self['lab1'].pageDown})
+        self['lab1'].hide()
+        self.updatetext()
+
+    def updatetext(self):
+        
+        message = _('Source Image file')
+        message += _(' -Wybierz kursorem pilota oprogramowanie do zainstalowania (w lewo lub prawo).\n\n')  
+              
+        message += _('Image Name')
+        message += _(' -Zmień nazwę image - aby zmienić naciśnij na pilocie niebieski.\n\n')   
+             
+        message += _('Do not copy files from Flash to the installed image ?')
+        message += _(' - po zaznaczeniu tej opcji nie zostanie nic skopiowane z image flash do instalowanego image w neoboot. \n\n')  
+              
+        message += _('Copy the kernel of the installed system (recommended only for Vu+) ?')
+        message += _(' - po zaznaczeniu tej opcji zostanie skopiowany plik jądra (kernel) instalowanego image do neoboota, zalecane tylko dla STB vuplus \n\n')
+                
+        message += _('Copy the channel list ?')
+        message += _(' - opcja kopiuje listę kanałów z flasha do instalowanego image w neoboocie.\n\n')
+                
+        message += _('Copy mounting disks ? (Recommended)')
+        message += _(' - opcja przenosi do instalowanego image w neoboot ustawienia montowania podłaczonych urządzeń do tunera.\n\n')
+                
+        message += _('Copy network settings LAN-WLAN ?')
+        message += _(' - opcja przenosi pliki z zawartymi ustawieniami dla sieci lan i wlan. \n\n ')
+                
+        message += _('Copy the drivers ? (Recommended only other image.)')  
+        message += _(' - opcja przenosi z flasza sterowniki do instalowanego image w neoboocie, zalecane tylko w przypadku jeśli instalujemy image od innego model niż posiadamy.\n\n') 
+                      
+        message += _('Copy Settings to the new Image')
+        message += _(' - opcja kopiuje ustawienia oprogramowania z flasza do instalowanego systemu w neoboocie.\n\n')
+                
+        message += _('Delete Image zip after Install ?')
+        message += _(' - po instalacji, opcja kasuje plik zip image z katalogu ImagesUpload. \n\n')
+                
+        message += _('Repair FTP ? (Recommended only other image if it does not work.)')
+        message += _(' - opcja w niektórych przypadkach naprawia w instalowanym image polączenie FTP (ang. File Transfer Protocol) \n\n')
+                
+        message += _('Copy settings SoftCam ?')
+        message += _(' - opcja kopiuje configi oscama i cccam (openpli -domyślnie)\n\n')
+                
+        message += _('Path BlackHole ? (Not recommended for VuPlus)')  
+        message += _(' - opcja przeznaczona dla image blackhole, pomaga uruchomić BH w neoboot \n\n')
+                     
+        self['lab1'].show()
+        self['lab1'].setText(message)
+
+
 
 def readline(filename, iferror = ''):
     if iferror[:3] == 'or:':
