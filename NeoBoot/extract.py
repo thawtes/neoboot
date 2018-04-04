@@ -141,6 +141,34 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/MyUpdater'):
             cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/MyUpdater %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
             rc = os.system(cmd)
+
+        if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/MediaPortal'):
+            cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/MediaPortal %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd)            
+            cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/mpgz %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd) 
+            cmd = 'cp -r /usr/lib/python2.7/argparse.pyo %s/ImageBoot/%s/usr/lib/python2.7 > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd) 
+            cmd = 'cp -r /usr/lib/python2.7/robotparser.pyo %s/ImageBoot/%s/usr/lib/python2.7 > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd)             
+            cmd = 'cp -r /usr/lib/python2.7/site-packages/Crypto %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd)
+            cmd = 'cp -r /usr/lib/python2.7/site-packages/mechanize %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd)
+            cmd = 'cp -r /usr/lib/python2.7/site-packages/requests %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd)
+            cmd = 'cp -r /usr/lib/python2.7/site-packages/requests-2.11.1-py2.7.egg-info %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+            rc = os.system(cmd)                                    
+
+            if not os.path.exists('%s/ImageBoot/%s/etc/enigma2' % (media, target)):
+                cmd = 'mkdir -p %s/ImageBoot/%s/etc/enigma2' % (media, target)
+                rc = os.system(cmd)
+            cmd = 'cp /etc/enigma2/settings %s/ImageBoot/%s/etc/enigma2' % (media, target)
+            rc = os.system(cmd)
+
+            os.system('echo "Skopiowano MediaPortal z ustawieniami systemowymi."')
+                                    
+
         if not os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/boxbranding.so' % (media, target)):
             cmd = 'cp -r /usr/lib/enigma2/python/boxbranding.so %s/ImageBoot/%s/usr/lib/enigma2/python/boxbranding.so > /dev/null 2>&1' % (media, target)
             rc = os.system(cmd)
@@ -216,7 +244,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
 
         if InstallSettings == 'True':
             if not os.path.exists('%s/ImageBoot/%s/etc/enigma2' % (media, target)):
-                cmd = 'mkdir -p /etc/fstab %s/ImageBoot/%s/etc/enigma2' % (media, target)
+                cmd = 'mkdir -p %s/ImageBoot/%s/etc/enigma2' % (media, target)
                 rc = os.system(cmd)
             cmd = 'cp /etc/enigma2/settings %s/ImageBoot/%s/etc/enigma2' % (media, target)
             rc = os.system(cmd)
@@ -265,7 +293,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                 cmd = 'cp -r -f -p /etc/init.d/softcam.oscam %s/ImageBoot/%s/etc/init.d/ > /dev/null 2>&1' % (media, target)
                 rc = os.system(cmd) 
             if os.path.exists('/etc/init.d/softcam.cccam'):
-                cmd = 'cp -r -f -p /etc/init.d/softcam.cccam %s/ImageBoot/%s/etc/init.d/ > /dev/null 2>&1' % (media, target)
+                cmd = 'cp -r -f -p /etc/init.d/softcam.CCcam %s/ImageBoot/%s/etc/init.d/ > /dev/null 2>&1' % (media, target)
                 rc = os.system(cmd) 
 
         if not os.path.exists('/usr/lib/enigma2/python/EGAMI') and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/EGAMI' % (media, target)):
@@ -288,6 +316,143 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
     os.system('mkdir -p ' + media_target + '/media/usb' + dev_null)
     os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
     os.system('mkdir -p ' + media_target + '/var/lib/opkg/info/' + dev_null) 
+
+
+
+################################
+
+    namefile = media + '/ImageBoot/' + target + '/etc/fstab'
+    namefile2 = namefile + '.tmp'
+    out = open(namefile2, 'w')
+    f = open(namefile, 'r')
+    for line in f.readlines():
+        if line.find('/dev/mtdblock2') != -1:
+            line = '#' + line
+        elif line.find('/dev/root') != -1:
+            line = '#' + line
+        out.write(line)
+
+    f.close()
+    out.close()
+    os.rename(namefile2, namefile)
+
+    tpmd = media + '/ImageBoot/' + target + '/etc/init.d/tpmd'
+    if os.path.exists(tpmd):
+        os.system('rm ' + tpmd)
+
+    fname = media + '/ImageBoot/' + target + '/usr/lib/enigma2/python/Components/config.py'
+    if os.path.exists(fname):
+        fname2 = fname + '.tmp'
+        out = open(fname2, 'w')
+        f = open(fname, 'r')
+        for line in f.readlines():
+            if line.find('if file(""/proc/stb/info/vumodel")') != -1:
+                line = '#' + line
+            out.write(line)
+
+        f.close()
+        out.close()
+        os.rename(fname2, fname)
+
+
+    targetfile = media + '/ImageBoot/' + target + '/etc/vsftpd.conf'
+    if os.path.exists(targetfile):
+        targetfile2 = targetfile + '.tmp'
+        out = open(targetfile2, 'w')
+        f = open(targetfile, 'r')
+        for line in f.readlines():
+            if not line.startswith('nopriv_user'):
+                out.write(line)
+
+        f.close()
+        out.close()
+        os.rename(targetfile2, targetfile)
+
+
+    mypath = media + '/ImageBoot/' + target + '/usr/lib/opkg/info/'
+    cmd = 'mkdir -p %s/ImageBoot/%s/var/lib/opkg/info > /dev/null 2>&1' % (media, target)
+    rc = os.system(cmd)
+    if not os.path.exists(mypath):
+        mypath = media + '/ImageBoot/' + target + '/var/lib/opkg/info/'
+    for fn in os.listdir(mypath):
+        if fn.find('kernel-image') != -1 and fn.find('postinst') != -1:
+            filename = mypath + fn
+            filename2 = filename + '.tmp'
+            out = open(filename2, 'w')
+            f = open(filename, 'r')
+            for line in f.readlines():
+                if line.find('/boot') != -1:
+                    line = line.replace('/boot', '/boot > /dev/null 2>\\&1; exit 0')
+                out.write(line)
+
+            if f.close():
+                out.close()
+                os.rename(filename2, filename)
+                cmd = 'chmod -R 0755 %s' % filename
+                rc = os.system(cmd)
+        if fn.find('-bootlogo.postinst') != -1:
+            filename = mypath + fn
+            filename2 = filename + '.tmp'
+            out = open(filename2, 'w')
+            f = open(filename, 'r')
+            for line in f.readlines():
+                if line.find('/boot') != -1:
+                    line = line.replace('/boot', '/boot > /dev/null 2>\\&1; exit 0')
+                out.write(line)
+
+            f.close()
+            out.close()
+            os.rename(filename2, filename)
+            cmd = 'chmod -R 0755 %s' % filename
+            rc = os.system(cmd)
+        if fn.find('-bootlogo.postrm') != -1:
+            filename = mypath + fn
+            filename2 = filename + '.tmp'
+            out = open(filename2, 'w')
+            f = open(filename, 'r')
+            for line in f.readlines():
+                if line.find('/boot') != -1:
+                    line = line.replace('/boot', '/boot > /dev/null 2>\\&1; exit 0')
+                out.write(line)
+
+            f.close()
+            out.close()
+            os.rename(filename2, filename)
+            cmd = 'chmod -R 0755 %s' % filename
+            rc = os.system(cmd)
+        if fn.find('-bootlogo.preinst') != -1:
+            filename = mypath + fn
+            filename2 = filename + '.tmp'
+            out = open(filename2, 'w')
+            f = open(filename, 'r')
+            for line in f.readlines():
+                if line.find('/boot') != -1:
+                    line = line.replace('/boot', '/boot > /dev/null 2>\\&1; exit 0')
+                out.write(line)
+
+            f.close()
+            out.close()
+            os.rename(filename2, filename)
+            cmd = 'chmod -R 0755 %s' % filename
+            rc = os.system(cmd)
+        if fn.find('-bootlogo.prerm') != -1:
+            filename = mypath + fn
+            filename2 = filename + '.tmp'
+            out = open(filename2, 'w')
+            f = open(filename, 'r')
+            for line in f.readlines():
+                if line.find('/boot') != -1:
+                    line = line.replace('/boot', '/boot > /dev/null 2>\\&1; exit 0')
+                out.write(line)
+
+            f.close()
+            out.close()
+            os.rename(filename2, filename)
+            cmd = 'chmod -R 0755 %s' % filename
+            rc = os.system(cmd)
+
+#######################
+
 
     os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
     os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
@@ -354,10 +519,167 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system('rm -rf ' + sourcefile)
         os.system('echo "Rozpakowywanie pliku instalacyjnego..."')
 
-        #UBI_READER
+    #Instalacja MIPS
+    if getCPUtype() == 'MIPS':                 
+        if os.path.exists('/media/neoboot/ubi') is False:
+            rc = os.system('mkdir /media/neoboot/ubi')
+        to = '/media/neoboot/ImageBoot/' + target
+        cmd = 'mkdir %s > /dev/null 2<&1' % to
+        rc = os.system(cmd)
+        to = '/media/neoboot/ImageBoot/' + target
+        cmd = 'chmod -R 0777 %s' % to
+        rc = os.system(cmd)
+        rootfname = 'rootfs.bin'
+        brand = ''
+        #NANDSIM
+        if os.path.exists('/lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko' % getKernelVersion()):
+            for i in range(0, 20):
+                    mtdfile = '/dev/mtd' + str(i)
+                    if os.path.exists(mtdfile) is False:
+                        break
+                
+            mtd = str(i)
+            os.chdir(media + '/ImagesUpload')
+            #zgemma
+            if os.path.exists('/media/neoboot/ImagesUpload/zgemma'):
+                os.chdir('zgemma')
+                brand = 'zgemma'
+                rootfname = 'rootfs.bin'
+                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/sh1'):
+                    os.chdir('sh1')
+                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/sh2'):
+                    os.chdir('sh2')
+                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h2'):
+                    os.chdir('h2')
+                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h3'):
+                    os.chdir('h3')
+                if os.path.exists('/media/neoboot/ImagesUpload/zgemma/h5'):
+                    os.chdir('h5')
+            #miraclebox
+            if os.path.exists('/media/neoboot/ImagesUpload/miraclebox'):
+                os.chdir('miraclebox')
+                brand = 'miraclebox'
+                rootfname = 'rootfs.bin'
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/mini'):
+                    os.chdir('mini')
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/miniplus'):
+                    os.chdir('miniplus')
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/minihybrid'):
+                    os.chdir('minihybrid')
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/twin'):
+                    os.chdir('twin')
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/ultra'):
+                    os.chdir('ultra')
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/micro'):
+                    os.chdir('micro')
+                if os.path.exists('/media/neoboot/ImagesUpload/miraclebox/twinplus'):
+                    os.chdir('twinplus')
+            #atemio
+            if os.path.exists('/media/neoboot/ImagesUpload/atemio'):
+                    os.chdir('atemio')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/5x00'):
+                        os.chdir('5x00')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6000'):
+                        os.chdir('6000')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6100'):
+                        os.chdir('6100')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/6200'):
+                        os.chdir('6200')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/8x00'):
+                        os.chdir('8x00')
+                    if os.path.exists('/media/neoboot/ImagesUpload/atemio/8x00'):
+                        os.chdir('8x00')
+            #Xtrend
+            if os.path.exists('/media/neoboot/ImagesUpload/et10000'):
+                os.chdir('et10000')
+                brand = 'et10000'
+            if os.path.exists('/media/neoboot/ImagesUpload/et9x00'):
+                os.chdir('et9x00')
+                brand = 'et9x00'
+            if os.path.exists('/media/neoboot/ImagesUpload/et8500'):
+                os.chdir('et8500')
+                brand = 'et8500'
+            if os.path.exists('/media/neoboot/ImagesUpload/et8000'):
+                os.chdir('et8000')
+                brand = 'et8000'
+            if os.path.exists('/media/neoboot/ImagesUpload/et7x00'):
+                os.chdir('et7x00')
+                brand = 'et7x00'
+            if os.path.exists('/media/neoboot/ImagesUpload/et6x00'):
+                os.chdir('et6x00')
+                brand = 'et6x00'
+            if os.path.exists('/media/neoboot/ImagesUpload/et5x00'):
+                os.chdir('et5x00')
+                brand = 'et5x00'
+            if os.path.exists('/media/neoboot/ImagesUpload/et4x00'):
+                os.chdir('et4x00')
+                brand = 'et4x00'
+            #formuler
+            if os.path.exists('/media/neoboot/ImagesUpload/formuler1'):
+                os.chdir('formuler1')
+                brand = 'formuler1'
+            if os.path.exists('/media/neoboot/ImagesUpload/formuler2'):
+                os.chdir('formuler2')
+                brand = 'formuler2'
+            if os.path.exists('/media/neoboot/ImagesUpload/formuler3'):
+                os.chdir('formuler3')
+                brand = 'formuler3'
+            if os.path.exists('/media/neoboot/ImagesUpload/formuler4turbo'):
+                os.chdir('formuler4turbo')
+                brand = 'formuler4turbo'
+            #inne
+            if os.path.exists('/media/neoboot/ImagesUpload/sf3038'):
+                os.chdir('sf3038')
+            if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx'):
+                os.chdir('xpeedlx')
+                brand = 'xpeedlx'
+            if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx3'):
+                os.chdir('xpeedlx3')
+                brand = 'xpeedlx3'
+            #VuPlus
+            if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
+                os.chdir('vuplus')
+                brand = 'vuplus'
+                rootfname = 'root_cfe_auto.jffs2'
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/uno'):
+                    os.chdir('uno')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/duo'):
+                    os.chdir('duo')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/ultimo'):
+                    os.chdir('ultimo')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/solo'):
+                    os.chdir('solo')
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/duo2'):
+                    os.chdir('duo2')
+                    rootfname = 'root_cfe_auto.bin'
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/solo2'):
+                    os.chdir('solo2')
+                    rootfname = 'root_cfe_auto.bin'
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/solose'):
+                    os.chdir('solose')
+                    rootfname = 'root_cfe_auto.bin'
+                if os.path.exists('/media/neoboot/ImagesUpload/vuplus/zero'):
+                    os.chdir('zero')
+                    rootfname = 'root_cfe_auto.bin'
+                    
+            #Instalacja image nandsim                                     
+            rc = os.system('insmod /lib/modules/%s/kernel/drivers/mtd/nand/nandsim.ko cache_file=/media/neoboot/image_cache first_id_byte=0x20 second_id_byte=0xaa third_id_byte=0x00 fourth_id_byte=0x15;sleep 5' % getKernelVersion())
+            cmd = 'dd if=%s of=/dev/mtdblock%s bs=2048' % (rootfname, mtd)
+            rc = os.system(cmd)
+            cmd = 'ubiattach /dev/ubi_ctrl -m %s -O 2048' % mtd
+            rc = os.system(cmd)
+            rc = os.system('mount -t ubifs ubi1_0 /media/neoboot/ubi')
+            os.chdir('/home/root')
+            cmd = 'cp -r /media/neoboot/ubi/* /media/neoboot/ImageBoot/' + target
+            rc = os.system(cmd)
+            rc = os.system('umount /media/neoboot/ubi')
+            cmd = 'ubidetach -m %s' % mtd
+            rc = os.system(cmd)              
+            rc = os.system('rmmod nandsim')
+            rc = os.system('rm /media/neoboot/image_cache')
 
-    if getCPUtype() == 'MIPS':
-        if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py'):
+        #UBI_READER
+        elif os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py'):
             if os.path.exists('/media/neoboot/ImagesUpload/venton-hdx'):
                 os.chdir('venton-hdx')
             if os.path.exists('/media/neoboot/ImagesUpload/hde'):
