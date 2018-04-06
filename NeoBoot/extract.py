@@ -278,22 +278,22 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
 
         if SoftCam == 'True':
             if os.path.exists('/usr/bin/oscam'):
-                cmd = 'cp -r -f -p /usr/bin/oscam %s/ImageBoot/%s/usr/bin/ > /dev/null 2>&1' % (media, target)
+                cmd = 'cp -r -f -p /usr/bin/oscam %s/ImageBoot/%s/usr/bin > /dev/null 2>&1' % (media, target)
                 rc = os.system(cmd)
             if os.path.exists('/usr/bin/CCcam'):
-                cmd = 'cp -r -f -p /usr/bin/CCcam %s/ImageBoot/%s/usr/bin/ > /dev/null 2>&1' % (media, target)
+                cmd = 'cp -r -f -p /usr/bin/CCcam %s/ImageBoot/%s/usr/bin > /dev/null 2>&1' % (media, target)
                 rc = os.system(cmd)       
             if os.path.exists('/etc/CCcam.cfg'):
-                cmd = 'cp -r -f /etc/CCcam.cfg %s/ImageBoot/%s/etc/ > /dev/null 2>&1' % (media, target)    
+                cmd = 'cp -r -f /etc/CCcam.cfg %s/ImageBoot/%s/etc > /dev/null 2>&1' % (media, target)    
                 rc = os.system(cmd)
             if os.path.exists('/etc/tuxbox/config'):
-                cmd = 'cp -r -f /etc/tuxbox/config %s/ImageBoot/%s/etc/tuxbox/ > /dev/null 2>&1' % (media, target)
+                cmd = 'cp -r -f /etc/tuxbox/config %s/ImageBoot/%s/etc/tuxbox > /dev/null 2>&1' % (media, target)
                 rc = os.system(cmd)       
             if os.path.exists('/etc/init.d/softcam.oscam'):
-                cmd = 'cp -r -f -p /etc/init.d/softcam.oscam %s/ImageBoot/%s/etc/init.d/ > /dev/null 2>&1' % (media, target)
+                cmd = 'cp -r -f -p /etc/init.d/softcam.oscam %s/ImageBoot/%s/etc/init.d > /dev/null 2>&1' % (media, target)
                 rc = os.system(cmd) 
-            if os.path.exists('/etc/init.d/softcam.cccam'):
-                cmd = 'cp -r -f -p /etc/init.d/softcam.CCcam %s/ImageBoot/%s/etc/init.d/ > /dev/null 2>&1' % (media, target)
+            if os.path.exists('/etc/init.d/softcam.CCcam'):
+                cmd = 'cp -r -f -p /etc/init.d/softcam.CCcam %s/ImageBoot/%s/etc/init.d > /dev/null 2>&1' % (media, target)
                 rc = os.system(cmd) 
 
         if not os.path.exists('/usr/lib/enigma2/python/EGAMI') and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/EGAMI' % (media, target)):
