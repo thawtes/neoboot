@@ -52,7 +52,7 @@ mediahome = media + '/ImageBoot/'
 extensions_path = '/usr/lib/enigma2/python/Plugins/Extensions/'
 dev_null = ' > /dev/null 2>&1'
 
-def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP, SoftCam, BlackHole):
+def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, LanWlan, Sterowniki, InstallSettings, ZipDelete, RepairFTP, SoftCam, MediaPortal, BlackHole):
     media_target = mediahome + target
     list_one = ['rm -r ' + media_target + dev_null, 'mkdir ' + media_target + dev_null, 'chmod -R 0777 ' + media_target]
     for command in list_one:
@@ -69,6 +69,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
      'rm ' + media_target + media + dev_null,
      'rmdir ' + media_target + media + dev_null,
      'mkdir -p ' + media_target + media + dev_null,
+     'cp /etc/passwd ' + media_target + '/etc/passwd' + dev_null,     
      'cp -rf ' + extensions_path + 'NeoBoot ' + media_target + extensions_path + 'NeoBoot' + dev_null]
     for command in list_two:
         os.system(command)
@@ -141,34 +142,9 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
         if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/MyUpdater'):
             cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/MyUpdater %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
             rc = os.system(cmd)
-
-        if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/MediaPortal'):
-            cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/MediaPortal %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
-            rc = os.system(cmd)            
-            cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/mpgz %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
-            rc = os.system(cmd) 
-            cmd = 'cp -r /usr/lib/python2.7/argparse.pyo %s/ImageBoot/%s/usr/lib/python2.7 > /dev/null 2>&1' % (media, target)
-            rc = os.system(cmd) 
-            cmd = 'cp -r /usr/lib/python2.7/robotparser.pyo %s/ImageBoot/%s/usr/lib/python2.7 > /dev/null 2>&1' % (media, target)
-            rc = os.system(cmd)             
-            cmd = 'cp -r /usr/lib/python2.7/site-packages/Crypto %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+        if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/DreamExplorer'):
+            cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/DreamExplorer %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
             rc = os.system(cmd)
-            cmd = 'cp -r /usr/lib/python2.7/site-packages/mechanize %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
-            rc = os.system(cmd)
-            cmd = 'cp -r /usr/lib/python2.7/site-packages/requests %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
-            rc = os.system(cmd)
-            cmd = 'cp -r /usr/lib/python2.7/site-packages/requests-2.11.1-py2.7.egg-info %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
-            rc = os.system(cmd)                                    
-
-            if not os.path.exists('%s/ImageBoot/%s/etc/enigma2' % (media, target)):
-                cmd = 'mkdir -p %s/ImageBoot/%s/etc/enigma2' % (media, target)
-                rc = os.system(cmd)
-            cmd = 'cp /etc/enigma2/settings %s/ImageBoot/%s/etc/enigma2' % (media, target)
-            rc = os.system(cmd)
-
-            os.system('echo "Skopiowano MediaPortal z ustawieniami systemowymi."')
-                                    
-
         if not os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/boxbranding.so' % (media, target)):
             cmd = 'cp -r /usr/lib/enigma2/python/boxbranding.so %s/ImageBoot/%s/usr/lib/enigma2/python/boxbranding.so > /dev/null 2>&1' % (media, target)
             rc = os.system(cmd)
@@ -295,6 +271,34 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
             if os.path.exists('/etc/init.d/softcam.CCcam'):
                 cmd = 'cp -r -f -p /etc/init.d/softcam.CCcam %s/ImageBoot/%s/etc/init.d > /dev/null 2>&1' % (media, target)
                 rc = os.system(cmd) 
+
+        if MediaPortal == 'True':
+            if os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/MediaPortal'):
+                cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/MediaPortal %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)            
+                cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/mpgz %s/ImageBoot/%s/usr/lib/enigma2/python/Plugins/Extensions > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd) 
+                cmd = 'cp -r /usr/lib/python2.7/argparse.pyo %s/ImageBoot/%s/usr/lib/python2.7 > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd) 
+                cmd = 'cp -r /usr/lib/python2.7/robotparser.pyo %s/ImageBoot/%s/usr/lib/python2.7 > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)             
+                cmd = 'cp -r /usr/lib/python2.7/site-packages/Crypto %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)
+                cmd = 'cp -r /usr/lib/python2.7/site-packages/mechanize %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)
+                cmd = 'cp -r /usr/lib/python2.7/site-packages/requests %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)
+                cmd = 'cp -r /usr/lib/python2.7/site-packages/requests-2.11.1-py2.7.egg-info %s/ImageBoot/%s/usr/lib/python2.7/site-packages > /dev/null 2>&1' % (media, target)
+                rc = os.system(cmd)                                    
+
+                if not os.path.exists('%s/ImageBoot/%s/etc/enigma2' % (media, target)):
+                    cmd = 'mkdir -p %s/ImageBoot/%s/etc/enigma2' % (media, target)
+                    rc = os.system(cmd)
+                cmd = 'cp /etc/enigma2/settings %s/ImageBoot/%s/etc/enigma2' % (media, target)
+                rc = os.system(cmd)
+                os.system('echo "Skopiowano MediaPortal z ustawieniami systemowymi."')
+            elif not os.path.exists('/usr/lib/enigma2/python/Plugins/Extensions/MediaPortal'):                    
+                os.system('echo "MediaPortal not found."')
 
         if not os.path.exists('/usr/lib/enigma2/python/EGAMI') and os.path.exists('%s/ImageBoot/%s/usr/lib/enigma2/python/EGAMI' % (media, target)):
             if getBoxVuModel() == 'ultimo4k' or getBoxVuModel() == 'solo4k' or getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'bm750' or getBoxVuModel() == 'duo' or getBoxVuModel() == 'solo' or getBoxVuModel() == 'uno' or getBoxVuModel() == 'ultimo' or getBoxVuModel() == 'solo2' or getBoxVuModel() == 'duo2' or getBoxVuModel() == 'solose' or getBoxVuModel() == 'zero':

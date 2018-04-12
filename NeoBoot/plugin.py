@@ -649,7 +649,9 @@ class NeoBootInstallation(Screen):
                     if os.system('opkg list-installed | grep python-argparse') != 0:
                             os.system('opkg install python-argparse')
                     if os.system('opkg list-installed | grep curl') != 0:
-                            os.system('opkg install curl')                           
+                            os.system('opkg install curl')    
+                    if os.system('opkg list-installed | grep packagegroup-base-nfs') != 0:                            
+                            os.system('opkg install packagegroup-base-nfs')                       
                     cmd = 'opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade kernel-image'
                     system(cmd)
                     os.system('opkg configure update-modules') 
@@ -1498,7 +1500,8 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.InstallSettings = ConfigYesNo(default=False)        
         self.ZipDelete = ConfigYesNo(default=False) 
         self.RepairFTP = ConfigYesNo(default=False)
-        self.SoftCam = ConfigYesNo(default=False)                                                             
+        self.SoftCam = ConfigYesNo(default=False)
+        self.MediaPortal = ConfigYesNo(default=False)                                                                             
         self.BlackHole = ConfigYesNo(default=False)
         self.target.value = ''
         self.curselimage = ''
@@ -1541,7 +1544,8 @@ class InstalacjaImage(Screen, ConfigListScreen):
         self.list.append(getConfigListEntry(_('Copy Settings to the new Image'), self.InstallSettings))                                                                                
         self.list.append(getConfigListEntry(_('Delete Image zip after Install ?'), self.ZipDelete)) 
         self.list.append(getConfigListEntry(_('Repair FTP ? (Recommended only other image if it does not work.)'), self.RepairFTP))
-        self.list.append(getConfigListEntry(_('Copy settings SoftCam ?'), self.SoftCam))          
+        self.list.append(getConfigListEntry(_('Copy config SoftCam ?'), self.SoftCam)) 
+        self.list.append(getConfigListEntry(_('Copy MediaPortal ?'), self.MediaPortal))                 
         self.list.append(getConfigListEntry(_('Path BlackHole ? (Not recommended for VuPlus)'), self.BlackHole))
      
     def HelpInstall(self):
@@ -1608,7 +1612,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                 message += _('Please, wait...\n')                
                 message += "'"
                 cmd1 = 'python ' + pluginpath + '/ex_init.py'
-                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
+                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
                  source,
                  target.replace(' ', '.'),
                  str(self.CopyFiles.value),                 
@@ -1621,6 +1625,7 @@ class InstalacjaImage(Screen, ConfigListScreen):
                  str(self.ZipDelete.value),                                                                    
                  str(self.RepairFTP.value),                                  
                  str(self.SoftCam.value), 
+                 str(self.MediaPortal.value),                 
                  str(self.BlackHole.value))  
                 print '[NEO-BOOT]: ', cmd
                 self.session.open(Console, _('NEOBoot: Install new image'), [message, cmd])
@@ -1695,7 +1700,7 @@ class HelpInstall(Screen):
         message += _('Repair FTP ? (Recommended only other image if it does not work.)')
         message += _(' - opcja w niektórych przypadkach naprawia w instalowanym image polączenie FTP (ang. File Transfer Protocol) \n\n')
                 
-        message += _('Copy settings SoftCam ?')
+        message += _('Copy config SoftCam ?')
         message += _(' - opcja kopiuje configi oscama i cccam (openpli -domyślnie)\n\n')
                 
         message += _('Path BlackHole ? (Not recommended for VuPlus)')  
