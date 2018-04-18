@@ -640,6 +640,9 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             if os.path.exists('/media/neoboot/ImagesUpload/xpeedlx3'):
                 os.chdir('xpeedlx3')
                 brand = 'xpeedlx3'
+            if os.path.exists('/media/neoboot/ImagesUpload/xp1000'):
+                os.chdir('xp1000')
+                brand = 'xp1000'
             #VuPlus
             if os.path.exists('/media/neoboot/ImagesUpload/vuplus'):
                 os.chdir('vuplus')
@@ -833,9 +836,12 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             #osmini
             if os.path.exists('/media/neoboot/ImagesUpload/osmini'):
                 os.chdir('osmini')
+            #xp1000
+            if os.path.exists('/media/neoboot/ImagesUpload/xp1000'):
+                os.chdir('xp1000')
 
-            #Instalacja image uni_reader  
-            os.system('echo "Instalacja - uni_reader."')            
+            #Instalacja image ubi_reader  
+            os.system('echo "Instalacja - ubi_reader w toku..."')            
             if os.path.exists('/media/neoboot/ImagesUpload/vuplus/root_cfe_auto.*'):
                 os.system('mv -f root_cfe_auto.* rootfs.bin') 
             cmd = 'chmod 777 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ubi_reader/ubi_extract_files.py'
@@ -912,6 +918,10 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system('echo "Instalacja systemu Miraclebox ultra4k."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
+        elif os.path.exists('/media/neoboot/ImagesUpload/e4hd'):
+            os.system('echo "Instalacja systemu Axas E4HD 4K Ultra w toku..."')
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            rc = os.system(cmd)
         else:
             os.system('echo "NeoBoot wykrył dłąd!!! Prawdopodobnie brak pliku instalacyjnego."')
 
@@ -966,6 +976,8 @@ def RemoveUnpackDirs():
         rc = os.system('rm -r /media/neoboot/ImagesUpload/gigablue')
     elif os.path.exists('/media/neoboot/ImagesUpload/miraclebox'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/miraclebox')
+    elif os.path.exists('/media/neoboot/ImagesUpload/e4hd'):
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/e4hd')                
     elif os.path.exists('/media/neoboot/ImagesUpload/update'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/update')
     elif os.path.exists('/media/neoboot/ImagesUpload/rootfs.tar.xz'):
@@ -985,7 +997,9 @@ def RemoveUnpackDirs():
     elif os.path.exists('/media/neoboot/ImagesUpload/xpeedl*'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/xpeedl*')
     elif os.path.exists('/media/neoboot/ImagesUpload/osmini'):
-        rc = os.system('rm -r /media/neoboot/ImagesUpload/osmini')        
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/osmini')  
+    elif os.path.exists('/media/neoboot/ImagesUpload/xp1000 '):
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/xp1000 ')                
     os.system('echo "..........................................."')
     
 #END            

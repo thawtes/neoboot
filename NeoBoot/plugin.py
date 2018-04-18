@@ -52,7 +52,7 @@ import time
                                                              #Zero 4K  :    72604    #Solo2    :    7356
 
 PLUGINVERSION = '6.00 '
-UPDATEVERSION = '6.53'
+UPDATEVERSION = '6.54'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
