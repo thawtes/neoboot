@@ -1,6 +1,13 @@
 #!/bin/sh
 # script gutosie
 
+if [ ! -e /usr/bin/ipkg ]; then 
+   ln -sfn /usr/bin/opkg /usr/bin/ipkg
+fi
+if [ ! -e /usr/bin/ipkg-cl ]; then 
+   ln -sfn /usr/bin/opkg-cl /usr/bin/ipkg-cl
+fi
+
 if [ -f /etc/vtiversion.info ] || [ -f /etc/bhversion ] || [ ! -e /boot/zImage.* ]; then
         /etc/init.d/networking stop; sync; /etc/init.d/networking start
 fi
