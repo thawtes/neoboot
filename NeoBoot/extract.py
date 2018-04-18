@@ -920,7 +920,7 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/e4hd'):
             os.system('echo "Instalacja systemu Axas E4HD 4K Ultra w toku..."')
-            cmd = 'chmod 777 /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/miraclebox/ultra4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/e4hd/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/e4hd/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         else:
             os.system('echo "NeoBoot wykrył dłąd!!! Prawdopodobnie brak pliku instalacyjnego."')
