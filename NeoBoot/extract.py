@@ -919,6 +919,10 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system('echo "Instalacja systemu Axas E4HD 4K Ultra w toku..."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/e4hd/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/e4hd/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
+        elif os.path.exists('/media/neoboot/ImagesUpload/update/lunix3-4k'):
+            os.system('echo "Instalacja systemu Qviart lunix3-4k w toku..."')
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/update/lunix3-4k; tar -jxvf /media/neoboot/ImagesUpload/update/lunix3-4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            rc = os.system(cmd)                                                                                                             
         else:
             os.system('echo "NeoBoot wykrył dłąd!!! Prawdopodobnie brak pliku instalacyjnego."')
 
