@@ -11,6 +11,10 @@ fi
 URL='https://github.com/gutosie/neoboot/archive/master.zip'
 curl -kLs $URL  -o /tmp/neoboot.zip
 cd /tmp/
+if [ ! -e /tmp/master.zip ]; then 
+   wget $URL  
+   mv -f /tmp/master.zip /tmp/neoboot.zip  
+fi
 unzip -qn ./neoboot.zip
 rm -f /tmp/neoboot.zip
 #kopiowanie
