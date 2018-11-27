@@ -49,7 +49,7 @@ import time
 #Formuler F1       bcm7356    #MBmini   :        bcm735      #Solo4k   :    7376     #Uno      :    7405(with 3D)    #Solo     :        7325
 #Formuler F3:      7362       #atemio6000 :      bcm7362     #Uno 4K   :    7252s    #Duo2     :    7424             #Solose-v2:        7241
 #MBmini   :        bcm7358    #Miraclebox Micro: bcm7362     #Uno4kSE  :    7252s    #Duo      :    7335             #Solose   :        7241
-                                                             #Zero 4K  :    72604    #Solo2    :    7356
+                              #Miraclebox Uktra: bcm7424     #Zero 4K  :    72604    #Solo2    :    7356
 
 PLUGINVERSION = '6.00 '
 UPDATEVERSION = '6.55'
