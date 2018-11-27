@@ -23,6 +23,7 @@ cd /tmp
 
 wget https://raw.githubusercontent.com/gutosie/neoboot/master/iNB.sh
 
+/tmp/iNB.sh
 #
 
 UWAGA!!! 
