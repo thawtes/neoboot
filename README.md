@@ -19,11 +19,18 @@ curl -kLs https://raw.githubusercontent.com/gutosie/neoboot/master/iNB.sh|sh
 
 Inny sposób na zainstalkowanie, jeśli narzędzie curl nie zadziała poprawnie, to proszę spróbować polecenia :
 
+
+opkg update
+
+
 cd /tmp
 
 wget https://raw.githubusercontent.com/gutosie/neoboot/master/iNB.sh
 
-/tmp/iNB.sh
+
+chmod 0755 /tmp/iNB.sh
+
+chmod 0755 /tmp/iNB.sh
 #
 
 UWAGA!!! 
