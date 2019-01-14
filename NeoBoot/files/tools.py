@@ -28,7 +28,7 @@ import time
 import sys
 import struct, shutil
 
-PLUGINVERSION = '6.00'
+PLUGINVERSION = '7.00'
 
 def getKernelVersion():
     try:
@@ -140,9 +140,14 @@ class MBTools(Screen):
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Informacje NeoBoota'), png, 11)
+        res = (_('Zahaszuj montowanie VolatileMedia '), png, 11)
         self.list.append(res)
         self['list'].list = self.list        
+        
+        res = (_('Informacje NeoBoota'), png, 12)
+        self.list.append(res)
+        self['list'].list = self.list        
+
 
 
     def KeyOk(self):
@@ -170,8 +175,10 @@ class MBTools(Screen):
         if self.sel == 9 and self.session.open(SetPasswd): 
             pass
         if self.sel == 10 and self.session.open(CheckInstall): 
-            pass            
-        if self.sel == 11 and self.session.open(MultiBootMyHelp):
+            pass   
+        if self.sel == 11 and self.session.open(VolatileMedia): 
+            pass                      
+        if self.sel == 12 and self.session.open(MultiBootMyHelp):
             pass
 
 class MBBackup(Screen):
@@ -830,6 +837,23 @@ class CheckInstall(Screen):
 
         except:
             False
+
+class VolatileMedia(Screen):
+    __module__ = __name__
+    skin = '\n\t<screen position="center,center" size="700,300" title="Zablokowac pomoc w montowaniu dyskow ?">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
+
+    def __init__(self, session):
+        Screen.__init__(self, session)
+        self['lab1'] = Label('Haszowanie montowania  ?')
+        self['key_red'] = Label(_('Uruchom'))
+        self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'back': self.close,
+         'red': self.Media})
+
+    def Media(self):
+        os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
+        self.close()
+
+
 
 class MultiBootMyHelp(Screen):
     screenwidth = getDesktop(0).size().width()
