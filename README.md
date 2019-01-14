@@ -2,7 +2,7 @@ Chcesz kupić tuner ? Polecam sklep : http://www.expert-tvsat.com/
 
 
 
-Wspierane tunery: Wszytkie modele VuPlus - klony też, Octagon SF4008, MiracleBox Mini, Formuler, Edison Mini OS ( Testy- DM900)
+ Wspierane tunery: Wszytkie modele VuPlus - klony też, Octagon SF4008, Octagon SF8008, Zgemma h7S, MiracleBox Mini, Formuler, Edison Mini OS ( Testy- DM900)
 
 NeoBoot nie działa jeszcze w pełni sprawnie w  modelach DM900 i OctagonSF4008 - prace nad ulepszeniem trwają..
 
