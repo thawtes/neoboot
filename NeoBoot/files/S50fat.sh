@@ -28,8 +28,15 @@ if [ ! -e /media/hdd ] ; then
         mkdir -p /media/hdd 
 fi
                                                 
+if [ ! -e /media//media/neoboot ] ; then
+        mkdir -p /media/media/neoboot
+fi
+                                                
 mount -a
-/usr/bin/enigma2_pre_start.sh 
+
+if [ ! -e /media/neoboot/ImageBoot/.neonextboot ] ; then
+    /usr/bin/enigma2_pre_start.sh   
+fi
                       
 if [ -f /etc/rcS.d/S50fat.sh ] ; then
                             ln -s /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh /etc/rcS.d/S50neo.sh                                                        
