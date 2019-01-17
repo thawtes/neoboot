@@ -328,9 +328,7 @@ class Montowanie(Screen):
         self.list.append(res)
         self['list'].list = self.list
 
-    def KeyOk(self):
-        if os.system('opkg list-installed | opkg install util-linux-sfdisk') != 0:
-            os.system('opkg update; opkg install util-linux-sfdisk')               
+    def KeyOk(self):                      
         self.sel = self['list'].getCurrent()
         if self.sel:
             self.sel = self.sel[2]
@@ -340,6 +338,7 @@ class Montowanie(Screen):
             if fileExists('/etc/devicemanager.cfg'):
                 system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
             cmd = '/media/neoboot/ImageBoot/Backup_NeoBoot.sh '
+            os.system('opkg install util-linux-sfdisk') 
             from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
             self.session.open(ManagerDevice)
         else:
