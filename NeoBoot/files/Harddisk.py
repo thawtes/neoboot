@@ -3,6 +3,7 @@
 #from Plugins.Extensions.NeoBoot.__init__ import _
 import os
 import time
+from Tools.Directories import fileExists, fileCheck, pathExists
 from Tools.CList import CList
 from Components.SystemInfo import SystemInfo
 from Components.Console import Console
@@ -611,6 +612,7 @@ class HarddiskManager():
                 self.partitions.append(Partition(mountpoint=m, description=d))
 
     def getBlockDevInfo(self, blockdev):
+        HasMMC = fileExists('/proc/cmdline') and 'root=/dev/mmcblk' in open('/proc/cmdline', 'r').read()
         devpath = '/sys/block/' + blockdev
         error = False
         removable = False
@@ -628,7 +630,7 @@ class HarddiskManager():
              7,
              31,
              253,
-             254] + (SystemInfo['HasMMC'] and [179] or [])
+             254] + (['HasMMC'] and [179] or [])
             if blockdev[0:2] == 'sr':
                 is_cdrom = True
             if blockdev[0:2] == 'hd':
