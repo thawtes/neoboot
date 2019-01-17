@@ -29,8 +29,8 @@ if [ ! -e /media/hdd ] ; then
 fi
                                                 
 mount -a
-   
-                   
+/usr/bin/enigma2_pre_start.sh 
+                      
 if [ -f /etc/rcS.d/S50fat.sh ] ; then
                             ln -s /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh /etc/rcS.d/S50neo.sh                                                        
                             telnetd on
