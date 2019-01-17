@@ -1021,12 +1021,8 @@ def RemoveUnpackDirs():
         rc = os.system('rm -r /media/neoboot/ImagesUpload/vuplus')
     elif os.path.exists('/media/neoboot/ImagesUpload/sf4008'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/sf4008')
-
-    elif os.path.exists('/media/neoboot/ImagesUpload/octagon/octagon/sf8008'):
-        rc = os.system('rm -r /media/neoboot/ImagesUpload/')          
-        rc = os.system('rm -r /media/neoboot/ImagesUpload/usb.update.bin')                  
-        rc = os.system('rm -r /media/neoboot/ImagesUpload/octagon') 
-                        
+    elif os.path.exists('/media/neoboot/ImagesUpload/octagon/sf8008'):          
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/usb.update.bin; rm -r /media/neoboot/ImagesUpload/octagon')                        
     elif os.path.exists('/media/neoboot/ImagesUpload/dm900'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/dm900')
     elif os.path.exists('/media/neoboot/ImagesUpload/hd51'):
