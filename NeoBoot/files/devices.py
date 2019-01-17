@@ -372,8 +372,8 @@ class DevicesConf(Screen, ConfigListScreen):
         ybox.setTitle(_('Please, wait....'))
 
     def delay(self, val):
-        if fileExists('/etc/init.d/volatile-media.sh'):
-            system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
+        #if fileExists('/etc/init.d/volatile-media.sh'):
+            #system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
         message = _('Completed assembly of disks.\nReturn to installation ?')
         ybox = self.session.openWithCallback(self.myclose, MessageBox, message, MessageBox.TYPE_YESNO)
         ybox.setTitle(_('MOUNTING....'))

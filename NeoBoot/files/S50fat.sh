@@ -15,18 +15,6 @@ fi
 if [ -f /etc/init.d/inadyn-mt ] ; then
     /etc/init.d/inadyn-mt start
 fi
-
-if [ -f /usr/bin/oscam ] ; then
-    if ! ps | grep oscam | grep -v grep ; then 
-        /usr/bin/oscam -b 
-        echo "START OSCam.."        
-    fi
-elif [ -f /usr/bin/CCcam ] ; then
-    if ! ps | grep CCcam | grep -v grep ; then 
-        /usr/bin/CCcam stop || start || restart  
-        echo "START CCCam.."
-    fi
-fi
                                                 
 if [ -f /home/root/*.tar.gz ] ; then
     /bin/tar -xzvf /home/root/*.tar.gz -C /; rm /home/root/*.tar.gz
