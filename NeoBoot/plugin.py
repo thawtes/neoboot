@@ -52,7 +52,7 @@ import time
                               #Miraclebox Ultra: bcm7424                             #Zero 4K  :    72604            #Solo2    : 7356    #Zgemma H9S    :
 
 PLUGINVERSION = '7.00 '
-UPDATEVERSION = '7.00'
+UPDATEVERSION = '7.01'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -329,6 +329,8 @@ class Montowanie(Screen):
         self['list'].list = self.list
 
     def KeyOk(self):
+        if os.system('opkg list-installed | opkg install util-linux-sfdisk') != 0:
+            os.system('opkg update; opkg install util-linux-sfdisk')               
         self.sel = self['list'].getCurrent()
         if self.sel:
             self.sel = self.sel[2]
@@ -591,16 +593,7 @@ class NeoBootInstallation(Screen):
                         os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())                    
                         os.system('dd if=/dev/mmcblk0p4 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel())      
                                                                                                                                                                                                                                                                                                                                                                     
-                    elif getCPUSoC() == '7278' or getBoxHostName() == 'h7 ':
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarmvu /sbin/neoinitarmvu; cd')  
-                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu')
-                        os.system('opkg download kernel-image')
-                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())                    
-                        #os.system('dd if=/dev/mmcblk0p6 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel())
-
-                    elif getCPUSoC() == '7278' or getBoxHostName() == 'h7 ':
+                    elif getCPUSoC() == '7278' or getBoxHostName() == 'duo4k':
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
                         os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')
                         os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarmvu /sbin/neoinitarmvu; cd')  
