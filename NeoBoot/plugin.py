@@ -52,7 +52,7 @@ import time
                               #Miraclebox Ultra: bcm7424                             #Zero 4K  :    72604            #Solo2    : 7356    #Zgemma H9S    :
 
 PLUGINVERSION = '7.00 '
-UPDATEVERSION = '7.02'
+UPDATEVERSION = '7.03'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
