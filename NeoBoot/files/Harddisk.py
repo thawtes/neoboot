@@ -4,8 +4,9 @@
 import os
 import time
 from Tools.CList import CList
-from SystemInfo import SystemInfo
+from Components.SystemInfo import SystemInfo
 from Components.Console import Console
+from Task import LoggingTask
 import Task
 
 def readFile(filename):
@@ -959,4 +960,5 @@ def internalHDDNotSleeping(external = False):
     return state
 
 
+harddiskmanager = HarddiskManager()
 SystemInfo['ext4'] = isFileSystemSupported('ext4')
