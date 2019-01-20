@@ -52,7 +52,7 @@ import time
                               #Miraclebox Ultra: bcm7424                             #Zero 4K  :    72604            #Solo2    : 7356    #Zgemma H9S    :
 
 PLUGINVERSION = '7.00 '
-UPDATEVERSION = '7.04'
+UPDATEVERSION = '7.05'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -333,12 +333,13 @@ class Montowanie(Screen):
         if self.sel:
             self.sel = self.sel[2]
         if self.sel == 0:
-            if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg'):
-                system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg; touch /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
-            if fileExists('/etc/devicemanager.cfg'):
-                system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
-            cmd = '/media/neoboot/ImageBoot/Backup_NeoBoot.sh '
-            os.system('opkg install util-linux-sfdisk') 
+            #if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg'):
+                #system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg; touch /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
+            #if fileExists('/etc/devicemanager.cfg'):
+                #system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
+            #cmd = '/media/neoboot/ImageBoot/Backup_NeoBoot.sh '
+            #os.system('opkg install util-linux-sfdisk') 
+		
             from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
             self.session.open(ManagerDevice)
         else:
