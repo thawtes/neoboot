@@ -194,8 +194,8 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                 rc = os.system(cmd)
             cmd = 'cp -r /etc/fstab %s/ImageBoot/%s/etc/fstab' % (media, target)
             rc = os.system(cmd)
-            #cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh %s/ImageBoot/%s/etc/rcS.d' % (media, target)
-            #rc = os.system(cmd)
+            cmd = 'cp -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/S50fat.sh %s/ImageBoot/%s/etc/rcS.d' % (media, target)
+            rc = os.system(cmd)
 
         if LanWlan == 'True':
             os.system('echo "Skopiowano pliki sieciowe LAN-WLAN."')
