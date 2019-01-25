@@ -33,6 +33,8 @@ if [ ! -e /media//media/neoboot ] ; then
 fi
                                                 
 mount -a
+mount -t auto
+mount media -a 
 
 if [ ! -e /media/neoboot/ImageBoot/.neonextboot ] ; then
     /usr/bin/enigma2_pre_start.sh   

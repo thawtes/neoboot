@@ -355,9 +355,13 @@ class DevicesConf(Screen, ConfigListScreen):
     def saveMypoints(self):
         system('mount media -a') 
         if fileExists('/etc/fstab.org'):        
-            system('cp -r -f /etc/fstab.org /etc/fstab; rm /etc/fstab.org ')                               
+            #system('cp -r -f /etc/fstab.org /etc/fstab; rm /etc/fstab.org ')
+            system('rm /etc/fstab ')
+            rename('/etc/fstab.org', '/etc/fstab')
+                               
         elif not fileExists('/etc/fstab.org'):
-            system('cp -r -f /etc/fstab /etc/fstab.org')
+            rename('/etc/fstab', '/etc/fstab.org')
+            #system('cp -r -f /etc/fstab /etc/fstab.org')
         self.Console = Console()
         mycheck = False
         for x in self['config'].list:

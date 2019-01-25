@@ -816,23 +816,9 @@ class CheckInstall(Screen):
          
     def neocheck(self):
         try:
-            if not fileExists('/usr/sbin/ubidetach'):
-                cmd = "echo -e '\n%s '" % _('OK, ubidetach found.')            
-            if not fileExists('/usr/sbin/ubiattach'):
-                cmd0 = "echo -e '\n%s '" % _('OK, ubiattach found.')           
-            if not fileExists('/usr/bin/curl'):
-                cmd1 = "echo -e '\n%s '" % _('OK, curl notfound.')          
-            if not fileExists('/usr/lib/python2.7/subprocess.pyo'):
-                cmd2 = "echo -e '\n%s '" % _('OK, python-subprocess found.')
-            else:
-                cmdA = "echo -e '\n%s '" % _('All installed OK')
-                self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmdA]) 
-                self.close()
-
+            cmd = ' /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/module_neoboot.sh -i'
             self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd,
-             cmd0,
-             cmd1,
-             cmd2]) 
+             cmd]) 
             self.close()
 
         except:
