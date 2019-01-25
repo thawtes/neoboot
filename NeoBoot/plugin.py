@@ -52,7 +52,7 @@ import time
                               #Miraclebox Ultra: bcm7424                             #Zero 4K  :    72604            #Solo2    : 7356    #Zgemma H9S    :
 
 PLUGINVERSION = '7.00 '
-UPDATEVERSION = '7.05'
+UPDATEVERSION = '7.06'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -333,13 +333,12 @@ class Montowanie(Screen):
         if self.sel:
             self.sel = self.sel[2]
         if self.sel == 0:
-            #if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg'):
-                #system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg; touch /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
-            #if fileExists('/etc/devicemanager.cfg'):
-                #system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
-            #cmd = '/media/neoboot/ImageBoot/Backup_NeoBoot.sh '
-            #os.system('opkg install util-linux-sfdisk') 
-		
+            if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg'):
+                system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg; touch /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
+            if fileExists('/etc/devicemanager.cfg'):
+                system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
+            cmd = '/media/neoboot/ImageBoot/Backup_NeoBoot.sh '
+            os.system('opkg install util-linux-sfdisk') 
             from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
             self.session.open(ManagerDevice)
         else:
@@ -468,10 +467,10 @@ class NeoBootInstallation(Screen):
 
     def device2(self, yesno):
         if yesno:
-            if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg'):
-                system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg; touch /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
-            if fileExists('/etc/devicemanager.cfg'):
-                system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
+            #if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg'):
+                #system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg; touch /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager*/devicemanager.cfg')
+            #if fileExists('/etc/devicemanager.cfg'):
+                #system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
             from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
             self.session.open(ManagerDevice)
         else:
@@ -527,10 +526,15 @@ class NeoBootInstallation(Screen):
                 f.close()
                 mntid = os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
                 system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
+                os.system('blkid -c /dev/null /dev/sd* > /tmp/blkidlist')
+                os.system('blkid -c /dev/null ' + mntdev + ' > /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
 
             #if not fileExists('/usr/lib/enigma2/python/Plugins/PLi'):                
                 #os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
 
+            #if os.path.isfile('/etc/init.d/volatile-media.sh'):
+                    #os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
+                    
             if os.path.isfile('/media/neoboot/ImageBoot/.neonextboot'): 
                     os.system('rm -f /media/neoboot/ImageBoot/.neonextboot; rm -f /media/neoboot/ImageBoot/.version; rm -f /media/neoboot/ImageBoot/.Flash; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.ipk; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.bin')
                     
