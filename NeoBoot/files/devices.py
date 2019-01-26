@@ -360,8 +360,8 @@ class DevicesConf(Screen, ConfigListScreen):
             rename('/etc/fstab.org', '/etc/fstab')
                                
         elif not fileExists('/etc/fstab.org'):
-            rename('/etc/fstab', '/etc/fstab.org')
-            #system('cp -r -f /etc/fstab /etc/fstab.org')
+            #rename('/etc/fstab', '/etc/fstab.org')
+            system('cp -r -f /etc/fstab /etc/fstab.org')
         self.Console = Console()
         mycheck = False
         for x in self['config'].list:
