@@ -96,59 +96,64 @@ class MBTools(Screen):
         if not fileExists(mypath + 'icons'):
             mypixmap = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/ok.png'
         png = LoadPixmap(mypixmap)
-        res = (_('Przywr\xc3\xb3\xc4\x87 kopi\xc4\x99 obrazu do NeoBoota'), png, 0)
-        self.list.append(res)
-        self['list'].list = self.list
-        
-        res = (_('Menad\xc5\xbcer urz\xc4\x85dze\xc5\x84'), png, 1)
-        self.list.append(res)
-        self['list'].list = self.list
-        
-        res = (_('Usu\xc5\x84 image ZIP z katalogu ImagesUpload  '), png, 2)
-        self.list.append(res)
-        self['list'].list = self.list
-        
-        res = (_('Odinstalowanie  NeoBoota'), png, 3)
-        self.list.append(res)
-        self['list'].list = self.list
-        
-        res = (_('Reinstalacja  NeoBoota'), png, 4)
-        self.list.append(res)
-        self['list'].list = self.list
-        
-        res = (_('Zaktualizuj NeoBoota na wszystkich obrazach.'), png, 5)
-        self.list.append(res)
-        self['list'].list = self.list
-        
-        res = (_('Kopia Zapasowa NeoBoota'), png, 6)
-        self.list.append(res)
-        self['list'].list = self.list
-        
-        res = (_('Aktualizacja listy TV na zainstalowanych image.'), png, 7)
+
+        res = (_('Wykonaj kopi\xc4\x99 obrazu z NeoBoota'), png, 0)
         self.list.append(res)
         self['list'].list = self.list
 
-        res = (_('Aktualizacja IPTVPlayer na zainstalowanych image.'), png, 8)
+        res = (_('Przywr\xc3\xb3\xc4\x87 kopi\xc4\x99 obrazu do NeoBoota'), png, 1)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Usuniecie hasla do root.'), png, 9)
-        self.list.append(res)
-        self['list'].list = self.list        
-
-        res = (_('Sprawdz poprawnosc instalacji neoboota'), png, 10)
+        res = (_('Menad\xc5\xbcer urz\xc4\x85dze\xc5\x84'), png, 2)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Zahaszuj montowanie VolatileMedia '), png, 11)
+        res = (_('Usu\xc5\x84 image ZIP z katalogu ImagesUpload  '), png, 3)
         self.list.append(res)
-        self['list'].list = self.list        
+        self['list'].list = self.list
         
-        res = (_('Informacje NeoBoota'), png, 12)
+        res = (_('Odinstalowanie  NeoBoota'), png, 4)
+        self.list.append(res)
+        self['list'].list = self.list
+        
+        res = (_('Reinstalacja  NeoBoota'), png, 5)
+        self.list.append(res)
+        self['list'].list = self.list
+        
+        res = (_('Zaktualizuj NeoBoota na wszystkich obrazach.'), png, 6)
+        self.list.append(res)
+        self['list'].list = self.list
+        
+        res = (_('Kopia Zapasowa NeoBoota'), png, 7)
+        self.list.append(res)
+        self['list'].list = self.list
+        
+        res = (_('Aktualizacja listy TV na zainstalowanych image.'), png, 8)
+        self.list.append(res)
+        self['list'].list = self.list
+
+        res = (_('Aktualizacja IPTVPlayer na zainstalowanych image.'), png, 9)
+        self.list.append(res)
+        self['list'].list = self.list
+        
+        res = (_('Usuniecie hasla do root.'), png, 10)
         self.list.append(res)
         self['list'].list = self.list        
 
-        res = (_('Wspierane tunery sat'), png, 13)
+        res = (_('Sprawdz poprawnosc instalacji neoboota'), png, 11)
+        self.list.append(res)
+        self['list'].list = self.list
+        
+        res = (_('Zahaszuj montowanie VolatileMedia '), png, 12)
+        self.list.append(res)
+        self['list'].list = self.list        
+        
+        res = (_('Informacje NeoBoota'), png, 13)
+        self.list.append(res)
+        self['list'].list = self.list        
+
+        res = (_('Wspierane tunery sat'), png, 14)
         self.list.append(res)
         self['list'].list = self.list  
 
@@ -156,33 +161,35 @@ class MBTools(Screen):
         self.sel = self['list'].getCurrent()
         if self.sel:
             self.sel = self.sel[2]
-        if self.sel == 0 and self.session.open(MBRestore):
+        if self.sel == 0 and self.session.open(MBBackup):
             pass
-        if self.sel == 1 and self.session.open(MenagerDevices):
+        if self.sel == 1 and self.session.open(MBRestore):
             pass
-        if self.sel == 2 and self.session.open(MBDeleUpload):
+        if self.sel == 2 and self.session.open(MenagerDevices):
             pass
-        if self.sel == 3 and self.session.open(UnistallMultiboot):
+        if self.sel == 3 and self.session.open(MBDeleUpload):
             pass
-        if self.sel == 4 and self.session.open(ReinstllNeoBoot):
+        if self.sel == 4 and self.session.open(UnistallMultiboot):
             pass
-        if self.sel == 5 and self.session.open(UpdateNeoBoot):
+        if self.sel == 5 and self.session.open(ReinstllNeoBoot):
             pass
-        if self.sel == 6 and self.session.open(BackupMultiboot):
+        if self.sel == 6 and self.session.open(UpdateNeoBoot):
             pass
-        if self.sel == 7 and self.session.open(ListTv):
+        if self.sel == 7 and self.session.open(BackupMultiboot):
             pass
-        if self.sel == 8 and self.session.open(IPTVPlayer):
+        if self.sel == 8 and self.session.open(ListTv):
             pass
-        if self.sel == 9 and self.session.open(SetPasswd): 
+        if self.sel == 9 and self.session.open(IPTVPlayer):
             pass
-        if self.sel == 10 and self.session.open(CheckInstall): 
+        if self.sel == 10 and self.session.open(SetPasswd): 
+            pass
+        if self.sel == 11 and self.session.open(CheckInstall): 
             pass   
-        if self.sel == 11 and self.session.open(VolatileMedia): 
+        if self.sel == 12 and self.session.open(VolatileMedia): 
             pass                      
-        if self.sel == 12 and self.session.open(MultiBootMyHelp):
+        if self.sel == 13 and self.session.open(MultiBootMyHelp):
             pass
-        if self.sel == 13 and self.session.open(TunerInfo):
+        if self.sel == 14 and self.session.open(TunerInfo):
             pass
 
 class MBBackup(Screen):
