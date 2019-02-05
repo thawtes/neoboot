@@ -894,7 +894,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         self['key_blue'] = Label(_('Info'))
         self['key_menu'] = Label(_('More options'))
         self['key_1'] = Label(_('Update NeoBot'))
-        self['key_2'] = Label(_('Backup image'))
+        self['key_2'] = Label(_('Start Flash Image'))
         self['key_3'] = Label(_('Install Kernel'))
         self['label1'] = Label(_('Please choose an image to boot'))
         self['label2'] = Label(_('NeoBoot is running from:'))
@@ -925,12 +925,13 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
          'ok': self.boot,
          'menu': self.mytools,
          '1': self.neoboot_update,
-         '2': self.MBBackup,
+         '2': self.ImageFlash,
          '3': self.ReinstallKernel,
          'back': self.close_exit})
         if not fileExists('/etc/name'):
             os.system('touch /etc/name')
         self.onShow.append(self.updateList)
+
 
     def pomoc(self):
         if fileExists('/.multinfo'):
@@ -939,9 +940,10 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         else:
             self.session.open(Opis)
 
-    def MBBackup(self):
-        from Plugins.Extensions.NeoBoot.files.tools import MBBackup
-        self.session.open(MBBackup)
+    def ImageFlash(self):
+            os.system('mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ; reboot -f ')
+        #from Plugins.Extensions.NeoBoot.files.tools import MBBackup
+        #self.session.open(MBBackup)
 
     def deviceneoboot(self):
         self.session.open(Montowanie)
@@ -1454,10 +1456,10 @@ class UruchamianieImage(Screen):
                                     self.session.open(Console, _('NeoBoot MiracleBox Ultra....'), [cmd2])
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
-                            self.messagebox = self.session.open(MessageBox, _('WyglÄ…da na to ĹĽe model STB nie jest wpierany przez multiboota!!! '), MessageBox.TYPE_INFO, 8)
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że model STB nie jest wpierany przez multiboota!!! '), MessageBox.TYPE_INFO, 8)
                             self.close()
                             
-                                                        
+                            
             #Edision OS MINI  - MIPS #Test   
             elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini':                                      
                         if getImageNeoBoot() == 'Flash':                    
