@@ -1433,7 +1433,7 @@ class UruchamianieImage(Screen):
             elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7424' or getTunerModel() == 'ini-8000sv':                                                         
                         if getImageNeoBoot() == 'Flash':                    
                             if fileExists('/.multinfo'):  
-                                cmd2='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh' 
+                                cmd2='ln -sfn /sbin/init.sysvinit /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh' 
                                 self.session.open(Console, _('NeoBoot MiracleBox Ultra...'), [cmd2])                 
                             elif not fileExists('/.multinfo'):  
                                 self.session.open(TryQuitMainloop, 2)                                      
@@ -1447,17 +1447,17 @@ class UruchamianieImage(Screen):
                                     self.session.open(Console, _('NeoBoot MiracleBox Ultra....'), [cmd2])              
                             elif fileExists('/.multinfo'):    
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    cmd2='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' % getBoxVuModel() 
+                                    cmd2='ln -sfn /sbin/init.sysvinit /sbin/init; opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' % getBoxVuModel() 
                                     self.session.open(Console, _('NeoBoot MiracleBox Ultra....'), [cmd2])
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
-                                    cmd2='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh'
+                                    cmd2='ln -sfn /sbin/init.sysvinit /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh'
                                     self.session.open(Console, _('NeoBoot MiracleBox Ultra....'), [cmd2])
                         else:
                             os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
-                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że model STB nie jest wpierany przez multiboota!!! '), MessageBox.TYPE_INFO, 8)
+                            self.messagebox = self.session.open(MessageBox, _('WyglÄ…da na to ĹĽe model STB nie jest wpierany przez multiboota!!! '), MessageBox.TYPE_INFO, 8)
                             self.close()
                             
-                            
+                                                        
             #Edision OS MINI  - MIPS #Test   
             elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini':                                      
                         if getImageNeoBoot() == 'Flash':                    
