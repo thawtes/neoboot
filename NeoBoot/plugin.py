@@ -941,10 +941,15 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             self.session.open(Opis)
 
     def ImageFlash(self):
-            os.system('mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ; reboot -f ')
-        #from Plugins.Extensions.NeoBoot.files.tools import MBBackup
-        #self.session.open(MBBackup)
-
+        if not fileExists('/.multinfo'):
+            self.session.open(MessageBox, _('Sorry, Opcja dostepna tylko z poziomu image uruchomionego w neoboocie.'), MessageBox.TYPE_INFO, 7)
+            self.close()
+        else:
+            cmd = _("echo -e 'Restart in progress...\n'")
+            cmd1 = 'mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ;sleep 2; reboot -f' 
+            self.session.openWithCallback(self.up, Console, _('NeoBoot: Deleting Image'), [cmd, cmd1])
+            #os.system('mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ; reboot -f ')
+            
     def deviceneoboot(self):
         self.session.open(Montowanie)
 
