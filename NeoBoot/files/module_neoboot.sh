@@ -1,3 +1,6 @@
+#!/bin/sh
+#DESCRIPTION=This script by gutosie
+
 opkg update
 opkg install --force-reinstall mtd-utils
 opkg install --force-reinstall mtd-utils-ubifs
