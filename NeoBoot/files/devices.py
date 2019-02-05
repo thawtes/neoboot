@@ -356,7 +356,7 @@ class DevicesConf(Screen, ConfigListScreen):
         if fileExists('/etc/fstab.org'):        
             system('rm /etc/fstab; mv /etc/fstab.org /etc/fstab; rm /etc/fstab.org ')                               
         elif not fileExists('/etc/fstab.org'):
-            system('mv /etc/fstab /etc/fstab.org')
+            system('cp -f /etc/fstab /etc/fstab.org')
         system('mount media -a') 
         
         self.Console = Console()
