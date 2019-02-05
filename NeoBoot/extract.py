@@ -103,7 +103,7 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
 
 #Ultra
             elif getBoxHostName() == 'mbultra' or getCPUSoC() == 'bcm7424':
-                os.system('mv /media/neoboot/ImagesUpload/miraclebox/kernel.bin ' + media_target + '/boot/' + getBoxHostName() + '.vmlinux.gz' + dev_null)        
+                os.system('mv /media/neoboot/ImagesUpload/miraclebox/ultra/kernel.bin ' + media_target + '/boot/' + getBoxHostName() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin MiracleBoxUltra. Typ stb - MIPS"')
 
 #Edision OS MINI 
