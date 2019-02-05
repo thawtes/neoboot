@@ -919,9 +919,16 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/rootfs.tar.xz; tar -jJxvf /media/neoboot/ImagesUpload/rootfs.tar.xz -C  /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/hd51'):
-            os.system('echo "Instalacja systemu HD51."')
-            cmd = 'chmod 777 /media/neoboot/ImagesUpload/hd51/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/hd51/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            os.system('echo "Instalacja systemu  HD51 "')
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/hd51/rootfs.fastboot; tar -jxvf /media/neoboot/ImagesUpload/hd51/rootfs.fastboot -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
+
+        elif os.path.exists('/media/neoboot/ImagesUpload/hd60'):
+            os.system('echo "Instalacja systemu AX HD60 4K"')
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/hd60/rootfs.fastboot.gz; tar -jxvf /media/neoboot/ImagesUpload/hd60/rootfs.fastboot.gz -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            rc = os.system(cmd)
+
+
         elif os.path.exists('/media/neoboot/ImagesUpload/gigablue'):
             os.system('echo "Instalacja systemu GigaBlue."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/gigablue/quad4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/gigablue/quad4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
@@ -1026,6 +1033,11 @@ def RemoveUnpackDirs():
         rc = os.system('rm -r /media/neoboot/ImagesUpload/sf4008')
     elif os.path.exists('/media/neoboot/ImagesUpload/octagon/sf8008'):          
         rc = os.system('mv /media/neoboot/ImagesUpload/usb_update.bin /media/neoboot/ImagesUpload/octagon; rm -r /media/neoboot/ImagesUpload/octagon')                                          
+
+    elif os.path.exists('/media/neoboot/ImagesUpload/hd60'):          
+        rc = os.system('mv /media/neoboot/ImagesUpload/bootargs.bin /media/neoboot/ImagesUpload/hd60; mv /media/neoboot/ImagesUpload/fastboot.bin /media/neoboot/ImagesUpload/hd60; rm -r /media/neoboot/ImagesUpload/hd60')                                          
+
+
     elif os.path.exists('/media/neoboot/ImagesUpload/dm900'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/dm900')
     elif os.path.exists('/media/neoboot/ImagesUpload/hd51'):
