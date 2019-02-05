@@ -433,8 +433,20 @@ class MenagerDevices(Screen):
         try:
             if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager/devicemanager.cfg'):
                 system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager/devicemanager.cfg')
+                from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
+                self.session.open(ManagerDevice)
             if fileExists('/etc/devicemanager.cfg'):
                 system(' rm -f /etc/devicemanager.cfg')
+                from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
+                self.session.open(ManagerDevice)
+            if fileExists('/etc/fstab.org'):        
+                system('rm /etc/fstab; mv /etc/fstab.org /etc/fstab; rm /etc/fstab.org ')                               
+                from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
+                self.session.open(ManagerDevice)
+            elif not fileExists('/etc/fstab.org'):
+                system('cp -f /etc/fstab /etc/fstab.org')
+                from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
+                self.session.open(ManagerDevice)
             else:
                 from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
                 self.session.open(ManagerDevice)
