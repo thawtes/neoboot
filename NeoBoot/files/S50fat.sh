@@ -35,6 +35,7 @@ fi
 mount -a
 mount -t auto
 mount media -a 
+rdate -s ntp.task.gda.pl
 
 if [ ! -e /media/neoboot/ImageBoot/.neonextboot ] ; then
     /usr/bin/enigma2_pre_start.sh   

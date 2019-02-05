@@ -148,7 +148,9 @@ class MBTools(Screen):
         self.list.append(res)
         self['list'].list = self.list        
 
-
+        res = (_('Wspierane tunery sat'), png, 13)
+        self.list.append(res)
+        self['list'].list = self.list  
 
     def KeyOk(self):
         self.sel = self['list'].getCurrent()
@@ -179,6 +181,8 @@ class MBTools(Screen):
         if self.sel == 11 and self.session.open(VolatileMedia): 
             pass                      
         if self.sel == 12 and self.session.open(MultiBootMyHelp):
+            pass
+        if self.sel == 13 and self.session.open(TunerInfo):
             pass
 
 class MBBackup(Screen):
@@ -836,8 +840,30 @@ class VolatileMedia(Screen):
          'red': self.Media})
 
     def Media(self):
-        os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
-        self.close()
+        box = self.session.openWithCallback(self.restartGUI, MessageBox, _('Zmienic montowanie ?\n\nWybierz Tak by zmienic.\nWybierz Nie by porzucic zmiany lub przywrocic.'), MessageBox.TYPE_YESNO)
+        box.setTitle(_('MONTOWANIE '))
+
+    def restartGUI(self, answer):
+        if answer is True:
+            try:
+                if fileExists('/etc/init.d/volatile-media.sh'):
+                    cmd = ' mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org'
+                    self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd]) 
+                    self.close()
+                #else:
+                    self.messagebox = self.session.open(MessageBox, _('Plik volatile-media.sh w lokalizacji /etc/init.d/\nzostal zmianiony na volatile-media.sh.org'), MessageBox.TYPE_INFO, 10)
+            except:
+                False
+        else:
+            try:
+                if fileExists('/etc/init.d/volatile-media.sh.org'):
+                    cmd = ' mv /etc/init.d/volatile-media.sh.org /etc/init.d/volatile-media.sh'
+                    self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd]) 
+                    self.close()
+                #else:
+                    self.messagebox = self.session.open(MessageBox, _('Plik volatile-media.sh.org w lokalizacji /etc/init.d/\nzostal zmianiony na org. naze volatile-media.sh'), MessageBox.TYPE_INFO, 10)
+            except:
+                False
 
 
 
@@ -873,6 +899,30 @@ class MultiBootMyHelp(Screen):
         message += _('Udanej zabawy :)\n\n')
         self['lab1'].show()
         self['lab1'].setText(message)
+
+
+class TunerInfo(Screen):
+    __module__ = __name__
+    skin = '\n\t<screen position="center,center" size="700,300" title="NeoBoot - Tunery Sat">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
+
+    def __init__(self, session):
+        Screen.__init__(self, session)
+        self['lab1'] = Label('NeoBoot: Lista wspieranych modeli STB.')
+        self['key_red'] = Label(_('Uruchom - Red'))
+        self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'back': self.close,
+         'red': self.iNFO})
+         
+    def iNFO(self):
+        try:
+            cmd = ' cat /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.info'
+            cmd1 = ''
+            self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd,
+                     cmd1]) 
+            self.close()
+
+        except:
+            False
+
 
 
 def myboot(session, **kwargs):
