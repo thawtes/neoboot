@@ -44,7 +44,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '7.00 '
-UPDATEVERSION = '7.10'
+UPDATEVERSION = '7.11'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -948,7 +948,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             cmd = _("echo -e 'Restart in progress...\n'")
             cmd1 = 'mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ;sleep 2; reboot -f' 
             self.session.openWithCallback(self.up, Console, _('NeoBoot: Deleting Image'), [cmd, cmd1])
-            #os.system('mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ; reboot -f ')
+
             
     def deviceneoboot(self):
         self.session.open(Montowanie)
@@ -1450,7 +1450,7 @@ class UruchamianieImage(Screen):
                                     cmd2='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot' 
                                     self.session.open(Console, _('NeoBoot MiracleBox Ultra....'), [cmd2])                                                                                                    
                                 elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):                                              
-                                    cmd2='ln -sfn /sbin/neoinitmipsvu /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh' 
+                                    cmd2='ln -sfn /sbin/neoinitmips /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh' 
                                     self.session.open(Console, _('NeoBoot MiracleBox Ultra....'), [cmd2])              
                             elif fileExists('/.multinfo'):    
                                 if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
