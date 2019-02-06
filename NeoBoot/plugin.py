@@ -873,6 +873,9 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         if fileExists('/.multinfo'):
             if fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image'):  
                     os.system('rm -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image; touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ')          
+            if fileExists('/usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image'):  
+                    os.system('rm -f /usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image; touch /usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ')          
+
 
         if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
@@ -1426,6 +1429,11 @@ class UruchamianieImage(Screen):
             system('touch /tmp/.control_ok ') 
         elif not fileExists('/media/neoboot/ImageBoot/%s//usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
             system('touch /media/neoboot/ImageBoot/%s//usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image ' % ( getImageNeoBoot()))
+        elif fileExists('/media/neoboot/ImageBoot/%s//usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
+            system('touch /tmp/.control_ok ') 
+        elif not fileExists('/media/neoboot/ImageBoot/%s//usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
+            system('touch /media/neoboot/ImageBoot/%s//usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image ' % ( getImageNeoBoot()))
+
 ####################################
         system('sync; echo 3 > /proc/sys/vm/drop_caches; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh')               
         self.sel = self['list'].getCurrent()
