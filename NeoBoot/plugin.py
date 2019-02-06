@@ -869,7 +869,11 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         Screen.__init__(self, session)
         if fileExists('/tmp/.init_reboot'):
             system('rm /tmp/.init_reboot')
-         
+
+        if fileExists('/.multinfo'):
+            if fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image'):  
+                    os.system('rm -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image; touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ')          
+
         if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
                 if getCPUSoC() == 'bcm7251' or getBoxHostName == 'sf4008':   
@@ -962,7 +966,8 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             self.close()
         else:
             cmd = _("echo -e 'Restart in progress...\n'")
-            cmd1 = 'mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ;sleep 2; reboot -f' 
+            cmd1='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/*.ipk' 
+            cmd2 = 'mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ;sleep 2; reboot -f' 
             self.session.openWithCallback(self.up, Console, _('NeoBoot: Deleting Image'), [cmd, cmd1])
 
             
@@ -1416,6 +1421,12 @@ class UruchamianieImage(Screen):
         self['list'].list = self.list
 
     def KeyOk(self):                              
+#################################
+        if fileExists('/media/neoboot/ImageBoot/%s//usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
+            system('touch /tmp/.control_ok ') 
+        elif not fileExists('/media/neoboot/ImageBoot/%s//usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
+            system('touch /media/neoboot/ImageBoot/%s//usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image ' % ( getImageNeoBoot()))
+####################################
         system('sync; echo 3 > /proc/sys/vm/drop_caches; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh')               
         self.sel = self['list'].getCurrent()
         if self.sel:
