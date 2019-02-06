@@ -8,7 +8,7 @@ if [ ! -e /usr/bin/ipkg-cl ]; then
    ln -sfn /usr/bin/opkg-cl /usr/bin/ipkg-cl
 fi
 
-if [ -f /etc/vtiversion.info ] || [ -f /etc/bhversion ] || [ ! -e /boot/zImage.* ]; then
+if [ -f /etc/vtiversion.info ] || [ -f /etc/bhversion ] ; then
         /etc/init.d/networking stop; sync; /etc/init.d/networking start
 fi
                    
