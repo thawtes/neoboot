@@ -113,6 +113,17 @@ else
                            done	
                         chmod 755 $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh   
 
+			if [ -e $IMAGE/$TARGET/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image ]; then
+          			echo "First boot - Proba uruchomienia nowego image... "
+			elif [ ! -e $IMAGE/$TARGET/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ]; then
+          			ln -sfn /sbin/init.sysvinit /sbin/init
+          			echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
+          			sync
+          			echo "Error - NeoBoot nie potrafi uruchomic tego image !!! "
+          			echo "Restart STB - Back to Flash... "
+          			sleep 10; reboot -f   
+			fi
+
 			if [ -f $IMAGE/$TARGET/sbin/init.sysvinit ]; then                                    
                                     exec /usr/sbin/chroot $IMAGE/$TARGET /sbin/init.sysvinit 
 			elif [ -f $IMAGE/$TARGET/sbin/init ]; then                                    

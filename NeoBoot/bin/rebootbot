@@ -1,9 +1,29 @@
 #!/bin/sh
+
 if [ ! -e /media/neoboot/ImageBoot/.neonextboot ]; then
           ln -sfn /sbin/init.sysvinit /sbin/init
           echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
           sync
           echo "Error - Back to Flash... "
           sleep 3; reboot -f
-fi  
+fi 
+ 
+IMAGE=/media/neoboot/ImageBoot
+IMAGEBOOT=/media/neoboot/ImageBoot/.neonextboot          
+TARGET=Flash
+if [ -f $IMAGEBOOT ]; then
+    TARGET=`cat $IMAGEBOOT`
+fi
+$IMAGE/$TARGET
+	
+if [ -e $IMAGE/$TARGET/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image ]; then
+          echo "No Error - Proba uruchomienia nowego image... "
+elif [ ! -e $IMAGE/$TARGET/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ]; then
+          ln -sfn /sbin/init.sysvinit /sbin/init
+          echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
+          sync
+          echo "Error - NeoBoot nie potrafi uruchomic tego image !!! "
+          echo "Restart STB - Back to Flash... "
+          sleep 10; reboot -f   
+fi
 exit 0
