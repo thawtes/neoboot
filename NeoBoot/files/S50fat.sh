@@ -8,7 +8,7 @@ if [ ! -e /usr/bin/ipkg-cl ]; then
    ln -sfn /usr/bin/opkg-cl /usr/bin/ipkg-cl
 fi
 
-if [ -f /etc/vtiversion.info ] || [ -f /etc/bhversion ] ; then
+if [ -f /etc/vtiversion.info ] || [ -f /etc/bhversion ] || [ ! -e /boot/zImage.* ]; then
         /etc/init.d/networking stop; sync; /etc/init.d/networking start
 fi
                    
@@ -32,9 +32,7 @@ if [ ! -e /media//media/neoboot ] ; then
         mkdir -p /media/media/neoboot
 fi
                                                 
-mount -a
-mount -t auto
-mount media -a 
+mount -a -t auto  
 rdate -s ntp.task.gda.pl
 
 if [ ! -e /media/neoboot/ImageBoot/.neonextboot ] ; then
