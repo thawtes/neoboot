@@ -521,24 +521,20 @@ class NeoBootInstallation(Screen):
                 f.close()
                 mntid = os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
                 system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
+
+                #os.system('mv /etc/fstab /etc/fstab.org')
+                #os.system('grep -v  /media/neoboot /etc/fstab > /etc/fstab.org')
+                #os.system('rm /etc/fstab.org')
+                os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
+
+                fstabuuid = os.popen('blkid -s UUID -o value ' + mntdev).read()
+                fstabuuidwrite = 'UUID=' + fstabuuid.strip() + '        /media/neoboot        auto        defaults\t       1        1'
+                fileHandle = open('/etc/fstab', 'a')
+                fileHandle.write(fstabuuidwrite)
+                fileHandle.close()
+
                 os.system('blkid -c /dev/null /dev/sd* > /tmp/blkidlist')
                 os.system('blkid -c /dev/null ' + mntdev + ' > /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
-
-
-
-
-                #os.system('mv /etc/fstab /etc/fstab1')
-                #os.system('grep -v  /media/neoboot /etc/fstab > /etc/fstab1')
-                #os.system('rm /etc/fstab1')
-                #os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
-
-                #fstabuuid = os.popen('blkid -s UUID -o value ' + mntdev).read()
-                #fstabuuidwrite = 'UUID=' + fstabuuid.strip() + '        /media/neoboot        auto        defaults\t       1        1'
-                #fileHandle = open('/etc/fstab', 'a')
-                #fileHandle.write(fstabuuidwrite)
-                #fileHandle.close()
-
-
 
 
 
