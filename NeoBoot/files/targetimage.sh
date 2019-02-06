@@ -132,14 +132,14 @@ if [ $TARGET = "Flash" ]; then
                         update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
                         echo "NEOBOOT is booting image from " $TARGET
                         echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                        sleep 5; /etc/init.d/reboot
+                        sleep 5; reboot -d -f -h -i
                     fi
 #MiracleBox Ultra - test
 
 
 
-                    elif [ $BOXNAME = "mbultra" ] || [ $CHIPSET = "bcm7424" ]; then 
-                            if [ -f /proc/stb/info/vumodel ]; then
+                    if [ $BOXNAME = "mbultra" ] || [ $CHIPSET = "bcm7424" ]; then 
+                            if [ -f /proc/stb/info/boxtype ]; then
                                 #if [ -e /media/neoboot/ImagesUpload/.kernel/vmlinux.gz ] ; then
                                     #echo "Kasowanie kernel z /dev/mtd2..."                                    
                                     #flash_erase /dev/mtd2 0 0
@@ -153,7 +153,6 @@ if [ $TARGET = "Flash" ]; then
                                     sleep 2
                                     cp -fR /media/neoboot/ImagesUpload/.kernel/zImage.$BOXNAME.ipk /tmp/zImage.ipk  
                                     echo "Instalacja kernel do /dev/mtd2..."                                 
-                                    ln -sfn /sbin/init.sysvinit /sbin/init 
                                     opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
 
                                 fi                            
@@ -161,7 +160,7 @@ if [ $TARGET = "Flash" ]; then
                             update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
                             echo "NEOBOOT is booting image from " $TARGET
                             echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                            sleep 5; /etc/init.d/reboot                            
+                            sleep 5; reboot -d -f -h -i                           
 ##################
 #Edision OSmini - test
 
@@ -187,9 +186,9 @@ if [ $TARGET = "Flash" ]; then
                             update-alternatives --remove vmlinux vmlinux-`uname -r` || true                                          
                             echo "NEOBOOT is booting image from " $TARGET
                             echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
-                            sleep 5; /etc/init.d/reboot                             
+                            sleep 5; reboot -d -f -h -i                             
 ##################
-
+                    fi
 
                 else
                     if [ ! -e /.multinfo ]; then
@@ -265,10 +264,12 @@ if [ $TARGET = "Flash" ]; then
                             update-alternatives --remove vmlinux vmlinux-`uname -r` || true
                             echo "Used Kernel: " $TARGET > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                             echo " NEOBOOT - zainstalowano kernel-image - " $TARGET  "Za chwile nastapi restart systemu !!!"
-                            sleep 5 ; /etc/init.d/reboot
+                            sleep 5 ; reboot -d -f -h -i
 
+
+                        fi 
 #Ultra
-                        elif [ $BOXNAME = "mbultra" ] || [ $CHIPSET = "bcm7424" ]; then 
+                        if [ $BOXNAME = "mbultra" ] || [ $CHIPSET = "bcm7424" ]; then 
                                 #if [ -e /media/neoboot/ImagesUpload/.kernel/vmlinux.gz ] ; then
                                     #echo "Kasowanie kernel z /dev/mtd2..."
                                     #sleep 2                                
@@ -286,8 +287,7 @@ if [ $TARGET = "Flash" ]; then
                                     opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
                                 fi                            
                                 echo " NEOBOOT Start sytem - " $TARGET  "Za chwile nastapi restart !!!"
-                                ln -sfn /sbin/init.sysvinit /sbin/init
-                                sleep 5; /etc/init.d/reboot  
+                                sleep 5; reboot -d -f -h -i 
 #OSmini
                         elif [ $BOXNAME = "osmini" ] || [ $CHIPSET = "BCM7362" ]; then
                                 if [ -e /media/neoboot/ImagesUpload/.kernel/vmlinux.gz ] ; then
@@ -307,10 +307,10 @@ if [ $TARGET = "Flash" ]; then
                                     opkg install --force-reinstall --force-overwrite --force-downgrade --nodeps /tmp/zImage.ipk
                                 fi                            
                                 echo " NEOBOOT Start sytem - " $TARGET  "Za chwile nastapi restart !!!"
-                                sleep 5; /etc/init.d/reboot                            
+                                sleep 5; reboot -d -f -h -i                            
                         else                            
                             echo " NEOBOOT Start sytem - " $TARGET  "Za chwile nastapi restart !!!"
-                            sleep 5; /etc/init.d/reboot
+                            sleep 5; reboot -d -f -h -i
                         fi
                     fi
                 fi
@@ -362,14 +362,14 @@ else
                                             echo "Typ procesora: " $CHIPSET " STB"                                             
                         fi
                         
-                        sleep 5; /etc/init.d/reboot
+                        sleep 5; reboot -d -f -h -i
 
             elif [ $VUMODEL = "zero4k" ]; then                         
                         if [ -e /.multinfo ] ; then
                                 INFOBOOT=$( cat /.multinfo )
                                 if [ $TARGET = $INFOBOOT ] ; then
                                     echo "NEOBOOT is booting image from " $TARGET
-                                    sleep 5; /etc/init.d/reboot
+                                    sleep 5; reboot -d -f -h -i
                                 else                                              
                                     echo "Przenoszenie pliku kernel do /tmp"
                                     sleep 2
@@ -386,7 +386,7 @@ else
                                             echo "Kernel dla potrzeb startu systemu " $TARGET " VUPLUS z procesorem arm zostal zmieniony!!!"
                                             echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                                             echo "Typ procesora: " $CHIPSET " STB"
-                                            sleep 5; /etc/init.d/reboot                              
+                                            sleep 5; reboot -d -f -h -i                              
                                 fi
                         else              
                                     echo "Przenoszenie pliku kernel do /tmp"
@@ -411,7 +411,7 @@ else
                                             sleep 5                                              
                         fi
 
-                        /etc/init.d/reboot                                    
+                        reboot -d -f -h -i                                    
 
             elif [ $VUMODEL = "solo2" ] || [ $VUMODEL = "duo2" ] || [ $VUMODEL = "solose" ] || [ $VUMODEL = "zero" ] ; then	     
                         if [ -e /.multinfo ] ; then
@@ -450,7 +450,7 @@ else
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                                     echo "Typ procesora: " $CHIPSET " STB"
                         fi
-	                sleep 5; /etc/init.d/reboot                                    	     
+	                sleep 5; reboot -d -f -h -i                                    	     
 
             elif [ $VUMODEL = "bm750" ] || [ $VUMODEL = "duo" ] || [ $VUMODEL = "solo" ] || [ $VUMODEL = "uno" ] || [ $VUMODEL = "ultimo" ]; then
                         if [ -e /.multinfo ] ; then
@@ -479,14 +479,14 @@ else
                                     echo "Kernel dla potrzeb startu systemu " $TARGET " z procesorem mips zostal zmieniony!!!"
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel                                       
                         fi
-                        sleep 5; /etc/init.d/reboot
+                        sleep 5; reboot -d -f -h -i
+            fi
         fi
 
     fi                       
         
-
 #Ultra
-    elif [ $BOXNAME = "mbultra" ] || [ $CHIPSET = "bcm7424" ]; then	     
+    if [ $BOXNAME = "mbultra" ] || [ $CHIPSET = "bcm7424" ]; then	     
                         if [ -e /.multinfo ] ; then
                                 INFOBOOT=$( cat /.multinfo )
                                 if [ $TARGET = $INFOBOOT ] ; then
@@ -523,7 +523,7 @@ else
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                                     echo "Typ procesora: " $CHIPSET " STB"
                         fi
-	                sleep 5; /etc/init.d/reboot 
+	                sleep 5; reboot -d -f -h -i
 
 ###############################
 #OSmini
@@ -564,7 +564,7 @@ else
                                     echo "Used Kernel: " $TARGET   > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
                                     echo "Typ procesora: " $CHIPSET " STB"
                         fi
-	                sleep 5; /etc/init.d/reboot 
+	                sleep 5; reboot -d -f -h -i 
 
             #else
                     #echo "$TARGET "  > /media/neoboot/ImageBoot/.neonextboot
