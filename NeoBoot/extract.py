@@ -1037,7 +1037,9 @@ def RemoveUnpackDirs():
     elif os.path.exists('/media/neoboot/ImagesUpload/hd60'):          
         rc = os.system('mv /media/neoboot/ImagesUpload/bootargs.bin /media/neoboot/ImagesUpload/hd60; mv /media/neoboot/ImagesUpload/fastboot.bin /media/neoboot/ImagesUpload/hd60; rm -r /media/neoboot/ImagesUpload/hd60')                                          
 
-
+    elif os.path.exists('/media/neoboot/ImagesUpload/osmio4k'):
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/osmio4k')
+        
     elif os.path.exists('/media/neoboot/ImagesUpload/dm900'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/dm900')
     elif os.path.exists('/media/neoboot/ImagesUpload/hd51'):
