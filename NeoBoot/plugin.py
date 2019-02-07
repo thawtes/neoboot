@@ -44,7 +44,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '7.00 '
-UPDATEVERSION = '7.13'
+UPDATEVERSION = '7.14'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -520,11 +520,6 @@ class NeoBootInstallation(Screen):
 
                 f.close()
                 mntid = os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
-                system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
-
-                #os.system('mv /etc/fstab /etc/fstab.org')
-                #os.system('grep -v  /media/neoboot /etc/fstab > /etc/fstab.org')
-                #os.system('rm /etc/fstab.org')
                 os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
 
                 fstabuuid = os.popen('blkid -s UUID -o value ' + mntdev).read()
@@ -532,12 +527,9 @@ class NeoBootInstallation(Screen):
                 fileHandle = open('/etc/fstab', 'a')
                 fileHandle.write(fstabuuidwrite)
                 fileHandle.close()
-
                 os.system('blkid -c /dev/null /dev/sd* > /tmp/blkidlist')
                 os.system('blkid -c /dev/null ' + mntdev + ' > /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
-
-
-
+                system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
 
 
             #if not fileExists('/usr/lib/enigma2/python/Plugins/PLi'):                
@@ -871,11 +863,10 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             system('rm /tmp/.init_reboot')
 
         if fileExists('/.multinfo'):
-            if fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image'):  
-                    os.system('rm -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image; touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ')          
-            if fileExists('/usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image'):  
-                    os.system('rm -f /usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image; touch /usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ')          
-
+            if fileExists('/.control_boot_new_image'):  
+                    os.system('rm -f /.control_boot_new_image ')          
+            elif not fileExists('/.control_boot_new_image'):  
+                    os.system('echo "checking the image start: \nImage booting without error _(*_*)_ OK" > /.control_ok' ) 
 
         if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
@@ -1425,14 +1416,10 @@ class UruchamianieImage(Screen):
 
     def KeyOk(self):                              
 #################################
-        if fileExists('/media/neoboot/ImageBoot/%s//usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
+        if fileExists('/media/neoboot/ImageBoot/%s//.control_ok ' % ( getImageNeoBoot())):
             system('touch /tmp/.control_ok ') 
-        elif not fileExists('/media/neoboot/ImageBoot/%s//usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
-            system('touch /media/neoboot/ImageBoot/%s//usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image ' % ( getImageNeoBoot()))
-        elif fileExists('/media/neoboot/ImageBoot/%s//usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
-            system('touch /tmp/.control_ok ') 
-        elif not fileExists('/media/neoboot/ImageBoot/%s//usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_ok ' % ( getImageNeoBoot())):
-            system('touch /media/neoboot/ImageBoot/%s//usr/lib64/enigma2/python/Plugins/Extensions/NeoBoot/.control_boot_new_image ' % ( getImageNeoBoot()))
+        elif not fileExists('/media/neoboot/ImageBoot/%s//.control_ok ' % ( getImageNeoBoot())):
+            system('touch /media/neoboot/ImageBoot/%s//.control_boot_new_image ' % ( getImageNeoBoot()))
 
 ####################################
         system('sync; echo 3 > /proc/sys/vm/drop_caches; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh')               
