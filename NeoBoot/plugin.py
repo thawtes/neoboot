@@ -44,7 +44,7 @@ import time
 # warranty, use at YOUR own risk.
 
 PLUGINVERSION = '7.00 '
-UPDATEVERSION = '7.14'
+UPDATEVERSION = '7.13'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -864,9 +864,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
 
         if fileExists('/.multinfo'):
             if fileExists('/.control_boot_new_image'):  
-                    os.system('rm -f /.control_boot_new_image ')          
-            elif not fileExists('/.control_boot_new_image'):  
-                    os.system('echo "checking the image start: \nImage booting without error _(*_*)_ OK" > /.control_ok' ) 
+                    os.system('rm -f /.control_boot_new_image; touch /.control_ok ')          
 
         if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
@@ -962,7 +960,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             cmd = _("echo -e 'Restart in progress...\n'")
             cmd1='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/*.ipk' 
             cmd2 = 'mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ;sleep 2; reboot -f' 
-            self.session.openWithCallback(self.up, Console, _('NeoBoot: Deleting Image'), [cmd, cmd1])
+            self.session.openWithCallback(self.up, Console, _('NeoBoot: Deleting Image'), [cmd, cmd1, cmd2])
 
             
     def deviceneoboot(self):
@@ -1414,8 +1412,16 @@ class UruchamianieImage(Screen):
         self.list.append(res)
         self['list'].list = self.list
 
-    def KeyOk(self):                              
 #################################
+    def KeyOk(self): 
+        if getImageNeoBoot() != 'Flash': 
+            cmd = _("echo -e '[NeoBoot] Uwaga!!! po poprawnym starcie wybranego oprogramowania w neoboot,\nnalezy uruchomic NEOBOOTA by potwierdzic prawidlowy start image.\n\nNacisnij OK lub exit na pilocie by kontynuowac...\n\n\n'") 
+            self.session.openWithCallback(self.StartImageInNeoBoot, Console, _('NeoBoot: Start image...'), [cmd])
+        else:
+            self.StartImageInNeoBoot()
+
+    def StartImageInNeoBoot(self):                              
+
         if fileExists('/media/neoboot/ImageBoot/%s//.control_ok ' % ( getImageNeoBoot())):
             system('touch /tmp/.control_ok ') 
         elif not fileExists('/media/neoboot/ImageBoot/%s//.control_ok ' % ( getImageNeoBoot())):
