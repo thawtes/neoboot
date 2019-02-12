@@ -43,25 +43,6 @@ else
 			fi 			
 		done
 	fi	
-	if [ -e $NEOBOOT/bin/install2  ]; then
-        	orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
-		selectinstall2=`cat $NEOBOOT/bin/install2`
-		for item in $orgimag1; do
-			selectmnt=`blkid | sed "/$selectinstall/!d" | cut -d":" -f1`
-			if [ $selectmnt == $item ]; then
-				echo "selectmnt=" $selectmnt
-                        	mnttest="uuid"
-				mount $selectmnt $NEO > /dev/null 2>&1
-			fi
-			if [ ! -e $NEO/ImageBoot  ]; then
-				echo "NEOBOOT hasn't been installed on: " $selectmnt
-				umount $NEO > /dev/null 2>&1 
-			else
-				echo "NEOBOOT has been installed on: " $selectmnt
-				break;
-			fi 			
-		done
-	fi
 	if [ ! -e $NEO  ]; then
 		mkdir $NEO > /dev/null 2>&1
 	fi        
@@ -134,28 +115,6 @@ else
                            done	
                         chmod 755 $IMAGE/$TARGET/usr/bin/enigma2_pre_start.sh   
                         #/bin/mount /dev/sda1 /media/neoboot/ImageBoot/$TARGET/media/hdd                                
-
-######### test boot new imaga>>>>
-			if [ -e $IMAGE/$TARGET/.control_ok ]; then
-          			echo "No Error - Booting image normal ... ";  sleep 2
-          			sync
-			else 
-          			if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
-                    			echo "First start image - Proba uruchomienia nowego image... ";  sleep 5; rm -r -f $IMAGE/$TARGET/.control_boot_new_image 
-                    			sync
-          			else 
-              			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
-                    			ln -sfn /sbin/init.sysvinit /sbin/init
-                    			echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
-                    			sync
-                    			echo "Error - NeoBoot nie potrafi uruchomic tego image !!! "
-                    			echo "Restart STB - Back to Flash... "
-                    			sleep 7; reboot -f   
-              			    fi
-          			fi
-			fi
-######### test boot new image
-
 			if [ -f $IMAGE/$TARGET/sbin/init.sysvinit ]; then                                    
                                     exec /usr/sbin/chroot $IMAGE/$TARGET /sbin/init.sysvinit 
 			elif [ -f $IMAGE/$TARGET/sbin/init ]; then                                    

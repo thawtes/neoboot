@@ -101,18 +101,11 @@ else
 		LIBDIR=/lib/modules/`ls /lib/modules | tail -n 1`
 	fi
         
-
 	if [ `mount | grep /proc | wc -l` -lt 1 ]; then
-	        /bin/mount -a
 		/bin/mount -t proc proc /proc > /dev/null 2>&1
 		/bin/mount -t sysfs sysfs /sys > /dev/null 2>&1
-		/sbin/depmod -Ae > /dev/null 2>&1                
-	fi 	
-
-	echo "NeoBoot is starting mdev"
-	echo "/sbin/mdev" > /proc/sys/kernel/hotplug
-	/etc/init.d/mdev > /dev/null 2>&1
-
+		/sbin/depmod -Ae > /dev/null 2>&1
+	fi
 
 	sleep 1
         echo " "
@@ -296,27 +289,6 @@ else
 			        done
 
 		                cd /media/neoboot/ImageBoot/$TARGET;
-
-######### test boot new imaga>>>>
-		                if [ -e $IMAGE/$TARGET/.control_ok ]; then
-          			    echo "No Error - Booting image normal ... ";  sleep 2
-          			    sync
-		                else 
-          			    if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
-                    			echo "First start image - Proba uruchomienia nowego image... ";  sleep 5; rm -r -f $IMAGE/$TARGET/.control_boot_new_image 
-                    			sync
-          			    else 
-              			        if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
-                    			    ln -sfn /sbin/init.sysvinit /sbin/init
-                    			    echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
-                    			    sync
-                    			    echo "Error - NeoBoot nie potrafi uruchomic tego image !!! "
-                    			    echo "Restart STB - Back to Flash... "
-                    			    sleep 7; reboot -f   
-              			        fi
-          			    fi
-		                fi
-######### test boot new image
 
                                 if [ -f $IMAGE/$TARGET/sbin/init.sysvinit ]; then                                    
                                     exec /usr/sbin/chroot . /sbin/init.sysvinit $*
