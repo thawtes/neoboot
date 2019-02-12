@@ -43,8 +43,16 @@ import time
 # save this copyright notice. This document/program is distributed WITHOUT any
 # warranty, use at YOUR own risk.
 
-PLUGINVERSION = '2.00 '
-UPDATEVERSION = '2.00'
+#Machine BCM
+#cat /proc/stb/info/chipset:
+#et8500   :        bcm7241    #SF4008   :        bcm7251     #Ultimo4k :    7444s    #Ultimo   :    7405(with 3D)    #Zero     :        7362
+#Formuler F1       bcm7356    #MBmini   :        bcm735      #Solo4k   :    7376     #Uno      :    7405(with 3D)    #Solo     :        7325
+#Formuler F3:      7362       #atemio6000 :      bcm7362     #Uno 4K   :    7252s    #Duo2     :    7424             #Solose-v2:        7241
+#MBmini   :        bcm7358    #Miraclebox Micro: bcm7362     #Uno4kSE  :    7252s    #Duo      :    7335             #Solose   :        7241
+                              #Miraclebox Uktra: bcm7424     #Zero 4K  :    72604    #Solo2    :    7356
+
+PLUGINVERSION = '6.00 '
+UPDATEVERSION = '6.55'
          
 class MyUpgrade(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -320,7 +328,7 @@ class Montowanie(Screen):
         self.list.append(res)
         self['list'].list = self.list
 
-    def KeyOk(self):                      
+    def KeyOk(self):
         self.sel = self['list'].getCurrent()
         if self.sel:
             self.sel = self.sel[2]
@@ -330,12 +338,10 @@ class Montowanie(Screen):
             if fileExists('/etc/devicemanager.cfg'):
                 system(' rm -f /etc/devicemanager.cfg; touch /etc/devicemanager.cfg ')
             cmd = '/media/neoboot/ImageBoot/Backup_NeoBoot.sh '
-            os.system('opkg install util-linux-sfdisk') 
             from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
             self.session.open(ManagerDevice)
         else:
             self.session.open(MessageBox, _('The operation has been canceled or meoboot is not running in stb VuPlus'), MessageBox.TYPE_INFO, 7)
-
 
 class NeoBootInstallation(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -473,9 +479,6 @@ class NeoBootInstallation(Screen):
         if not os.path.isfile('/etc/fstab.org'):
             self.session.open(MessageBox, _('NeoBot - First use the Device Manager and mount the drives correctly !!!'), MessageBox.TYPE_INFO, 7)
             self.close()
-        if fileExists('/.multinfo'):
-            self.session.open(MessageBox, _('Sorry, NeoBoot can installed or upgraded only when booted from Flash.'), MessageBox.TYPE_INFO, 7)
-            self.close()
         else:
             self.first_installation()
 
@@ -521,24 +524,10 @@ class NeoBootInstallation(Screen):
 
                 f.close()
                 mntid = os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
-                os.system('blkid -s UUID -o value ' + mntdev + '>/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
+                system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install')
 
-                fstabuuid = os.popen('blkid -s UUID -o value ' + mntdev).read()
-                fstabuuidwrite = 'UUID=' + fstabuuid.strip() + '        /media/neoboot        auto        defaults\t       1        1'
-                fileHandle = open('/etc/fstab', 'a')
-                fileHandle.write(fstabuuidwrite)
-                fileHandle.close()
-                os.system('blkid -c /dev/null /dev/sd* > /tmp/blkidlist')
-                os.system('blkid -c /dev/null ' + mntdev + ' > /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
-                system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/install2')
-
-
-            #if not fileExists('/usr/lib/enigma2/python/Plugins/PLi'):                
-                #os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
-
-            #if os.path.isfile('/etc/init.d/volatile-media.sh'):
-                    #os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
-                    
+            if os.path.isfile('/etc/init.d/volatile-media.sh'):
+                    os.system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
             if os.path.isfile('/media/neoboot/ImageBoot/.neonextboot'): 
                     os.system('rm -f /media/neoboot/ImageBoot/.neonextboot; rm -f /media/neoboot/ImageBoot/.version; rm -f /media/neoboot/ImageBoot/.Flash; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.ipk; rm -f /media/neoboot/ImagesUpload/.kernel/zImage*.bin')
                     
@@ -581,39 +570,7 @@ class NeoBootInstallation(Screen):
     def pakiet2(self, yesno):
         if yesno:
                 try:
-                    system('opkg update;opkg configure;sleep 3')                    
-
-                    if os.system('opkg list-installed | grep python-subprocess') != 0:
-                            os.system('opkg install python-subprocess')
-                    if os.system('opkg list-installed | grep python-argparse') != 0:
-                            os.system('opkg install python-argparse')
-                    if os.system('opkg list-installed | grep curl') != 0:
-                            os.system('opkg install curl')    
-                    if os.system('opkg list-installed | grep packagegroup-base-nfs') != 0:                            
-                            os.system('opkg install packagegroup-base-nfs')                       
-                    if os.system('opkg list-installed | grep ofgwrite') != 0:                                                                                                                                                                                                                                                                                                                                                
-                            os.system('opkg install ofgwrite')
-                    if os.system('opkg list-installed | grep bzip2') != 0:                                                                                                                                                                                                                                                                                                                                                
-                            os.system('opkg install bzip2')
-                    if os.system('opkg list-installed | grep mtd-utils') != 0:
-                            os.system('opkg install mtd-utils')
-                    if os.system('opkg list-installed | grep mtd-utils-ubifs') != 0:                                                                                                                                                                                                                                                                                                                                                
-                            os.system('opkg install mtd-utils-ubifs')
-                    if os.system('opkg list-installed | grep mtd-utils-jffs2') != 0:
-                            os.system('opkg install mtd-utils-jffs2')
-                    if os.system('opkg list-installed | grep kernel-module-nandsim') != 0:
-                            os.system('opkg install kernel-module-nandsim')    
-                    if os.system('opkg list-installed | grep packagegroup-base-nfs') != 0:                            
-                            os.system('opkg install packagegroup-base-nfs')                       
-                    if os.system('opkg list-installed | grep lzo') != 0:                            
-                            os.system('opkg install lzo') 
-                    if os.system('opkg list-installed | grep python-setuptools') != 0:                            
-                            os.system('opkg install python-setuptools')                             
- 
-                    cmd = 'opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade kernel-image'
-                    system(cmd)
-                    os.system('opkg configure update-modules; sleep 3') 
-
+                    system('opkg update;opkg configure;sleep 5')                    
                     #VUPLUS ARM 
                     if getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuuno4kse' :
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
@@ -632,38 +589,17 @@ class NeoBootInstallation(Screen):
                         os.system('opkg download kernel-image')
                         os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())                    
                         os.system('dd if=/dev/mmcblk0p4 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel())      
-                                                                                                                                                                                                                                                                                                                                                                    
-                    elif getCPUSoC() == '7278' or getBoxHostName() == 'vuduo4k':
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarmvu /sbin/neoinitarmvu; cd')  
-                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarmvu')
-                        os.system('opkg download kernel-image')
-                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())                    
-                        os.system('dd if=/dev/mmcblk0p6 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxVuModel())
-
-
-                    #Octagon SF4008   
-                    elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008':
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm')  
-                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarm')
-                        os.system('opkg download kernel-image')
-                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())                    
-                        os.system('dd if=/dev/mmcblk0p3 of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
-
-                    #Zgemma h7S  arm  
-                    elif getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':
-                        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/' )
-                        os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; cd') 
-                        os.system('chmod 755 /sbin/neoinitarm; chmod 755 /sbin/neoinitarm')
-                        os.system('opkg download kernel-image')
-                        os.system('mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName()) 
-                        os.system('python /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/findkerneldevice.py')                   
-                        os.system('dd if=/dev/kernel of=/media/neoboot/ImagesUpload/.kernel/flash-kernel-%s.bin' % getBoxHostName())
 
                     #VUPLUS MIPS                                                                                                                                                                                                                 
-                    elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7424' or getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'mbultra' or getBoxHostName() == 'osmini' or getBoxHostName() == 'h3':   
+                    elif getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7241' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini':   
+                        if os.system('opkg list-installed | grep mtd-utils') != 0:
+                            os.system('opkg install mtd-utils')
+                        if os.system('opkg list-installed | grep mtd-utils-ubifs') != 0:                                                                                                                                                                                                                                                                                                                                                
+                            os.system('opkg install mtd-utils-ubifs')
+                        if os.system('opkg list-installed | grep mtd-utils-jffs2') != 0:
+                            os.system('opkg install mtd-utils-jffs2')
+                        if os.system('opkg list-installed | grep kernel-module-nandsim') != 0:
+                            os.system('opkg install kernel-module-nandsim')
                         if not fileExists('/usr/lib/enigma2/python/Tools/HardwareInfoVu.pyo'):
                             os.system('ln -sfn /usr/lib/enigma2/python/Tools/HardwareInfo.pyo /usr/lib/enigma2/python/Tools/HardwareInfoVu.pyo')
                         if not fileExists('/usr/lib/enigma2/python/Tools/DreamboxHardware.pyo'):
@@ -672,42 +608,32 @@ class NeoBootInstallation(Screen):
                             os.system('ln -sfn /usr/lib/enigma2/python/Components/PackageInfo.pyo /usr/lib/enigma2/python/Tools/DreamboxInfoHandler.pyo')                            
 
                         os.system('cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitmips /sbin/neoinitmips; cp -Rf /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitmipsvu /sbin/neoinitmipsvu') 
-                        os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nfidump; chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump_mips; rm -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; cd')
+                        os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nfidump; chmod 0755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump; rm -r /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; cd')
                         os.system('chmod 755 /sbin/neoinitmips; chmod 0755 /sbin/neoinitmipsvu')
    
-                        if getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getTunerModel() == 'ini-1000sv' or getTunerModel() == 'h3':
+                        if getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getTunerModel() == 'ini-1000sv':
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; mv ./bin/fontforneoboot.ttf /usr/share/fonts; mv ./bin/libpngneo /usr/lib; cp -f ./bin/neoinitmips /sbin/neoinitmips; chmod 0755 ./bin/neobm; chmod 0755 /usr/lib/libpngneo; cd; chmod 0755 /sbin/neoinitmips; ln -sf /media/neoboot/ImageBoot/.neonextboot /etc/neoimage')
 
                         elif getBoxHostName() == 'bm750' or getBoxHostName() == 'vuduo' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vuultimo':
-                            #os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump_mips /dev/mtd1 -f > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/') 
-                            if fileExists ('/usr/sbin/nanddump'):
-                                os.system('cd; cd /media/neoboot/ImagesUpload/.kernel; /usr/sbin/nanddump /dev/mtd0 -o > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
-                            elif not fileExists ('/usr/sbin/nanddump'):
-                                os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump_mips /dev/mtd0 -f > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
+                            os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd1 -o -b > vmlinux.gz') 
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')
 
                         elif getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vusolose' or getBoxHostName() == 'vuzero':
-                            #os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump_mips /dev/mtd2 -f > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
-                            if fileExists ('/usr/sbin/nanddump'):
-                                os.system('cd; cd /media/neoboot/ImagesUpload/.kernel; /usr/sbin/nanddump /dev/mtd2 -o > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
-                            elif not fileExists ('/usr/sbin/nanddump'):
-                                os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump_mips /dev/mtd2 -f > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
+                            os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump /dev/mtd2 -o -b > vmlinux.gz')
                             os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')  
-
+ 
                         if fileExists('/tmp/plik.tar.gz'):
                             cmd = 'mkdir -p ' + self.mysel + 'ImagesUpload/.egami'    #private non-public use patch
                             system(cmd)
                             os.system('/bin/tar -xzvf /tmp/plik.tar.gz -C /;rm -fr /tmp/*.tar.gz')                                                                
                         os.system('opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxVuModel())
-                             
-                    #OctagonSF4008 - DM900 - Zgemma h7S - Octagon sf 8008 - AX HD60 4K         
-                    elif getCPUSoC() == 'hi3798mv200' or getBoxHostName() == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251'  or getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
+                            
+                    #OctagonSF4008 DM900
+                    elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':
                         os.system('cp -f /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitarm /sbin/neoinitarm; chmod 0755 /sbin/neoinitarm; ln -sfn /sbin/neoinitarm /sbin/init')                             
 
                     else:
                          self.messagebox = self.session.open(MessageBox, _('Canceled ... NeoBoot will not work properly !!! NeoBoot works only on VuPlus box, Ultimo4k, Solo4k, Uno4k !!!'), MessageBox.TYPE_INFO, 20)
-
-
 
                     os.system('touch /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh') 
                     cel = open('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/neobootup.sh', 'w')
@@ -717,42 +643,18 @@ class NeoBootInstallation(Screen):
                     cel = open('/etc/name', 'w')
                     cel.write('gutosie')
                     cel.close()
-
+                                                                 
+                    if os.system('opkg list-installed | grep python-subprocess') != 0:
+                            os.system('opkg install python-subprocess')
+                    if os.system('opkg list-installed | grep python-argparse') != 0:
+                            os.system('opkg install python-argparse')
+                    if os.system('opkg list-installed | grep curl') != 0:
+                            os.system('opkg install curl')    
+                    if os.system('opkg list-installed | grep packagegroup-base-nfs') != 0:                            
+                            os.system('opkg install packagegroup-base-nfs')                       
                     cmd = 'opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade kernel-image'
                     system(cmd)
-                     
-                    #MiracleBoxUltra 
-                    if getBoxHostName() == 'mbultra': 
-                            os.system('opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())
-                            if not fileExists ('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName()):
-                                os.system('opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())
-                            #os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump_mips /dev/mtd2 -f > vmlinux.gz')
-                            if fileExists ('/usr/sbin/nanddump'):
-                                os.system('cd; cd /media/neoboot/ImagesUpload/.kernel; /usr/sbin/nanddump /dev/mtd2 -o > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
-                            elif not fileExists ('/usr/sbin/nanddump'):
-                                os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump_mips /dev/mtd2 -f > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
-                            os.system('rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitmipsvu')
-                            os.system('rm /sbin/neoinitmipsvu')
-
-                    #Edision OS MINI 
-                    if getCPUSoC() == 'BCM7362' or getBoxHostName() == 'osmini':
-                            os.system('opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())
-                            if not fileExists ('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName()):
-                                os.system('opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())
-                            os.system('opkg download kernel-image; sleep 2; mv /home/root/*.ipk /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % getBoxHostName())
-                            if fileExists ('/usr/sbin/nanddump'):
-                                os.system('cd; cd /media/neoboot/ImagesUpload/.kernel; /usr/sbin/nanddump /dev/mtd0 -o > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
-                            elif not fileExists ('/usr/sbin/nanddump'):
-                                os.system('cd /media/neoboot/ImagesUpload/.kernel/; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/nanddump_mips /dev/mtd0 -f > vmlinux.gz; mv /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel/')
-                            #os.system('cp -rf /etc/fstab.org /etc/fstab; rm /etc/fstab.org')
-                            #os.system('cp -rf /etc/init.d/volatile-media.sh.org /etc/init.d/volatile-media.sh; rm /etc/init.d/volatile-media.sh.org')  
-                            os.system('opkg install volatile-media')
-                            os.system('rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitmipsvu')
-                            os.system('rm /sbin/neoinitmipsvu')
-                            
-                    if fileExists("/home/root/vmlinux.gz"):
-                            os.system('mv -f /home/root/vmlinux.gz /media/neoboot/ImagesUpload/.kernel')
-                    os.system('opkg configure update-modules')
+                    os.system('opkg configure update-modules') 
                     
                     if getCPUtype() == 'ARMv7':       
                         os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; rm ./bin/neoinitmip*; rm -r ./bin/nanddump; rm ./bin/nfidump; rm ./bin/neobm; rm ./neologo.mvi; rm ./bin/fontforneoboot.ttf; rm ./bin/libpngneo; cd')   
@@ -760,34 +662,14 @@ class NeoBootInstallation(Screen):
                         os.system('rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/neoinitar*; rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/bin/rebootbot')
 
                     os.system('chmod 644 /media/neoboot/ImagesUpload/.kernel/*')                                                            
-                    os.system('chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/target/*')
-                    
+
                     if fileExists("/proc/stb/info/vumodel") and not fileExists("/proc/stb/info/boxtype"):
                         if fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
                             self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
                         elif not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxVuModel()) ):
                             self.myclose2(_('Error - nie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxVuModel()) )) 
-
-                    #Ultra
-                    if getCPUSoC() == 'bcm7424' or getBoxHostName == 'mbultra' or getTunerModel() == 'ini-8000sv': 
-                        if fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('Error - nie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-
                     else:
                             self.myclose2(_('NeoBoot has been installed succesfully !' ))
-
-                    #Edision OS MINI
-                    if getCPUSoC() == 'BCM7362' or getBoxHostName == 'osmini': 
-                        if fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('NeoBoot has been installed succesfully !' ))                                      
-                        elif not fileExists('/media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk' % ( getBoxHostName()) ):
-                            self.myclose2(_('Error - nie odnaleziono pliku kernela zImage.%s.ipk ' % ( getBoxHostName()) ))
-
-                    else:
-                            self.myclose2(_('NeoBoot has been installed succesfully !' ))
-
                 except:
                         pass
         else:
@@ -825,7 +707,7 @@ class NeoBootImageChoose(Screen):
         <widget name="config" position="1183,256" size="659,690" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor.png" font="Regular;32" itemHeight="42" scrollbarMode="showOnDemand" backgroundColor="black" transparent="1" />     
         <widget name="key_menu" position="254,419" zPosition="1" size="249,45" font="Regular;33" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#99FFFF" />  
 
-        <eLabel backgroundColor="black" font="Regular; 35" foregroundColor="red" position="67,54" size="443,55" text=" NeoBoot  Multi-image " transparent="1" />          
+        <eLabel backgroundColor="black" font="Regular; 35" foregroundColor="red" position="67,54" size="443,55" text=" NeoBoot ARM  -  MENU" transparent="1" />          
         <eLabel backgroundColor="black" font="Regular; 30" foregroundColor="yellow" position="140,424" size="155,41" text="MENU &gt;" transparent="1" />  
         <eLabel backgroundColor="black" font="Regular; 35" foregroundColor="#C0C0C0" position="90,659" size="80,46" text="1 &gt;" transparent="1" />  
         <eLabel backgroundColor="black" font="Regular; 35" foregroundColor="#C0C0C0" position="90,742" size="80,43" text="2 &gt;" transparent="1" />  
@@ -900,28 +782,11 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         Screen.__init__(self, session)
         if fileExists('/tmp/.init_reboot'):
             system('rm /tmp/.init_reboot')
-
-        if fileExists('/.multinfo'):
-            if fileExists('/.control_boot_new_image'):  
-                    os.system('rm -f /.control_boot_new_image; touch /.control_ok ')          
-            if not fileExists('/.control_boot_new_image'):  
-                    os.system('touch /.control_ok ') 
-
+         
         if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
             if os.path.exists('/proc/stb/info/boxtype'):
                 if getCPUSoC() == 'bcm7251' or getBoxHostName == 'sf4008':   
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')  
-
-        if fileExists('/.multinfo') and getCPUtype() == 'ARMv7':
-            if os.path.exists('/proc/stb/info/boxtype'):
-                if getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':   
-                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p3 /media/mmc')
-
-            if getCPUSoC() == '3798mv200' or getBoxHostName == 'sf8008':   
-                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p13 /media/mmc')  
-
-            if getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60':   
-                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p21 /media/mmc')
 
             if os.path.exists('/proc/stb/info/model'):
                 if getTunerModel() == 'dm900' or getCPUSoC() == 'BCM97252SSFF':   
@@ -930,11 +795,8 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             if  getBoxVuModel() == 'uno4k' or getBoxVuModel() == 'uno4kse' or  getBoxVuModel() == 'ultimo4k' or  getBoxVuModel() == 'solo4k':
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p4 /media/mmc')
 
-            if  getBoxVuModel() == 'vu_mmcblk0p4':
+            if  getBoxVuModel() == 'zero4k':
                     os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p7 /media/mmc')
-
-            if  getBoxVuModel() == 'duo4k':               
-                    os.system('mkdir -p /media/mmc; mount /dev/mmcblk0p9 /media/mmc')
 
 
         self.list = []
@@ -949,7 +811,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         self['key_blue'] = Label(_('Info'))
         self['key_menu'] = Label(_('More options'))
         self['key_1'] = Label(_('Update NeoBot'))
-        self['key_2'] = Label(_('Start Flash Image'))
+        self['key_2'] = Label(_('Backup image'))
         self['key_3'] = Label(_('Install Kernel'))
         self['label1'] = Label(_('Please choose an image to boot'))
         self['label2'] = Label(_('NeoBoot is running from:'))
@@ -980,13 +842,12 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
          'ok': self.boot,
          'menu': self.mytools,
          '1': self.neoboot_update,
-         '2': self.ImageFlash,
+         '2': self.MBBackup,
          '3': self.ReinstallKernel,
          'back': self.close_exit})
         if not fileExists('/etc/name'):
             os.system('touch /etc/name')
         self.onShow.append(self.updateList)
-
 
     def pomoc(self):
         if fileExists('/.multinfo'):
@@ -995,17 +856,10 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         else:
             self.session.open(Opis)
 
-    def ImageFlash(self):
-        if not fileExists('/.multinfo'):
-            self.session.open(MessageBox, _('Sorry, Opcja dostepna tylko z poziomu image uruchomionego w neoboocie.'), MessageBox.TYPE_INFO, 7)
-            self.close()
-        else:
-            cmd = _("echo -e 'Restart in progress...\n'")
-            cmd1='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/*.ipk' 
-            cmd2 = 'mount -a ;ln -sf "init.sysvinit" "/sbin/init" ; echo "Flash " > /media/neoboot/ImageBoot/.neonextboot ;sleep 2; reboot -f' 
-            self.session.openWithCallback(self.up, Console, _('NeoBoot: Deleting Image'), [cmd, cmd1, cmd2])
+    def MBBackup(self):
+        from Plugins.Extensions.NeoBoot.files.tools import MBBackup
+        self.session.open(MBBackup)
 
-            
     def deviceneoboot(self):
         self.session.open(Montowanie)
 
@@ -1056,9 +910,9 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             self.session.open(MessageBox, _('Canceled update.'), MessageBox.TYPE_INFO, 7)
                                            
     def chackupdate3(self):
-        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot;curl -O --ftp-ssl https://raw.githubusercontent.com/gutosie/neoboot2/master/ver.txt;sleep 3;cd /')            
+        os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot;curl -O --ftp-ssl https://raw.githubusercontent.com/gutosie/neoboot/master/ver.txt;sleep 3;cd /')            
         if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt'):
-            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot;fullwget --no-check-certificate https://raw.githubusercontent.com/gutosie/neoboot2/master/ver.txt; sleep 3;cd /')
+            os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot;fullwget --no-check-certificate https://raw.githubusercontent.com/gutosie/neoboot/master/ver.txt; sleep 3;cd /')
             if not fileExists('/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt'):
                 self.session.open(MessageBox, _('Unfortunately, at the moment not found an update, try again later.'), MessageBox.TYPE_INFO, 8)
         else:
@@ -1078,13 +932,13 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
         if yesno:
             if fileExists('/tmp/*.zip'):
                 os.system('rm /tmp/*.zip')
-            os.system('cd /tmp; curl -O --ftp-ssl https://codeload.github.com/gutosie/neoboot2/zip/master; mv /tmp/master /tmp/neoboot.zip; cd /')
+            os.system('cd /tmp; curl -O --ftp-ssl https://codeload.github.com/gutosie/neoboot/zip/master; mv /tmp/master /tmp/neoboot.zip; cd /')
             if not fileExists('/tmp/neoboot.zip'):
-                    os.system('cd /tmp;fullwget --no-check-certificate https://codeload.github.com/gutosie/neoboot2/zip/master; mv /tmp/master /tmp/neoboot.zip; sleep 3;cd ')
+                    os.system('cd /tmp;fullwget --no-check-certificate https://codeload.github.com/gutosie/neoboot/zip/master; mv /tmp/master /tmp/neoboot.zip; sleep 3;cd ')
                     if not fileExists('/tmp/neoboot.zip'):
                         self.session.open(MessageBox, _('Unfortunately, at the moment not found an update, try again later.'), MessageBox.TYPE_INFO, 8)
-            else:                                                                                                                                                                                                                                                                                                                                                   
-                os.system('cd /tmp/; unzip -qn ./neoboot.zip; rm -f ./neoboot.zip; cp -rf ./neoboot2-master/NeoBoot /usr/lib/enigma2/python/Plugins/Extensions; rm -rf /tmp/neoboot2-master;  rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt; cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoini*;  chmod 0755 ./ex_init.py; chmod 0755 ./target/*; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; cd')                    
+            else:
+                os.system('cd /tmp/; unzip -qn ./neoboot.zip; rm -f ./neoboot.zip; cp -rf ./neoboot-master/NeoBoot /usr/lib/enigma2/python/Plugins/Extensions; rm -rf /tmp/neoboot-master;  rm /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/ver.txt; cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; chmod 0755 ./bin/neoini*;  chmod 0755 ./ex_init.py; chmod 0755 ./files/targetimage.sh; chmod 0755 ./files/NeoBoot.sh; chmod 0755 ./files/S50fat.sh; cd')                    
                 if getCPUtype() == 'MIPS':
                     os.system('cd /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/; cp -rf ./bin/neoinitmipsvu /sbin; chmod 755 /sbin/neoinitmipsvu; cp -rf ./bin/neoinitmips /sbin; chmod 755 /sbin/neoinitmips; cd')                    
                 elif getCPUtype() == 'ARMv7':
@@ -1346,10 +1200,10 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             self.session.open(MessageBox, _('Removing canceled!'), MessageBox.TYPE_INFO)
 
     def ImageInstall(self):
-        if not fileExists('/.multinfo'):                                                                                                                                                                                                                         
-            KERNEL_VERSION = getKernelVersionString()             
-            if getCPUSoC() == 'hi3798mv200' or getBoxHostName == 'ax60' or getCPUSoC() == '3798mv200' or getBoxHostName() == 'sf8008' or getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'bcm7251s' or getCPUSoC() == '7241' or getBoxHostName() == 'h7' or getBoxHostName() == 'dm900' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getCPUSoC() == '7278' or getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getCPUSoC() == 'bcm7424' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getBoxHostName() == 'mbultra' or getBoxHostName() == 'h3':                   
-                self.extractImage()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        if not fileExists('/.multinfo'):
+            KERNEL_VERSION = getKernelVersionString()        
+            if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getBoxHostName() == 'dm900' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == 'BCM97252SSFF' or getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getCPUSoC() == '7335' or getCPUSoC() == '7413' or getCPUSoC() == '7325' or getCPUSoC() == '7356' or getCPUSoC() == 'bcm7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424' or getCPUSoC() == '7362' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7358' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini':                   
+                self.extractImage()                
             else:
                 self.messagebox = self.session.open(MessageBox, _('Nie wykryto odpowiedniego STB do instalacji !!!!'), MessageBox.TYPE_INFO, 8)
                 self.close()
@@ -1380,9 +1234,7 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
                 images = False
 
         if images == True:
-            #self.session.openWithCallback(self.up2, InstalacjaImage)
-                from Plugins.Extensions.NeoBoot.unpack import InstallImage
-                self.session.open(InstallImage)
+            self.session.openWithCallback(self.up2, InstalacjaImage)
         else:
             self.ImageSystem()
 
@@ -1401,16 +1253,464 @@ valign="center" backgroundColor="black" transparent="1" foregroundColor="white" 
             out = open('/media/neoboot/ImageBoot/.neonextboot', 'w')
             out.write(self.mysel)
             out.close()
-        from Plugins.Extensions.NeoBoot.run import StartImage
-        self.session.open(StartImage)
-        
+        self.session.open(UruchamianieImage)
+
     def myClose(self, message):
         self.session.open(MessageBox, message, MessageBox.TYPE_INFO)
         self.close()
+
+class UruchamianieImage(Screen):
+    screenwidth = getDesktop(0).size().width()
+    if screenwidth and screenwidth == 1920:
+        skin = """<screen position="center, center" size="1241, 850" title="NeoBoot">
+        \n\t\t\t<ePixmap position="491, 673" zPosition="-2" size="365, 160" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/matrixhd.png" />
+        <widget source="list" render="Listbox" position="20, 171" size="1194, 290" scrollbarMode="showOnDemand">\n\t\t\t\t<convert type="TemplatedMultiContent">
+        \n                \t\t{"template": [
+        \n                    \t\t\tMultiContentEntryText(pos = (90, 1), size = (920, 66), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
+        \n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (8, 4), size = (66, 66), png = 1),
+        \n                    \t\t\t],
+        \n                    \t\t\t"fonts": [gFont("Regular", 40)],\n                    \t\t\t"itemHeight": 66\n                \t\t}
+        \n            \t\t</convert>\n\t\t</widget>
+        \n         <widget name="label1" position="21, 29" zPosition="1" size="1184, 116" font="Regular;35" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="red" />
+        \n\t\t        <widget name="label2" position="22, 480" zPosition="-2" size="1205, 168" font="Regular;35" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="red" />
+        \n\t\t        </screen>"""
+    else:
+        skin = """<screen position="center, center" size="835, 500" title="NeoBoot">
+        \n\t\t\t           <ePixmap position="0,0" zPosition="-1" size="835,500" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/frame835x500.png"  />
+        <widget source="list" render="Listbox" position="16, 150" size="800, 40"    selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/listselection800x35.png" scrollbarMode="showOnDemand">
+        \n\t\t\t\t<convert type="TemplatedMultiContent">
+        \n                \t\t{"template": [
+        \n                    \t\t\tMultiContentEntryText(pos = (180, 0), size = (520, 36), flags = RT_HALIGN_LEFT|RT_VALIGN_CENTER, text = 0),
+        \n                    \t\t\tMultiContentEntryPixmapAlphaTest(pos = (4, 2), size = (36, 36), png = 1),
+        \n                    \t\t\t],\n                    \t\t\t"fonts": [gFont("Regular", 22)],
+        \n                    \t\t\t"itemHeight": 35\n               \t\t}\n            \t\t</convert>
+        \n\t\t</widget>\n<widget name="label1" font="Regular; 26" position="15, 70" size="803, 58" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#00cc99" />
+        <widget name="label2" position="40, 232" zPosition="2" size="806, 294" font="Regular;25" halign="center" valign="center" backgroundColor="black" transparent="1" foregroundColor="#00cc99" />
+        \n\t\t        </screen>"""
+
+    __module__ = __name__
+    def __init__(self, session):
+        Screen.__init__(self, session)
+        self.list = []
+        self['list'] = List(self.list)
+        self.select()
+        self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'ok': self.KeyOk,
+         'back': self.close})
+        self['label1'] = Label(_('Start the chosen system now ?'))
+        self['label2'] = Label(_('Select OK to run the image.'))
+        
+    def select(self):
+        self.list = []
+        mypath = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot'
+        if not fileExists(mypath + 'icons'):
+            mypixmap = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/ok.png'
+        png = LoadPixmap(mypixmap)
+        res = (_('OK Start image...'), png, 0)
+        self.list.append(res)
+        self['list'].list = self.list
+
+    def KeyOk(self):                              
+        system('sync; echo 3 > /proc/sys/vm/drop_caches; chmod 755 /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh')               
+        self.sel = self['list'].getCurrent()
+        if self.sel:
+            self.sel = self.sel[2]     
+        if self.sel == 0:          
+            if fileExists('/media/mmc/etc/init.d/neobootmount.sh'):
+                os.system('rm -f /media/mmc/etc/init.d/neobootmount.sh;')
+
+            #Octagon SF4008, DM900
+            if getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008' or getCPUSoC() == 'BCM97252SSFF' or getBoxHostName() == 'dm900':                  
+                        if getImageNeoBoot() == 'Flash':                    
+                            if fileExists('/.multinfo'):   
+                                os.system('cd /media/mmc; ln -sfn /sbin/init.sysvinit /media/mmc/sbin/init; /etc/init.d/reboot')                 
+                            elif not fileExists('/.multinfo'): 
+                                os.system('ln -sfn /sbin/init.sysvinit /sbin/init; /etc/init.d/reboot')
+                        elif getImageNeoBoot() != 'Flash':                     
+                                os.system('ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot')                                                          
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
+            #MiracleBox, ET8500, Formuler F1, Formuler F3, Atemio6000 - MIPS    
+            elif getCPUtype() != 'ARMv7' and getCPUSoC() == 'bcm7358' or getCPUSoC() == 'bcm7362' or getCPUSoC() == 'BCM7362' or getCPUSoC() == 'bcm7356' or getCPUSoC() == 'bcm7241' or getCPUSoC() == 'bcm7362' or getBoxHostName() == 'mbmini' or getBoxHostName() == 'osmini' or getTunerModel() == 'ini-1000sv':                                      
+                        if getImageNeoBoot() == 'Flash':                                        
+                            self.session.open(TryQuitMainloop, 2)
+                        elif getImageNeoBoot() != 'Flash':                     
+                                cmd='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot' 
+                                self.session.open(Console, _('NeoBoot Arm....'), [cmd])                                                         
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że multiboot nie wspiera tego modelu STB !!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
+            #VUPLUS ARM                                                        
+            elif getCPUSoC() == '7444s' or getCPUSoC() == '7252s' or getCPUSoC() == '7376' or getCPUSoC() == '72604' or getBoxHostName() == 'vuultimo4k' or getBoxHostName() == 'vuuno4k' or getBoxHostName() == 'vusolo4k' or getBoxHostName() == 'vuzero4k' or getBoxHostName() == 'vuuno4kse' :
+                        if getImageNeoBoot() == 'Flash':                                               
+                            if fileExists('/.multinfo'):                                                                
+                                cmd1='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh'                  
+                                self.session.open(Console, _('NeoBoot Arm....'), [cmd1])
+                            elif not fileExists('/.multinfo'):                                                                                             
+                                self.session.open(TryQuitMainloop, 2)                                             
+                        elif getImageNeoBoot() != 'Flash':                                                 
+                            if not fileExists('/.multinfo'):  
+                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):   
+                                    cmd1='ln -sfn /sbin/neoinitarm /sbin/init; /etc/init.d/reboot'  
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd1])   
+                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):     
+                                    cmd1='ln -sfn /sbin/neoinitarmvu /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh'                   
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd1])
+                            elif fileExists('/.multinfo'):    
+                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd1='cd /media/mmc; ln -sf /sbin/neoinitarm /media/mmc/sbin/init; opkg install --force-maintainer --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' %  getBoxVuModel()
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd1])
+                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/zImage.%s' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd1='cd /media/mmc; ln -sfn /sbin/neoinitarmvu /media/mmc/sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh'                                                                                      
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd1])
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że Twój model STB nie jest wpierany!!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+                         
+            #VUPLUS MIPS  mtd2            
+            elif getCPUSoC() == '7356' or getCPUSoC() == '7429' or getCPUSoC() == '7424'  or getCPUSoC() == '7241' or getCPUSoC() == '7362' or getBoxHostName() == 'vusolo2' or getBoxHostName() == 'vusolose'  or getBoxHostName() == 'vuduo2' or getBoxHostName() == 'vuzero':
+                        if getImageNeoBoot() == 'Flash':                    
+                            if fileExists('/.multinfo'):  
+                                cmd2='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh' 
+                                self.session.open(Console, _('NeoBoot Arm....'), [cmd2])                 
+                            elif not fileExists('/.multinfo'):  
+                                self.session.open(TryQuitMainloop, 2)                                      
+                        elif getImageNeoBoot() != 'Flash':                    
+                            if not fileExists('/.multinfo'):                        
+                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd2='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot' 
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd2])                                                                                                    
+                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):                                              
+                                    cmd2='ln -sfn /sbin/neoinitmipsvu /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh' 
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd2])              
+                            elif fileExists('/.multinfo'):    
+                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd2='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' % getBoxVuModel() 
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd2])
+                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd2='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh'
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd2])
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że model STB nie jest wpierany przez multiboota!!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
+
+            #VUPLUS MIPS mtd1              
+            elif getCPUSoC() == '7335'  or getCPUSoC() == '7325' or getCPUSoC() == '7405' or getCPUSoC() == '7405(with 3D)' or getBoxHostName() == 'vuultimo' or getBoxHostName() == 'bm750' or getBoxHostName() == 'duo' or getBoxHostName() == 'vuuno' or getBoxHostName() == 'vusolo' or getBoxHostName() == 'vuduo':                              
+                        if getImageNeoBoot() == 'Flash':                    
+                            if fileExists('/.multinfo'):   
+                                cmd3='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh' 
+                                self.session.open(Console, _('NeoBoot Arm....'), [cmd3])                
+                            elif not fileExists('/.multinfo'):   
+                                self.session.open(TryQuitMainloop, 2)        
+                        elif getImageNeoBoot() != 'Flash':                    
+                            if not fileExists('/.multinfo'):                        
+                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd3='ln -sfn /sbin/neoinitmips /sbin/init; /etc/init.d/reboot' 
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd3])                                                               
+                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd3='ln -sfn /sbin/neoinitmipsvu /sbin/init; /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh' 
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd3])                 
+                            elif fileExists('/.multinfo'):   
+                                if not fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd3='opkg install --force-reinstall --force-overwrite --force-downgrade /media/neoboot/ImagesUpload/.kernel/zImage.%s.ipk; /etc/init.d/reboot' % getBoxVuModel()
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd3])
+                                elif fileExists('/media/neoboot/ImageBoot/%s/boot/%s.vmlinux.gz' % ( getImageNeoBoot(),  getBoxVuModel())):
+                                    cmd3='/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/targetimage.sh'
+                                    self.session.open(Console, _('NeoBoot Arm....'), [cmd3])
+                        else:
+                            os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                            self.messagebox = self.session.open(MessageBox, _('Wygląda na to że model STB nie jest wpierany!!! '), MessageBox.TYPE_INFO, 8)
+                            self.close()
+
+            else:
+                os.system('echo "Flash "  >> /media/neoboot/ImageBoot/.neonextboot')
+                self.messagebox = self.session.open(MessageBox, _('Wygląda na to że model STB nie jest wpierany przez NEOBOOT !!! '), MessageBox.TYPE_INFO, 8)
+                self.close()           
                 
-####################### _(-_-)_ gutosie _(-_-)_ #######################
-####################### _(-_-)_ gutosie _(-_-)_ #######################
-                                               
+                
+class InstalacjaImage(Screen, ConfigListScreen):
+    screenwidth = getDesktop(0).size().width()
+    if screenwidth and screenwidth == 1920:
+        skin = """<screen position="82,105" size="1650,875" title="NeoBoot - Installation">
+                  <eLabel position="41,107" size="1541,2" backgroundColor="blue" foregroundColor="blue" name="linia" />
+                  <eLabel position="40,744" size="1545,2" backgroundColor="blue" foregroundColor="blue" name="linia" />
+                  <eLabel text="NeoBoot opcje dla instalowanego obrazu" font="Regular; 38" position="40,24" size="1538,74" halign="center" foregroundColor="red" backgroundColor="black" transparent="1" />
+                  <widget name="config" position="38,134" size="1547,593" font="Regular; 32" itemHeight="42" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/selektor.png" scrollbarMode="showOnDemand" transparent="1" backgroundColor="transpBlack" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" position="84,820" size="178,28" alphatest="on" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/greencor.png" position="457,820" size="178,29" alphatest="on" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellowcor.png" position="884,823" size="169,28" alphatest="on" />
+                  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/bluecor.png" position="1288,821" size="167,29" alphatest="on" />
+                  <widget name="HelpWindow" position="330,310" zPosition="5" size="1,1" transparent="1" alphatest="on" />
+                  <widget name="key_red" position="36,762" zPosition="1" size="284,53" font="Regular; 35" halign="center" valign="center" backgroundColor="#FF0000" transparent="1" foregroundColor="red" />
+                  <widget name="key_green" position="403,760" zPosition="1" size="293,55" font="Regular; 35" halign="center" valign="center" backgroundColor="#00FF00" transparent="1" foregroundColor="green" />
+                  <widget name="key_yellow" position="816,761" zPosition="1" size="295,54" font="Regular; 35" halign="center" valign="center" backgroundColor="#FFFF00" transparent="1" foregroundColor="yellow" />
+                  <widget name="key_blue" position="1233,760" zPosition="1" size="272,56" font="Regular; 35" halign="center" valign="center" backgroundColor="#0000FF" transparent="1" foregroundColor="blue" />\
+               </screen>"""
+    else:
+          skin = """<screen position="0,0" size="1280,720" title="NeoBoot - Installation">
+                    <ePixmap position="0,0" zPosition="-1" size="1280,720" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1frame_base-fs8.png"  />
+                    <eLabel text="NeoBoot opcje dla instalowanego obrazu" font="Regular; 28" position="10,30" size="700,30" halign="center" foregroundColor="#58ccff" backgroundColor="black" transparent="1" />
+                    <widget name="config" position="0,150" size="780,450" font="Regular; 22" itemHeight="32" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/listselection700x32-fs8.png" scrollbarMode="showOnDemand" transparent="1" backgroundColor="transpBlack" />
+                    <widget name="HelpWindow" position="100,500" zPosition="5" size="1,1" transparent="1" alphatest="on" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/red25.png" position="0,650" size="250,40" alphatest="blend" />
+                    <widget name="key_red" position="0,670" zPosition="2" size="250,40"  font="Regular; 20" halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/green25.png" position="200,650" size="230,36" alphatest="blend" />
+                    <widget name="key_green" position="200,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/yellow25.png" position="400,650" size="230,36" alphatest="blend" />
+                    <widget name="key_yellow" position="400,670" size="230,38" zPosition="1" font="Regular; 20"  halign="center" backgroundColor="transpBlack" transparent="1" foregroundColor="white" />
+                    <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/blue25.png" position="600,650" size="230,36" alphatest="blend" />
+                    <widget source="session.VideoPicture" render="Pig" position=" 836,89" size="370,208" zPosition="3" backgroundColor="#ff000000"/>
+                    <ePixmap position="920,500" zPosition="1" size="228,130" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/1matrix.png" />
+                  </screen>"""
+
+    def __init__(self, session):
+        Screen.__init__(self, session)
+        fn = 'NewImage'
+        sourcelist = []
+        for fn in os.listdir('/media/neoboot/ImagesUpload'):
+            if fn.find('.zip') != -1:
+                fn = fn.replace('.zip', '')
+                sourcelist.append((fn, fn))
+                continue
+            if fn.find('.tar.xz') != -1:
+                fn = fn.replace('.tar.xz', '')
+                sourcelist.append((fn, fn))
+                continue
+            if fn.find('.nfi') != -1:
+                fn = fn.replace('.nfi', '')
+                sourcelist.append((fn, fn))
+                continue
+        if len(sourcelist) == 0:
+            sourcelist = [('None', 'None')]
+        self.source = ConfigSelection(choices=sourcelist)
+        self.target = ConfigText(fixed_size=False)
+        self.CopyFiles = ConfigYesNo(default=False)
+        self.CopyKernel = ConfigYesNo(default=True)
+        self.TvList = ConfigYesNo(default=True) 
+        self.Montowanie = ConfigYesNo(default=True)
+        self.LanWlan = ConfigYesNo(default=True)
+        self.Sterowniki = ConfigYesNo(default=False)                        
+        self.InstallSettings = ConfigYesNo(default=False)        
+        self.ZipDelete = ConfigYesNo(default=False) 
+        self.RepairFTP = ConfigYesNo(default=False)
+        self.SoftCam = ConfigYesNo(default=False)
+        self.MediaPortal = ConfigYesNo(default=False)                                                                             
+        self.BlackHole = ConfigYesNo(default=False)
+        self.target.value = ''
+        self.curselimage = ''
+
+        try:
+            if self.curselimage != self.source.value:
+                self.target.value = self.source.value[:-13]
+                self.curselimage = self.source.value
+        except:
+            pass
+
+        self.createSetup()
+        ConfigListScreen.__init__(self, self.list, session=session)
+        self.source.addNotifier(self.typeChange)
+        self['actions'] = ActionMap(['OkCancelActions',
+         'ColorActions',
+         'CiSelectionActions',
+         'VirtualKeyboardActions'], {'cancel': self.cancel,
+         'red': self.cancel,
+         'green': self.imageInstall,
+         'yellow': self.HelpInstall,
+         'blue': self.openKeyboard}, -2)        
+        self['key_green'] = Label(_('Install'))
+        self['key_red'] = Label(_('Cancel'))
+        self['key_yellow'] = Label(_('Help'))
+        self['key_blue'] = Label(_('Keyboard'))        
+        self['HelpWindow'] = Pixmap()
+        self['HelpWindow'].hide()
+
+    def createSetup(self):
+        self.list = []
+        self.list.append(getConfigListEntry(_('Source Image file'), self.source))
+        self.list.append(getConfigListEntry(_('Image Name'), self.target)) 
+        self.list.append(getConfigListEntry(_('Do not copy files from Flash to the installed image ?'), self.CopyFiles ))         
+        self.list.append(getConfigListEntry(_('Copy the kernel of the installed system (recommended only for Vu+) ?'), self.CopyKernel ))         
+        self.list.append(getConfigListEntry(_('Copy the channel list ?'), self.TvList))  
+        self.list.append(getConfigListEntry(_('Copy mounting disks ? (Recommended)'), self.Montowanie))
+        self.list.append(getConfigListEntry(_('Copy network settings LAN-WLAN ?'), self.LanWlan))
+        self.list.append(getConfigListEntry(_('Copy the drivers ? (Recommended only other image.)'), self.Sterowniki))                                                                
+        self.list.append(getConfigListEntry(_('Copy Settings to the new Image'), self.InstallSettings))                                                                                
+        self.list.append(getConfigListEntry(_('Delete Image zip after Install ?'), self.ZipDelete)) 
+        self.list.append(getConfigListEntry(_('Repair FTP ? (Recommended only other image if it does not work.)'), self.RepairFTP))
+        self.list.append(getConfigListEntry(_('Copy config SoftCam ?'), self.SoftCam)) 
+        self.list.append(getConfigListEntry(_('Copy MediaPortal ?'), self.MediaPortal))                 
+        self.list.append(getConfigListEntry(_('Path BlackHole ? (Not recommended for VuPlus)'), self.BlackHole))
+     
+    def HelpInstall(self):
+        if fileExists('/.multinfo'):
+            mess = _('Information available only when running Flash.')
+            self.session.open(MessageBox, mess, MessageBox.TYPE_INFO)
+        else:
+            self.session.open(HelpInstall)
+               
+        
+
+    def typeChange(self, value):
+        self.createSetup()
+        self['config'].l.setList(self.list)
+        if self.curselimage != self.source.value:
+            self.target.value = self.source.value[:-13]
+            self.curselimage = self.source.value
+
+    def openKeyboard(self):
+        sel = self['config'].getCurrent()
+        if sel:
+            if sel == self.target:
+                if self['config'].getCurrent()[1].help_window.instance is not None:
+                    self['config'].getCurrent()[1].help_window.hide()
+            self.vkvar = sel[0]
+            if self.vkvar == _('Image Name'):
+                self.session.openWithCallback(self.VirtualKeyBoardCallback, VirtualKeyBoard, title=self['config'].getCurrent()[0], text=self['config'].getCurrent()[1].value)
+        return
+
+    def VirtualKeyBoardCallback(self, callback = None):
+        if callback is not None and len(callback):
+            self['config'].getCurrent()[1].setValue(callback)
+            self['config'].invalidate(self['config'].getCurrent())
+        return
+
+    def imageInstall(self):
+        if self.check_free_space():
+            pluginpath = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot'
+            myerror = ''
+            source = self.source.value.replace(' ', '')
+            target = self.target.value.replace(' ', '')
+            for fn in os.listdir('/media/neoboot/ImageBoot'):
+                if fn == target:
+                    myerror = _('Sorry, an Image with the name ') + target + _(' is already installed.\n Please try another name.')
+                    continue
+
+            if source == 'None':
+                myerror = _('You have to select one Image to install.\nPlease, upload your zip file in the folder: /media/neoboot/ImagesUpload and select the image to install.')
+            if target == '':
+                myerror = _('You have to provide a name for the new Image.')
+            if target == 'Flash':
+                myerror = _('Sorry this name is reserved. Choose another name for the new Image.')
+            if len(target) > 35:
+                myerror = _('Sorry the name of the new Image is too long.')
+            if myerror:
+                myerror
+                self.session.open(MessageBox, myerror, MessageBox.TYPE_INFO)
+            else:
+                myerror
+                message = "echo -e '"
+                message += _('NeoBot started installing new image.\n')
+                message += _('The installation process may take a few minutes.\n')
+                message += _('Please: DO NOT reboot your STB and turn off the power.\n')
+                message += _('Please, wait...\n')                
+                message += "'"
+                cmd1 = 'python ' + pluginpath + '/ex_init.py'
+                cmd = '%s %s %s %s %s %s %s %s %s %s %s %s %s %s %s ' % (cmd1,
+                 source,
+                 target.replace(' ', '.'),
+                 str(self.CopyFiles.value),                 
+                 str(self.CopyKernel.value),                 
+                 str(self.TvList.value),
+                 str(self.Montowanie.value),
+                 str(self.LanWlan.value),
+                 str(self.Sterowniki.value),                                                                                                                        
+                 str(self.InstallSettings.value), 
+                 str(self.ZipDelete.value),                                                                    
+                 str(self.RepairFTP.value),                                  
+                 str(self.SoftCam.value), 
+                 str(self.MediaPortal.value),                 
+                 str(self.BlackHole.value))  
+                print '[NEO-BOOT]: ', cmd
+                self.session.open(Console, _('NEOBoot: Install new image'), [message, cmd])
+
+
+    def check_free_space(self):
+        if Freespace('/media/neoboot/ImagesUpload') < 500000:
+            self.session.open(MessageBox, _('Not enough free space on /media/neoboot/ !!\nYou need at least 500Mb free space.\n\nExit plugin.'), type=MessageBox.TYPE_ERROR)
+            return False
+        return True
+
+    def cancel(self):
+        self.close()
+
+class HelpInstall(Screen):
+    screenwidth = getDesktop(0).size().width()
+    if screenwidth and screenwidth == 1920:
+        skin = """<screen position="center,center" size="1920,1080" borderWidth="0" borderColor="transpBlack" flags="wfNoBorder">
+                    <eLabel text="Informacje instalacji image w NeoBoot" font="Regular; 35" position="71,20" size="1777,112" halign="center" foregroundColor="yellow" backgroundColor="black" transparent="1" />
+                    <widget name="lab1" position="69,134" size="1780,913" font="Regular;35"    />
+                  </screen>"""
+    else:
+        skin = """<screen position="center,center" size="1280,720" title="NeoBoot - Informacje">
+                    <widget name="lab1" position="18,19" size="1249,615" font="Regular;20" backgroundColor="black" transparent="1" />
+                  </screen>"""
+    __module__ = __name__
+
+    def __init__(self, session):
+        Screen.__init__(self, session)
+        self['lab1'] = ScrollLabel('')
+        self['actions'] = ActionMap(['WizardActions', 'ColorActions', 'DirectionActions'], {'back': self.close,
+         'ok': self.close,
+         'up': self['lab1'].pageUp,
+         'left': self['lab1'].pageUp,
+         'down': self['lab1'].pageDown,
+         'right': self['lab1'].pageDown})
+        self['lab1'].hide()
+        self.updatetext()
+
+    def updatetext(self):
+        
+        message = _('Source Image file')
+        message += _(' -Wybierz kursorem pilota oprogramowanie do zainstalowania (w lewo lub prawo).\n\n')  
+              
+        message += _('Image Name')
+        message += _(' -Zmień nazwę image - aby zmienić naciśnij na pilocie niebieski.\n\n')   
+             
+        message += _('Do not copy files from Flash to the installed image ?')
+        message += _(' - po zaznaczeniu tej opcji nie zostanie nic skopiowane z image flash do instalowanego image w neoboot. \n\n')  
+              
+        message += _('Copy the kernel of the installed system (recommended only for Vu+) ?')
+        message += _(' - po zaznaczeniu tej opcji zostanie skopiowany plik jądra (kernel) instalowanego image do neoboota, zalecane tylko dla STB vuplus \n\n')
+                
+        message += _('Copy the channel list ?')
+        message += _(' - opcja kopiuje listę kanałów z flasha do instalowanego image w neoboocie.\n\n')
+                
+        message += _('Copy mounting disks ? (Recommended)')
+        message += _(' - opcja przenosi do instalowanego image w neoboot ustawienia montowania podłaczonych urządzeń do tunera.\n\n')
+                
+        message += _('Copy network settings LAN-WLAN ?')
+        message += _(' - opcja przenosi pliki z zawartymi ustawieniami dla sieci lan i wlan. \n\n ')
+                
+        message += _('Copy the drivers ? (Recommended only other image.)')  
+        message += _(' - opcja przenosi z flasza sterowniki do instalowanego image w neoboocie, zalecane tylko w przypadku jeśli instalujemy image od innego model niż posiadamy.\n\n') 
+                      
+        message += _('Copy Settings to the new Image')
+        message += _(' - opcja kopiuje ustawienia oprogramowania z flasza do instalowanego systemu w neoboocie.\n\n')
+                
+        message += _('Delete Image zip after Install ?')
+        message += _(' - po instalacji, opcja kasuje plik zip image z katalogu ImagesUpload. \n\n')
+                
+        message += _('Repair FTP ? (Recommended only other image if it does not work.)')
+        message += _(' - opcja w niektórych przypadkach naprawia w instalowanym image polączenie FTP (ang. File Transfer Protocol) \n\n')
+                
+        message += _('Copy config SoftCam ?')
+        message += _(' - opcja kopiuje configi oscama i cccam (openpli -domyślnie)\n\n')
+                
+        message += _('Path BlackHole ? (Not recommended for VuPlus)')  
+        message += _(' - opcja przeznaczona dla image blackhole, pomaga uruchomić BH w neoboot \n\n')
+                     
+        self['lab1'].show()
+        self['lab1'].setText(message)
+
+
+
 def readline(filename, iferror = ''):
     if iferror[:3] == 'or:':
       data = iferror[3:]
@@ -1425,6 +1725,12 @@ def readline(filename, iferror = ''):
         PrintException()
     return data
 
+def Freespace(dev):
+    statdev = os.statvfs(dev)
+    space = statdev.f_bavail * statdev.f_frsize / 1024
+    print '[NeoBoot] Free space on %s = %i kilobytes' % (dev, space)
+    return space
+
 def checkimage():
     mycheck = False
     if fileExists('/proc/stb/info'): #vumodel'): ogranicza tylko dla vu+
@@ -1432,7 +1738,6 @@ def checkimage():
     else:
         mycheck = False
     return mycheck
-
 
 def checkversion(session):
     version = 0
@@ -1453,7 +1758,7 @@ def checkversion(session):
             session.open(MessageBox, _('Sorry: Wrong image in flash found. You have to install in flash Vu+ or Octagon-sf4008 Image !!!'), MessageBox.TYPE_INFO, 10)
     else:
         session.open(NeoBootInstallation)
-            
+
 def main(session, **kwargs):
     try:
         doMount=True
