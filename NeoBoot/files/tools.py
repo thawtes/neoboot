@@ -28,7 +28,7 @@ import time
 import sys
 import struct, shutil
 
-PLUGINVERSION = '7.00'
+PLUGINVERSION = '6.00'
 
 def getKernelVersion():
     try:
@@ -96,100 +96,82 @@ class MBTools(Screen):
         if not fileExists(mypath + 'icons'):
             mypixmap = '/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/ok.png'
         png = LoadPixmap(mypixmap)
-
-        res = (_('Wykonaj kopi\xc4\x99 obrazu z NeoBoota'), png, 0)
-        self.list.append(res)
-        self['list'].list = self.list
-
-        res = (_('Przywr\xc3\xb3\xc4\x87 kopi\xc4\x99 obrazu do NeoBoota'), png, 1)
+        res = (_('Przywr\xc3\xb3\xc4\x87 kopi\xc4\x99 obrazu do NeoBoota'), png, 0)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Menad\xc5\xbcer urz\xc4\x85dze\xc5\x84'), png, 2)
+        res = (_('Menad\xc5\xbcer urz\xc4\x85dze\xc5\x84'), png, 1)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Usu\xc5\x84 image ZIP z katalogu ImagesUpload  '), png, 3)
+        res = (_('Usu\xc5\x84 image ZIP z katalogu ImagesUpload  '), png, 2)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Odinstalowanie  NeoBoota'), png, 4)
+        res = (_('Odinstalowanie  NeoBoota'), png, 3)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Reinstalacja  NeoBoota'), png, 5)
+        res = (_('Reinstalacja  NeoBoota'), png, 4)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Zaktualizuj NeoBoota na wszystkich obrazach.'), png, 6)
+        res = (_('Zaktualizuj NeoBoota na wszystkich obrazach.'), png, 5)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Kopia Zapasowa NeoBoota'), png, 7)
+        res = (_('Kopia Zapasowa NeoBoota'), png, 6)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Aktualizacja listy TV na zainstalowanych image.'), png, 8)
+        res = (_('Aktualizacja listy TV na zainstalowanych image.'), png, 7)
         self.list.append(res)
         self['list'].list = self.list
 
-        res = (_('Aktualizacja IPTVPlayer na zainstalowanych image.'), png, 9)
+        res = (_('Aktualizacja IPTVPlayer na zainstalowanych image.'), png, 8)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Usuniecie hasla do root.'), png, 10)
+        res = (_('Usuniecie hasla do root.'), png, 9)
         self.list.append(res)
         self['list'].list = self.list        
 
-        res = (_('Sprawdz poprawnosc instalacji neoboota'), png, 11)
+        res = (_('Sprawdz poprawnosc instalacji neoboota'), png, 10)
         self.list.append(res)
         self['list'].list = self.list
         
-        res = (_('Zahaszuj montowanie VolatileMedia '), png, 12)
-        self.list.append(res)
-        self['list'].list = self.list        
-        
-        res = (_('Informacje NeoBoota'), png, 13)
+        res = (_('Informacje NeoBoota'), png, 11)
         self.list.append(res)
         self['list'].list = self.list        
 
-        res = (_('Wspierane tunery sat'), png, 14)
-        self.list.append(res)
-        self['list'].list = self.list  
 
     def KeyOk(self):
         self.sel = self['list'].getCurrent()
         if self.sel:
             self.sel = self.sel[2]
-        if self.sel == 0 and self.session.open(MBBackup):
+        if self.sel == 0 and self.session.open(MBRestore):
             pass
-        if self.sel == 1 and self.session.open(MBRestore):
+        if self.sel == 1 and self.session.open(MenagerDevices):
             pass
-        if self.sel == 2 and self.session.open(MenagerDevices):
+        if self.sel == 2 and self.session.open(MBDeleUpload):
             pass
-        if self.sel == 3 and self.session.open(MBDeleUpload):
+        if self.sel == 3 and self.session.open(UnistallMultiboot):
             pass
-        if self.sel == 4 and self.session.open(UnistallMultiboot):
+        if self.sel == 4 and self.session.open(ReinstllNeoBoot):
             pass
-        if self.sel == 5 and self.session.open(ReinstllNeoBoot):
+        if self.sel == 5 and self.session.open(UpdateNeoBoot):
             pass
-        if self.sel == 6 and self.session.open(UpdateNeoBoot):
+        if self.sel == 6 and self.session.open(BackupMultiboot):
             pass
-        if self.sel == 7 and self.session.open(BackupMultiboot):
+        if self.sel == 7 and self.session.open(ListTv):
             pass
-        if self.sel == 8 and self.session.open(ListTv):
+        if self.sel == 8 and self.session.open(IPTVPlayer):
             pass
-        if self.sel == 9 and self.session.open(IPTVPlayer):
+        if self.sel == 9 and self.session.open(SetPasswd): 
             pass
-        if self.sel == 10 and self.session.open(SetPasswd): 
-            pass
-        if self.sel == 11 and self.session.open(CheckInstall): 
-            pass   
-        if self.sel == 12 and self.session.open(VolatileMedia): 
-            pass                      
-        if self.sel == 13 and self.session.open(MultiBootMyHelp):
-            pass
-        if self.sel == 14 and self.session.open(TunerInfo):
+        if self.sel == 10 and self.session.open(CheckInstall): 
+            pass            
+        if self.sel == 11 and self.session.open(MultiBootMyHelp):
             pass
 
 class MBBackup(Screen):
@@ -440,20 +422,8 @@ class MenagerDevices(Screen):
         try:
             if fileExists('/usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager/devicemanager.cfg'):
                 system('rm -f /usr/lib/enigma2/python/Plugins/SystemPlugins/DeviceManager/devicemanager.cfg')
-                from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
-                self.session.open(ManagerDevice)
             if fileExists('/etc/devicemanager.cfg'):
                 system(' rm -f /etc/devicemanager.cfg')
-                from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
-                self.session.open(ManagerDevice)
-            if fileExists('/etc/fstab.org'):        
-                system('rm /etc/fstab; mv /etc/fstab.org /etc/fstab; rm /etc/fstab.org ')                               
-                from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
-                self.session.open(ManagerDevice)
-            elif not fileExists('/etc/fstab.org'):
-                system('cp -f /etc/fstab /etc/fstab.org')
-                from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
-                self.session.open(ManagerDevice)
             else:
                 from Plugins.Extensions.NeoBoot.files.devices import ManagerDevice
                 self.session.open(ManagerDevice)
@@ -839,52 +809,27 @@ class CheckInstall(Screen):
          
     def neocheck(self):
         try:
-            cmd = ' /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/files/module_neoboot.sh -i'
+            if not fileExists('/usr/sbin/ubidetach'):
+                cmd = "echo -e '\n%s '" % _('OK, ubidetach found.')            
+            if not fileExists('/usr/sbin/ubiattach'):
+                cmd0 = "echo -e '\n%s '" % _('OK, ubiattach found.')           
+            if not fileExists('/usr/bin/curl'):
+                cmd1 = "echo -e '\n%s '" % _('OK, curl notfound.')          
+            if not fileExists('/usr/lib/python2.7/subprocess.pyo'):
+                cmd2 = "echo -e '\n%s '" % _('OK, python-subprocess found.')
+            else:
+                cmdA = "echo -e '\n%s '" % _('All installed OK')
+                self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmdA]) 
+                self.close()
+
             self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd,
-             cmd]) 
+             cmd0,
+             cmd1,
+             cmd2]) 
             self.close()
 
         except:
             False
-
-class VolatileMedia(Screen):
-    __module__ = __name__
-    skin = '\n\t<screen position="center,center" size="700,300" title="Zablokowac pomoc w montowaniu dyskow ?">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
-
-    def __init__(self, session):
-        Screen.__init__(self, session)
-        self['lab1'] = Label('Haszowanie montowania  ?')
-        self['key_red'] = Label(_('Uruchom'))
-        self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'back': self.close,
-         'red': self.Media})
-
-    def Media(self):
-        box = self.session.openWithCallback(self.restartGUI, MessageBox, _('Zmienic montowanie ?\n\nWybierz Tak by zmienic.\nWybierz Nie by porzucic zmiany lub przywrocic.'), MessageBox.TYPE_YESNO)
-        box.setTitle(_('MONTOWANIE '))
-
-    def restartGUI(self, answer):
-        if answer is True:
-            try:
-                if fileExists('/etc/init.d/volatile-media.sh'):
-                    cmd = ' mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org'
-                    self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd]) 
-                    self.close()
-                #else:
-                    self.messagebox = self.session.open(MessageBox, _('Plik volatile-media.sh w lokalizacji /etc/init.d/\nzostal zmianiony na volatile-media.sh.org'), MessageBox.TYPE_INFO, 10)
-            except:
-                False
-        else:
-            try:
-                if fileExists('/etc/init.d/volatile-media.sh.org'):
-                    cmd = ' mv /etc/init.d/volatile-media.sh.org /etc/init.d/volatile-media.sh'
-                    self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd]) 
-                    self.close()
-                #else:
-                    self.messagebox = self.session.open(MessageBox, _('Plik volatile-media.sh.org w lokalizacji /etc/init.d/\nzostal zmianiony na org. naze volatile-media.sh'), MessageBox.TYPE_INFO, 10)
-            except:
-                False
-
-
 
 class MultiBootMyHelp(Screen):
     screenwidth = getDesktop(0).size().width()
@@ -918,30 +863,6 @@ class MultiBootMyHelp(Screen):
         message += _('Udanej zabawy :)\n\n')
         self['lab1'].show()
         self['lab1'].setText(message)
-
-
-class TunerInfo(Screen):
-    __module__ = __name__
-    skin = '\n\t<screen position="center,center" size="700,300" title="NeoBoot - Tunery Sat">\n\t\t<widget name="lab1" position="20,20" size="660,215" font="Regular;24" halign="center" valign="center" transparent="1"/><ePixmap position="280,250" size="140,40" pixmap="/usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/images/redcor.png" alphatest="on" zPosition="1" /><widget name="key_red" position="280,250" zPosition="2" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="red" transparent="1" /></screen>'
-
-    def __init__(self, session):
-        Screen.__init__(self, session)
-        self['lab1'] = Label('NeoBoot: Lista wspieranych modeli STB.')
-        self['key_red'] = Label(_('Uruchom - Red'))
-        self['actions'] = ActionMap(['WizardActions', 'ColorActions'], {'back': self.close,
-         'red': self.iNFO})
-         
-    def iNFO(self):
-        try:
-            cmd = ' cat /usr/lib/enigma2/python/Plugins/Extensions/NeoBoot/.info'
-            cmd1 = ''
-            self.session.openWithCallback(self.close, Console, _('NeoBoot....'), [cmd,
-                     cmd1]) 
-            self.close()
-
-        except:
-            False
-
 
 
 def myboot(session, **kwargs):

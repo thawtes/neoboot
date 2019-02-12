@@ -353,8 +353,11 @@ class DevicesConf(Screen, ConfigListScreen):
             pass
 
     def saveMypoints(self):
-        system('mount media -a')
-        system('cp -r -f /etc/fstab /etc/fstab.org')        
+        system('mount media -a') 
+        if fileExists('/etc/fstab.org'):        
+            system('cp -r -f /etc/fstab.org /etc/fstab; rm /etc/fstab.org ')                               
+        elif not fileExists('/etc/fstab.org'):
+            system('cp -r -f /etc/fstab /etc/fstab.org')
         self.Console = Console()
         mycheck = False
         for x in self['config'].list:
@@ -369,8 +372,8 @@ class DevicesConf(Screen, ConfigListScreen):
         ybox.setTitle(_('Please, wait....'))
 
     def delay(self, val):
-        #if fileExists('/etc/init.d/volatile-media.sh'):
-            #system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
+        if fileExists('/etc/init.d/volatile-media.sh'):
+            system('mv /etc/init.d/volatile-media.sh /etc/init.d/volatile-media.sh.org')
         message = _('Completed assembly of disks.\nReturn to installation ?')
         ybox = self.session.openWithCallback(self.myclose, MessageBox, message, MessageBox.TYPE_YESNO)
         ybox.setTitle(_('MOUNTING....'))
