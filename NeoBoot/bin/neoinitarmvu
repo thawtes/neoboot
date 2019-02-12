@@ -43,25 +43,6 @@ else
 			fi 			
 		done
 	fi	
-	if [ -e $NEOBOOT/bin/install2  ]; then
-        	orgimag1=`mount | sed '/sd/!d' | cut -d" " -f1`
-		selectinstall2=`cat $NEOBOOT/bin/install2`
-		for item in $orgimag1; do
-			selectmnt=`blkid | sed "/$selectinstall/!d" | cut -d":" -f1`
-			if [ $selectmnt == $item ]; then
-				echo "selectmnt=" $selectmnt
-                        	mnttest="uuid"
-				mount $selectmnt $NEO > /dev/null 2>&1
-			fi
-			if [ ! -e $NEO/ImageBoot  ]; then
-				echo "NEOBOOT hasn't been installed on: " $selectmnt
-				umount $NEO > /dev/null 2>&1 
-			else
-				echo "NEOBOOT has been installed on: " $selectmnt
-				break;
-			fi 			
-		done
-	fi
 	if [ ! -e $NEO  ]; then
 		mkdir $NEO > /dev/null 2>&1
 	fi        
@@ -91,39 +72,21 @@ else
                   echo "Flash "  > $IMAGEBOOT
                   echo "Used Kernel: Reinstall kernel !"  > /media/neoboot/ImagesUpload/.kernel/used_flash_kernel
 		  reboot -f
-	fi 
-          
+	fi   
+
+        cat /etc/videomode > /proc/stb/video/videomode
+
 	TARGET=Flash
 	if [ -f $IMAGEBOOT ]; then
 	  TARGET=`cat $IMAGEBOOT`
-	fi
-######### test boot new imaga>>>>	
-	if [ -e $IMAGE/$TARGET/.control_ok ]; then
-          			echo "No Error - Booting image normal ... "
-          			sync
-	else 
-          			if [ -e $IMAGE/$TARGET/.control_boot_new_image ]; then
-                    			echo "First start image - Proba uruchomienia nowego image... "; rm -f $IMAGE/$TARGET/.control_boot_new_image 
-                    			sync
-          			else 
-              			    if [ ! -e $IMAGE/$TARGET/.control_ok ] ; then
-                    			ln -sfn /sbin/init.sysvinit /sbin/init
-                    			echo "Flash "  > /media/neoboot/ImageBoot/.neonextboot
-                    			sync
-                    			echo "Error - NeoBoot nie potrafi uruchomic tego image !!! "
-                    			echo "Restart STB - Back to Flash... "
-                    			sleep 8; reboot -f   
-              			    fi
-          			fi
-	fi
-######### test boot new image<<<<<	
-
+	fi	
 	if [ $TARGET = "Flash" ]; then
 		echo "NEOBOOT is booting image from " $TARGET
 		/bin/umount $NEO > /dev/null 2>&1
 		/bin/umount /media/usb > /dev/null 2>&1
 		/bin/umount /media/hdd > /dev/null 2>&1
 	else
+                #echo 3 > /proc/sys/vm/drop_caches
 		if [ -d $NEO/ImageBoot/$TARGET ]; then			
 			if [ -f $NEO/ImageBoot/$TARGET/etc/init.d/udev ]; then
 				sed -ie s!"\$4"!"\$3"!g $NEO/ImageBoot/$TARGET/etc/init.d/udev
