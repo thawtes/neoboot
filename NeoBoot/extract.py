@@ -111,11 +111,21 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                 os.system('mv /media/neoboot/ImagesUpload/osmini/kernel.bin ' + media_target + '/boot/' + getBoxHostName() + '.vmlinux.gz' + dev_null)        
                 os.system('echo "Skopiowano kernel.bin Edision OS MINI. Typ stb - MIPS"')
 
-#arm
+#arm vuplus
             elif getCPUSoC() == '7444s' or getCPUSoC() == '7278' or getCPUSoC() == '7376' or getCPUSoC() == '7252s' or getCPUSoC() == '72604':
                 os.system('mv /media/neoboot/ImagesUpload/vuplus/' + getBoxVuModel() + '/kernel_auto.bin ' + media_target + '/boot/zImage.' + getBoxVuModel() + '' + dev_null)
                 os.system('echo "Skopiowano kernel.bin STB-ARM"')   
 
+#arm octagon
+            elif getCPUSoC() == 'bcm7251' or getBoxHostName() == 'sf4008':
+                os.system('mv /media/neoboot/ImagesUpload/' + getBoxHostName() + '/kernel.bin ' + media_target + '/boot/zImage.' + getBoxHostName() + '' + dev_null)
+                os.system('echo "Skopiowano kernel.bin STB-ARM Octagon."')   
+
+#arm Zgemma h7
+            elif getCPUSoC() == 'bcm7251s' or getBoxHostName() == 'h7':
+                os.system('mv /media/neoboot/ImagesUpload/zgemma/' + getBoxHostName() + '/kernel.bin ' + media_target + '/boot/zImage.' + getBoxHostName() + '' + dev_null)
+                os.system('echo "Skopiowano kernel.bin STB-ARM Zgemma h7."')
+                
 
     if not os.path.exists('/media/neoboot/ImageBoot/.without_copying'):
         cmd = 'cp /etc/hostname %s/ImageBoot/%s/etc/hostname > /dev/null 2>&1' % (media, target)
@@ -459,13 +469,11 @@ def NEOBootMainEx(source, target, CopyFiles, CopyKernel, TvList, Montowanie, Lan
                 cmd = 'chmod -R 0755 %s' % filename
                 rc = os.system(cmd)
 
+        os.system('mkdir -p ' + media_target + '/media/hdd' + dev_null)
+        os.system('mkdir -p ' + media_target + '/media/usb' + dev_null)
+        os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
+        os.system('mkdir -p ' + media_target + '/var/lib/opkg/info/' + dev_null)
 #######################                                                                                                                                   
-
-    os.system('mkdir -p ' + media_target + '/media/hdd' + dev_null)
-    os.system('mkdir -p ' + media_target + '/media/usb' + dev_null)
-    os.system('mkdir -p ' + media_target + '/media/neoboot' + dev_null)
-    os.system('mkdir -p ' + media_target + '/var/lib/opkg/info/' + dev_null) 
-
     os.system('touch /media/neoboot/ImageBoot/.data; echo "Data instalacji image" > /media/neoboot/ImageBoot/.data; echo " "; date  > /media/neoboot/ImageBoot/.data')
     os.system('mv -f /media/neoboot/ImageBoot/.data /media/neoboot/ImageBoot/%s/.data' % target)
     cmd = 'touch /tmp/.init_reboot'
@@ -897,18 +905,14 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system('echo "Instalacja systemu Octagon SF4008."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/sf4008/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/sf4008/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
-
-        if os.path.exists('/media/neoboot/ImagesUpload/octagon/sf8008'):
+        elif os.path.exists('/media/neoboot/ImagesUpload/octagon/sf8008'):
             os.system('echo "Instalacja systemu Octagon SF8008."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/octagon/sf8008/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/octagon/sf8008/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
-
-        if os.path.exists('/media/neoboot/ImagesUpload/osmio4k'):
+        elif os.path.exists('/media/neoboot/ImagesUpload/osmio4k'):
             os.system('echo "Instalacja systemu EDISION osmio4k"')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/osmio4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/osmio4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
-
-
         elif os.path.exists('/media/neoboot/ImagesUpload/dm900'):
             os.system('echo "Instalacja systemu Dreambox DM900."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/dm900/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/dm900/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
@@ -918,20 +922,21 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
             os.system('cp -r /media/neoboot/ImagesUpload/%s.tar.xz  /media/neoboot/ImagesUpload/rootfs.tar.xz' % source)
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/rootfs.tar.xz; tar -jJxvf /media/neoboot/ImagesUpload/rootfs.tar.xz -C  /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
-        elif os.path.exists('/media/neoboot/ImagesUpload/hd51'):
+        elif os.path.exists('/media/neoboot/ImagesUpload/hd51/rootfs.tar.bz2'):
             os.system('echo "Instalacja systemu  HD51 "')
-            cmd = 'chmod 777 /media/neoboot/ImagesUpload/hd51/rootfs.fastboot; tar -jxvf /media/neoboot/ImagesUpload/hd51/rootfs.fastboot -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
-            rc = os.system(cmd)
-
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/hd51/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/hd51/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            rc = os.system(cmd)         
         elif os.path.exists('/media/neoboot/ImagesUpload/hd60'):
             os.system('echo "Instalacja systemu AX HD60 4K"')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/hd60/rootfs.fastboot.gz; tar -jxvf /media/neoboot/ImagesUpload/hd60/rootfs.fastboot.gz -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
-
-
-        elif os.path.exists('/media/neoboot/ImagesUpload/gigablue'):
-            os.system('echo "Instalacja systemu GigaBlue."')
+        elif os.path.exists('/media/neoboot/ImagesUpload/gigablue/quad4k'):
+            os.system('echo "Instalacja systemu GigaBlue quad4k"')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/gigablue/quad4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/gigablue/quad4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
+            rc = os.system(cmd)
+        elif os.path.exists('/media/neoboot/ImagesUpload/gigablue/ue4k'):
+            os.system('echo "Instalacja systemu GigaBlue ue4k."')
+            cmd = 'chmod 777 /media/neoboot/ImagesUpload/gigablue/ue4k/rootfs.tar.bz2; tar -jxvf /media/neoboot/ImagesUpload/gigablue/ue4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
             rc = os.system(cmd)
         elif os.path.exists('/media/neoboot/ImagesUpload/vuplus/solo4k'):
             os.system('echo "Instalacja systemu VuPlus Solo4K."')
@@ -984,7 +989,7 @@ def NEOBootExtract(source, target, ZipDelete, BlackHole):
         elif os.path.exists('/media/neoboot/ImagesUpload/update/lunix3-4k'):
             os.system('echo "Instalacja systemu Qviart lunix3-4k w toku..."')
             cmd = 'chmod 777 /media/neoboot/ImagesUpload/update/lunix3-4k; tar -jxvf /media/neoboot/ImagesUpload/update/lunix3-4k/rootfs.tar.bz2 -C /media/neoboot/ImageBoot/' + target + ' > /dev/null 2>&1'
-            rc = os.system(cmd)                                                                                                             
+            rc = os.system(cmd)
         else:
             os.system('echo "NeoBoot wykrył dłąd!!! Prawdopodobnie brak pliku instalacyjnego."')
 
@@ -1033,13 +1038,10 @@ def RemoveUnpackDirs():
         rc = os.system('rm -r /media/neoboot/ImagesUpload/sf4008')
     elif os.path.exists('/media/neoboot/ImagesUpload/octagon/sf8008'):          
         rc = os.system('mv /media/neoboot/ImagesUpload/usb_update.bin /media/neoboot/ImagesUpload/octagon; rm -r /media/neoboot/ImagesUpload/octagon')                                          
-
     elif os.path.exists('/media/neoboot/ImagesUpload/hd60'):          
         rc = os.system('mv /media/neoboot/ImagesUpload/bootargs.bin /media/neoboot/ImagesUpload/hd60; mv /media/neoboot/ImagesUpload/fastboot.bin /media/neoboot/ImagesUpload/hd60; rm -r /media/neoboot/ImagesUpload/hd60')                                          
-
     elif os.path.exists('/media/neoboot/ImagesUpload/osmio4k'):
-        rc = os.system('rm -r /media/neoboot/ImagesUpload/osmio4k')
-        
+        rc = os.system('rm -r /media/neoboot/ImagesUpload/osmio4k')        
     elif os.path.exists('/media/neoboot/ImagesUpload/dm900'):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/dm900')
     elif os.path.exists('/media/neoboot/ImagesUpload/hd51'):
@@ -1073,5 +1075,5 @@ def RemoveUnpackDirs():
     elif os.path.exists('/media/neoboot/ImagesUpload/xp1000 '):
         rc = os.system('rm -r /media/neoboot/ImagesUpload/xp1000 ')                
     os.system('echo "..........................................."')
-    
+    return 0
 #END            
